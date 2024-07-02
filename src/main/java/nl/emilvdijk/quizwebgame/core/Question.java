@@ -1,15 +1,23 @@
 package nl.emilvdijk.quizwebgame.core;
 
+import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
+
 import java.util.Arrays;
 import java.util.Map;
 
-//@Component
+@Component
+@Entity
+@Table(name = "questions")
 public class Question {
+
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   String category;
+
   String id;
   String correctAnswer;
   String[] incorrectAnswers;
-  Map<String,Object> question;
+  Map<String, Object> question;
   String[] tags;
   String type;
   String difficulty;
@@ -98,25 +106,32 @@ public class Question {
 
   @Override
   public String toString() {
-    return "Question{" +
-        "category='" + category + '\'' +
-        ", id='" + id + '\'' +
-        ", correctAnswer='" + correctAnswer + '\'' +
-        ", incorrectAnswers=" + Arrays.toString(incorrectAnswers) +
-        ", question=" + question +
-        ", tags=" + tags +
-        ", type='" + type + '\'' +
-        ", difficulty='" + difficulty + '\'' +
-        ", regions=" + Arrays.toString(regions) +
-        ", isNiche=" + isNiche +
-        '}';
+    return "Question{"
+        + "category='"
+        + category
+        + '\''
+        + ", id='"
+        + id
+        + '\''
+        + ", correctAnswer='"
+        + correctAnswer
+        + '\''
+        + ", incorrectAnswers="
+        + Arrays.toString(incorrectAnswers)
+        + ", question="
+        + question
+        + ", tags="
+        + tags
+        + ", type='"
+        + type
+        + '\''
+        + ", difficulty='"
+        + difficulty
+        + '\''
+        + ", regions="
+        + Arrays.toString(regions)
+        + ", isNiche="
+        + isNiche
+        + '}';
   }
-
-//  private  String type;
-//  private String difficulty;
-//  private String category;
-//  private String question;
-//  private String correct_answer;
-//  private List<String> incorrect_answers;
-
 }
