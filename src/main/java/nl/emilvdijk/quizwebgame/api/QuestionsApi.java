@@ -1,11 +1,11 @@
-package nl.emilvdijk.quizwebgame.quizquestionapi;
+package nl.emilvdijk.quizwebgame.api;
 
 import java.util.List;
-import nl.emilvdijk.quizwebgame.core.Question;
+import nl.emilvdijk.quizwebgame.entity.Question;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-public class quizapi {
+public class QuestionsApi {
 
   public static List<Question> getNewQuestion() {
 
