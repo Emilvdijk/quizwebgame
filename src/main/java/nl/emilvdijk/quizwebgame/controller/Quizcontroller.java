@@ -1,11 +1,12 @@
 package nl.emilvdijk.quizwebgame.controller;
 
+import java.util.Arrays;
+import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class Quizcontroller {
@@ -20,7 +21,9 @@ public class Quizcontroller {
 
   @GetMapping("/quiz")
   public String showQuizQuestion(Model model) {
-    model.addAttribute("showquizquestion", quizService.getQuestion());
+    Question question = quizService.getQuestion();
+    question.prepareAnswers();
+    model.addAttribute("question", question);
     return "quiz";
   }
 

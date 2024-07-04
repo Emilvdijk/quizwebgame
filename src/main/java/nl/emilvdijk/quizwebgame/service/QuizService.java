@@ -21,6 +21,9 @@ public class QuizService {
   }
 
   public Question getQuestion() {
+    if (questionRepo.count() < 1) {
+      getNewQuestions();
+    }
     List<Question> questions = questionRepo.findAll();
     Question question = questions.getFirst();
     questionRepo.delete(questions.getFirst());
