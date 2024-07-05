@@ -4,14 +4,11 @@ package nl.emilvdijk.quizwebgame.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 
 @Entity
 @Table(name = "questions")
@@ -32,15 +29,8 @@ public class Question {
   String difficulty;
   String[] regions;
   String isNiche;
-//  String[] answers;
   HashMap<Integer, String> answers;
 
-//  public void prepareAnswers() {
-//    String[] answers = {Arrays.toString(this.getIncorrectAnswers()), this.getCorrectAnswer()};
-//    answers.
-//    Collections.shuffle(Arrays.asList(answers));
-//    this.setAnswers(answers);
-//  }
 
   public void prepareAnswers() {
     HashMap<Integer, String> answers = new HashMap<>();

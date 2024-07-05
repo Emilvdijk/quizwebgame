@@ -1,6 +1,5 @@
 package nl.emilvdijk.quizwebgame.controller;
 
-import java.util.Arrays;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class Quizcontroller {
 
-  @Autowired
-  QuizService quizService;
+  @Autowired QuizService quizService;
 
   @GetMapping("/")
   public String showHomePage() {
@@ -26,6 +24,4 @@ public class Quizcontroller {
     model.addAttribute("question", question);
     return "quiz";
   }
-
-
 }

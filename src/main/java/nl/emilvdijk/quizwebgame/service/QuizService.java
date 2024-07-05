@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QuizService {
 
-  @Autowired
-  QuestionRepo questionRepo;
+  @Autowired QuestionRepo questionRepo;
 
   public List<Question> getQuestions() {
     if (questionRepo.count() < 1) {

@@ -18,6 +18,5 @@ class quizApiTest {
     for (Question question : questions) {
       System.out.println(question);
     }
-
   }
 }
