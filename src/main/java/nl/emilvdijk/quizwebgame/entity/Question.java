@@ -1,6 +1,6 @@
 package nl.emilvdijk.quizwebgame.entity;
 
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,11 +18,12 @@ import lombok.ToString;
 @ToString
 public class Question {
 
-  @Id
-  String id;
+  @Id String id;
   String category;
   String correctAnswer;
   String[] incorrectAnswers;
+ //FIXME
+//  @Column(length=400);
   HashMap<String, String> question;
   String[] tags;
   String type;
@@ -30,7 +31,6 @@ public class Question {
   String[] regions;
   String isNiche;
   HashMap<Integer, String> answers;
-
 
   public void prepareAnswers() {
     HashMap<Integer, String> answers = new HashMap<>();
