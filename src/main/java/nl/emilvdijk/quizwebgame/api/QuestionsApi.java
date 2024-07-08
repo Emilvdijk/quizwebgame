@@ -7,14 +7,23 @@ import org.springframework.web.client.RestTemplate;
 
 public class QuestionsApi {
 
+  /**
+   * private constructor to prevent instantiation
+   */
+  private QuestionsApi() {
+  }
+
+  /**
+   * makes call to question api and returns a list of question objects
+   *
+   * @return list of question objects
+   */
   public static List<Question> getNewQuestion() {
 
     RestTemplate restTemplate = new RestTemplate();
 
     ResponseEntity<Question[]> response =
         restTemplate.getForEntity(ApiSettings.QUIZ_API_URL, Question[].class);
-    List<Question> questions = List.of(response.getBody());
-
-    return questions;
+    return List.of(response.getBody());
   }
 }

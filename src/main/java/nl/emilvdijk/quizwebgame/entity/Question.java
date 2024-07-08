@@ -4,7 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,24 +25,22 @@ public class Question {
   String category;
   String correctAnswer;
   String[] incorrectAnswers;
- //FIXME
-//  @Column(length=400);
-  HashMap<String, String> question;
+  @Column(length=400) HashMap<String, String> question;
   String[] tags;
   String type;
   String difficulty;
   String[] regions;
   String isNiche;
-  HashMap<Integer, String> answers;
+  List<String> answers;
 
+  /**
+   * prepares and populates the answers field
+   */
   public void prepareAnswers() {
-    HashMap<Integer, String> answers = new HashMap<>();
-    answers.put(1, this.correctAnswer);
-    int i = 2;
-    for (String incorrectAnswer : this.incorrectAnswers) {
-      answers.put(i, incorrectAnswer);
-      i++;
-      this.answers = answers;
-    }
+    List<String> preparedAnswers = new ArrayList<>();
+    preparedAnswers.add(this.correctAnswer);
+    preparedAnswers.addAll(List.of(this.incorrectAnswers));
+    Collections.shuffle(preparedAnswers);
+    this.answers = preparedAnswers;
   }
 }
