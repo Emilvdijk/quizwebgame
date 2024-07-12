@@ -1,13 +1,12 @@
 package nl.emilvdijk.quizwebgame.controller;
 
+import java.util.Objects;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 @Controller
 public class Quizcontroller {
@@ -37,22 +36,24 @@ public class Quizcontroller {
   }
 
   /**
-   * this method is called when a user answers a question. it checks if the answer is correct and returns a new result page
+   * this method is called when a user answers a question. it checks if the answer is correct and
+   * returns a new result page
    *
    * @param chosenAnswerStr the number of the answer chosen by user
    * @param model model to add attributes to
    * @return either the correct answer html page or the incorrect answer html page
    */
   @PostMapping("/quiz")
-  public String questionAnswer(@RequestBody String chosenAnswerStr,Model model){
+  public String questionAnswer(@RequestBody String chosenAnswerStr, Model model) {
     Question question = quizService.getQuestion();
     model.addAttribute("question", question);
-    String chosenAnswer = quizService.getQuestion().getAnswers().get(Integer.parseInt(chosenAnswerStr.substring(13)));
+    String chosenAnswer =
+        quizService.getQuestion().getAnswers().get(Integer.parseInt(chosenAnswerStr.substring(13)));
     model.addAttribute("chosenanswer", chosenAnswer);
-    if(Objects.equals(chosenAnswer, quizService.getQuestion().getCorrectAnswer())){
+    if (Objects.equals(chosenAnswer, quizService.getQuestion().getCorrectAnswer())) {
       quizService.setQuestion(null);
       return "resultpagegood";
-    }else {
+    } else {
       quizService.setQuestion(null);
       return "resultpagebad";
     }

@@ -7,11 +7,8 @@ import org.springframework.web.client.RestTemplate;
 
 public class QuestionsApi {
 
-  /**
-   * private constructor to prevent instantiation
-   */
-  private QuestionsApi() {
-  }
+  /** private constructor to prevent instantiation */
+  private QuestionsApi() {}
 
   /**
    * makes call to question api and returns a list of question objects

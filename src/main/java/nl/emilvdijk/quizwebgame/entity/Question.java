@@ -22,10 +22,13 @@ import lombok.ToString;
 public class Question {
 
   @Id String id;
+
+  @Column(length = 400)
+  HashMap<String, String> question;
+
   String category;
   String correctAnswer;
   String[] incorrectAnswers;
-  @Column(length=400) HashMap<String, String> question;
   String[] tags;
   String type;
   String difficulty;
@@ -33,9 +36,7 @@ public class Question {
   String isNiche;
   List<String> answers;
 
-  /**
-   * prepares and populates the answers field
-   */
+  /** prepares and populates the answers field */
   public void prepareAnswers() {
     List<String> preparedAnswers = new ArrayList<>();
     preparedAnswers.add(this.correctAnswer);
