@@ -6,7 +6,9 @@ import nl.emilvdijk.quizwebgame.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class Quizcontroller {
@@ -49,7 +51,6 @@ public class Quizcontroller {
     model.addAttribute("question", question);
     String chosenAnswer =
         quizService.getQuestion().getAnswers().get(Integer.parseInt(chosenAnswerStr.substring(13)));
-    model.addAttribute("chosenanswer", chosenAnswer);
     if (Objects.equals(chosenAnswer, quizService.getQuestion().getCorrectAnswer())) {
       quizService.setQuestion(null);
       return "resultpagegood";
