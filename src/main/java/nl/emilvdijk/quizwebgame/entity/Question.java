@@ -9,15 +9,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 @Component
 @Entity
 @Table(name = "questions")
-// @NoArgsConstructor
+@NoArgsConstructor
 @Getter
-// @Setter
+@Setter
 @ToString
 public class Question {
 
@@ -29,16 +31,17 @@ public class Question {
 
   @Id String id;
 
+  @Setter
   @Column(length = 400)
   HashMap<String, String> question;
 
   String category;
   String correctAnswer;
-  String[] incorrectAnswers;
-  String[] tags;
+  List<String> incorrectAnswers;
+  List<String> tags;
   String type;
   String difficulty;
-  String[] regions;
+  List<String> regions;
   String isNiche;
   List<String> answers;
 
@@ -46,7 +49,7 @@ public class Question {
   public void prepareAnswers() {
     List<String> preparedAnswers = new ArrayList<>();
     preparedAnswers.add(this.correctAnswer);
-    preparedAnswers.addAll(List.of(this.incorrectAnswers));
+    preparedAnswers.addAll(this.incorrectAnswers);
     Collections.shuffle(preparedAnswers);
     this.answers = preparedAnswers;
   }
