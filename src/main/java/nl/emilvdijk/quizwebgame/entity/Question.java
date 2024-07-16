@@ -9,17 +9,23 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
+import org.springframework.stereotype.Component;
 
+@Component
 @Entity
 @Table(name = "questions")
-@NoArgsConstructor
+// @NoArgsConstructor
 @Getter
-@Setter
+// @Setter
 @ToString
 public class Question {
+
+  //  @Id
+  //  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGen")
+  //  @SequenceGenerator(name = "question_sequence", sequenceName = "question_sequence",
+  // allocationSize = 1)
+  //  Long id;
 
   @Id String id;
 
