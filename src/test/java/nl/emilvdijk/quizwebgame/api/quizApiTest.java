@@ -32,7 +32,7 @@ class quizApiTest {
   @Test
   void getNewQuestionwithparams() {
     quizApiUriVariables.put("difficulties", "easy");
-    quizApiUriVariables.put("categories", "film_and_tv,games");
+    quizApiUriVariables.put("categories", "film_and_tv");
 
     List<Question> questions = QuestionsApi.getNewQuestion();
 
@@ -46,6 +46,7 @@ class quizApiTest {
   @Test
   void getNewQuestionsWithOtherApi() throws JSONException {
     // https://opentdb.com/
+    //    FIXME check this out
     // https://stackoverflow.com/questions/56601673/how-to-read-json-file-with-arrays-and-objects-in-java
     RestTemplate restTemplate = new RestTemplate();
 

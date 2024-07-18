@@ -2,7 +2,10 @@ package nl.emilvdijk.quizwebgame.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,13 +26,15 @@ import org.springframework.stereotype.Component;
 @ToString
 public class Question {
 
-  //  @Id
-  //  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGen")
-  //  @SequenceGenerator(name = "question_sequence", sequenceName = "question_sequence",
-  // allocationSize = 1)
-  //  Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGen")
+  @SequenceGenerator(
+      name = "question_sequence",
+      sequenceName = "question_sequence",
+      allocationSize = 1)
+  Long myid;
 
-  @Id String id;
+  String id;
 
   @Setter
   @Column(length = 400)
