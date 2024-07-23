@@ -49,7 +49,8 @@ public class Quizcontroller {
   public String questionAnswer(@RequestBody String chosenAnswerStr, Model model) {
     Question question = quizService.getQuestion();
     model.addAttribute("question", question);
-    String chosenAnswer = chosenAnswerStr.replace("number=","");
+    String chosenAnswer =
+        quizService.getQuestion().getAnswers().get(Integer.parseInt(chosenAnswerStr.substring(13)));
     if (Objects.equals(chosenAnswer, quizService.getQuestion().getCorrectAnswer())) {
       quizService.setQuestion(null);
       return "resultpagegood";
