@@ -9,19 +9,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @SpringBootTest(classes = QuizwebgameApplication.class)
 class WebMvcConfigTest {
 
-  @Autowired
-  PasswordEncoder passwordEncoder;
+  @Autowired PasswordEncoder passwordEncoder;
 
   @Test
   void passwordEncoder() {
     String result = passwordEncoder.encode("myPassword");
-//    System.out.println(result);
+    //    System.out.println(result);
     assertTrue(passwordEncoder.matches("myPassword", result));
-
-
   }
 }
