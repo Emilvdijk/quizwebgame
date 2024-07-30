@@ -37,7 +37,7 @@ public class Question {
   String id;
 
   @Setter
-  @Column(length = 400)
+  @Column(length = 777)
   HashMap<String, String> question;
 
   String category;

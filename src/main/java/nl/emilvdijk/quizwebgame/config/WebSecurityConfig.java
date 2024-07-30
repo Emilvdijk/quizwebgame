@@ -18,9 +18,13 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(
             (requests) ->
-                requests.requestMatchers("/", "/home").permitAll().anyRequest().authenticated())
+                requests.requestMatchers("/", "/home","/quiz").permitAll())
         .formLogin((form) -> form.loginPage("/login").permitAll())
         .logout((logout) -> logout.permitAll());
+
+//    FIXME remove after testing
+    http
+            .csrf(csrf -> csrf.disable());
 
     return http.build();
   }
