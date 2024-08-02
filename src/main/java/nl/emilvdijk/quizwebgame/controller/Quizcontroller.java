@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -46,7 +47,11 @@ public class Quizcontroller {
    * @return either the correct answer html page or the incorrect answer html page
    */
   @PostMapping("/quiz")
-  public String questionAnswer(@RequestBody String chosenAnswerStr, Model model) {
+  public String questionAnswer(@ModelAttribute String chosenAnswerStr, Model model) {
+   // FIXME fix csrf settings for this page
+    //  @requestbody @Modelattribute
+//https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-components
+//https://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html#integration-with-requestdatavalueprocessor
     Question question = quizService.getQuestion();
     model.addAttribute("question", question);
     String chosenAnswer =
@@ -58,5 +63,6 @@ public class Quizcontroller {
       quizService.setQuestion(null);
       return "resultpagebad";
     }
+//    return "home";
   }
 }
