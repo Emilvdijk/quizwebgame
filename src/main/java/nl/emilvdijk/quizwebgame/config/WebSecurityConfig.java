@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,36 +19,33 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+  //  FIXME overide configure? or make bean?
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(
-            (requests) -> requests.requestMatchers("/", "/home", "/quiz").permitAll());
-        //        .formLogin((form) -> form.loginPage("/login").permitAll())
-    http
+            requests ->
+                requests
+                    .requestMatchers("/", "/home", "/quiz")
+                    .permitAll()
+                    .requestMatchers("/h2-console/**")
+                    .hasRole("ADMIN")
+                    .anyRequest()
+                    .authenticated())
         .formLogin(withDefaults())
-        .logout((logout) -> logout.permitAll());
+        .logout(logout -> logout.permitAll());
 
     //    FIXME remove after testing
-//    http.csrf(csrf -> csrf.disable());
-    http
-            .csrf((csrf) -> csrf
-                            .ignoringRequestMatchers("/quiz"));
-    http.authorizeHttpRequests(
-        (requests) -> requests.requestMatchers("/h2-console/**").authenticated());
-
+    http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+    //    http.csrf(csrf -> csrf.disable());
+    http.csrf(csrf -> csrf.ignoringRequestMatchers("/quiz/**", "/h2-console/**"));
     return http.build();
   }
 
   @Bean
   public UserDetailsService userDetailsService() {
     //    FIXME remove this user someday
-//    UserDetails user =
-//        User.withDefaultPasswordEncoder().username("1").password("1").roles("USER").build();
-    var user = User.withUsername("1")
-            .password(passwordEncoder().encode("1"))
-//            .authorities("admin")
-            .build();
-
+    UserDetails user =
+        User.withUsername("1").password(passwordEncoder().encode("1")).roles("ADMIN").build();
     return new InMemoryUserDetailsManager(user);
   }
 
