@@ -25,15 +25,14 @@ public class WebSecurityConfig {
     http.authorizeHttpRequests(
             requests ->
                 requests
-                    .requestMatchers("/", "/home", "/quiz")
+                    .requestMatchers("/", "/home", "/quiz", "/images/*")
                     .permitAll()
-                    .requestMatchers("/h2-console/**")
+                    .requestMatchers("/h2-console/**") // FIXME remove after testing
                     .hasRole("ADMIN")
                     .anyRequest()
                     .authenticated())
-        .formLogin(withDefaults())
-        .logout(logout -> logout.permitAll());
-
+        .formLogin(withDefaults());
+    //        .logout(logout -> logout.permitAll());
     //    FIXME remove after testing
     http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
     //    http.csrf(csrf -> csrf.disable());
