@@ -47,6 +47,11 @@ public class Quizcontroller {
    */
   @PostMapping("/quiz")
   public String questionAnswer(@RequestBody String chosenAnswerStr, Model model) {
+    // FIXME fix csrf settings for this page
+    // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-components
+    // https://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html#integration-with-requestdatavalueprocessor
+    // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-form
+
     Question question = quizService.getQuestion();
     model.addAttribute("question", question);
     String chosenAnswer =
@@ -58,5 +63,10 @@ public class Quizcontroller {
       quizService.setQuestion(null);
       return "resultpagebad";
     }
+  }
+
+  @GetMapping("/login")
+  public String login(){
+    return "login";
   }
 }

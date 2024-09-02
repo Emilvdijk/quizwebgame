@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class Question {
   String id;
 
   @Setter
-  @Column(length = 400)
+  @Column(length = 512, columnDefinition = "VARCHAR")
   HashMap<String, String> question;
 
   String category;
@@ -49,6 +50,7 @@ public class Question {
   List<String> regions;
   String isNiche;
   List<String> answers;
+  LocalDateTime added = LocalDateTime.now();
 
   /** prepares and populates the answers field */
   public void prepareAnswers() {
