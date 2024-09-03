@@ -37,7 +37,6 @@ public class Question {
 
   String id;
 
-  @Setter
   @Column(length = 512, columnDefinition = "VARCHAR")
   HashMap<String, String> question;
 

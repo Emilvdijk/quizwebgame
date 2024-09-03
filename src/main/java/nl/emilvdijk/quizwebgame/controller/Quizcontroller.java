@@ -64,9 +64,4 @@ public class Quizcontroller {
       return "resultpagebad";
     }
   }
-
-  @GetMapping("/login")
-  public String login() {
-    return "login";
-  }
 }
