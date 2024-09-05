@@ -1,8 +1,8 @@
 package nl.emilvdijk.quizwebgame.controller;
 
 import nl.emilvdijk.quizwebgame.entity.MyUser;
-import nl.emilvdijk.quizwebgame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class Usercontroller {
 
-  @Autowired UserService userService;
+  @Autowired UserDetailsManager userService;
 
   /**
    * custom login page
@@ -39,12 +39,12 @@ public class Usercontroller {
   /**
    * post request for the register new user method
    *
-   * @param myUser user to be saved
+   * @param User user to be saved
    * @return returns redirect to the login page
    */
   @PostMapping("register")
-  public String registerUser(@ModelAttribute MyUser myUser) {
-    userService.save(myUser);
+  public String registerUser(@ModelAttribute MyUser User) {
+    userService.createUser(User);
     // TODO explore flash attributes in spring
 
     //    redirectAttributes.addFlashAttribute("message", "uccesful! Please log in.");
