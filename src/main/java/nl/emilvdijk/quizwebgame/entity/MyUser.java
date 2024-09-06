@@ -1,14 +1,16 @@
 package nl.emilvdijk.quizwebgame.entity;
 
 import jakarta.persistence.*;
-import java.util.Collection;
-import java.util.List;
+
+import java.util.*;
+
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "users")
+@Table(name = "myusers")
 @Getter
 @Setter
 @ToString
@@ -28,22 +30,21 @@ public class MyUser implements UserDetails {
   //  @ElementCollection
   //  @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "OWNER_ID"))
   //  @Column(name = "authoritiesnumber")
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private List<MyRoles> authorities;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//  private List<MyRoles> myRoles;
 
-  //  @Override
-  //  public Collection<? extends GrantedAuthority> getAuthorities() {
-  //    Set<GrantedAuthority> userauth = new HashSet<>();
-  //    for (String authority : authorities) {
-  //      userauth.add(new SimpleGrantedAuthority(authority));
-  //    }
-  //    return userauth;
-  //  }
+@ElementCollection
+  @Column(columnDefinition = "VARCHAR")
+  private List<String> myRoles;
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return authorities;
-  }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+      Set<GrantedAuthority> userauth = new HashSet<>();
+      for (String authority : myRoles) {
+        userauth.add(new SimpleGrantedAuthority(authority));
+      }
+      return userauth;
+    }
 
   @Override
   public String getPassword() {

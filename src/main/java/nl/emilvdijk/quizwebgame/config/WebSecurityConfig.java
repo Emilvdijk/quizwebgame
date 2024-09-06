@@ -3,7 +3,11 @@ package nl.emilvdijk.quizwebgame.config;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import javax.sql.DataSource;
+
+
+import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
+import nl.emilvdijk.quizwebgame.service.QuizService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +16,9 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -54,36 +61,39 @@ public class WebSecurityConfig {
   //    return new JdbcUserDetailsManager(user,user2);
   //  }
 
-  @Bean
-  public MyUserService myUserService(DataSource dataSource) {
-    MyUserService myUserService = new MyUserService();
-    myUserService.setDataSource(dataSource);
-
-    //    ArrayList<String> userauth = new ArrayList<>();
-    //    userauth.add("USER");
-    //    UserDetails user =
-    //        MyUser.builder()
-    //            .username("user")
-    //            .password(passwordEncoder().encode("user"))
-    //            .authorities(userauth)
-    //            .build();
-
-//    ArrayList<String> adminauth = new ArrayList<>();
-//    adminauth.add("ADMIN");
+//  @Bean
+//  public MyUserService myUserService(DataSource dataSource) {
+//    MyUserService myUserService = new MyUserService();
 //
-//    List<MyRoles> nice = new ArrayList<>();
-//    nice.add(new MyRoles("ADMIN"));
-//    MyUser admin =
-//        MyUser.builder()
-//            .username("nice12")
-//            .password(passwordEncoder().encode("nice12"))
-//            .authorities(nice)
-//            .build();
-//    myUserService.createUser(admin);
-    //    UserDetailsManager.createUser(user);
-
-    return myUserService;
-  }
+//    //    ArrayList<String> userauth = new ArrayList<>();
+//    //    userauth.add("USER");
+//    //    UserDetails user =
+//    //        MyUser.builder()
+//    //            .username("user")
+//    //            .password(passwordEncoder().encode("user"))
+//    //            .authorities(userauth)
+//    //            .build();
+//
+////    ArrayList<String> adminauth = new ArrayList<>();
+////    adminauth.add("ADMIN");
+////
+////    List<MyRoles> nice = new ArrayList<>();
+////    nice.add(new MyRoles("ADMIN"));
+////    MyUser admin =
+////        MyUser.builder()
+////            .username("nice12")
+////            .password(passwordEncoder().encode("nice12"))
+////            .myRoles(nice)
+////            .build();
+////    myUserService.save(admin);
+//ArrayList<String> roles = new ArrayList<>();
+//roles.add("USER");
+//    MyUser user = MyUser.builder().username("user").password(passwordEncoder().encode("user")).myRoles(roles).build();
+//    myUserService.save(user);
+//    //    UserDetailsManager.createUser(user);
+//
+//    return myUserService;
+//  }
 
   //  @Bean
   //  public UserDetailsManager users(DataSource dataSource) {
