@@ -1,9 +1,7 @@
 package nl.emilvdijk.quizwebgame.entity;
 
 import jakarta.persistence.*;
-
 import java.util.*;
-
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,27 +22,29 @@ public class MyUser implements UserDetails {
   private Long myid;
 
   private String username;
+
   private String password;
   private boolean enabled;
 
   //  @ElementCollection
   //  @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "OWNER_ID"))
   //  @Column(name = "authoritiesnumber")
-//    @ManyToMany(fetch = FetchType.EAGER)
-//  private List<MyRoles> myRoles;
+  //    @ManyToMany(fetch = FetchType.EAGER)
+  //  private List<MyRoles> myRoles;
 
-@ElementCollection
-  @Column(columnDefinition = "VARCHAR")
+  @ElementCollection(fetch = FetchType.EAGER)
+  //  @ManyToOne(fetch = FetchType.EAGER)
+  //  @JoinColumn(columnDefinition = "VARCHAR")
   private List<String> myRoles;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-      Set<GrantedAuthority> userauth = new HashSet<>();
-      for (String authority : myRoles) {
-        userauth.add(new SimpleGrantedAuthority(authority));
-      }
-      return userauth;
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    Set<GrantedAuthority> userauth = new HashSet<>();
+    for (String authority : myRoles) {
+      userauth.add(new SimpleGrantedAuthority(authority));
     }
+    return userauth;
+  }
 
   @Override
   public String getPassword() {

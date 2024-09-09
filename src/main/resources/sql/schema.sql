@@ -1,4 +1,9 @@
-CREATE TABLE IF NOT EXISTS monkey;
+--CREATE TABLE IF NOT EXISTS mytestmonkey;
+
+--INSERT INTO MYUSERS (USERNAME, PASSWORD, ENABLED, MYID )
+--VALUES
+--(1, $2a$10$ixsefZtwnAoLc10H/R6Tu.NBQgWKnhgx5vXs.r2aYp32IjKE6YlCu, true, default),
+--(user, $2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG, true, default);
 
 --https://docs.spring.io/spring-security/site/docs/5.0.7.RELEASE/reference/html/appendix-schema.html
 --create table if not exists users(

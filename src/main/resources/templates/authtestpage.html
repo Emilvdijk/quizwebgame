@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <title>authtestpage</title>
+</head>
+<body>
+<p>yo man</p>
+<p><span th:remove="tag"
+         sec:authentication="authorities">thymeleaf</span></p>
+<p>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+  This content is only shown to administrators.ROLE_ADMIN
+</div>
+<div sec:authorize="hasRole('ADMIN')">
+  This content is only shown 2ADMIN
+</div>
+<div sec:authorize="hasRole('USER')">
+  This content is only shown 2USER
+</div>
+<div sec:authorize="hasRole('ROLE_USER')">
+  This content is only shown 2ROLE_USER
+</div>
+</p>
+</body>
+</html>

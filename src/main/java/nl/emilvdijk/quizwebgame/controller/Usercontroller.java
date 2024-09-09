@@ -3,7 +3,6 @@ package nl.emilvdijk.quizwebgame.controller;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class Usercontroller {
 
-  @Autowired
-  MyUserService userService;
+  @Autowired MyUserService userService;
 
   /**
    * custom login page
@@ -36,6 +34,11 @@ public class Usercontroller {
   public String showRegisterForm(Model model) {
     model.addAttribute("user", new MyUser());
     return "register";
+  }
+
+  @GetMapping("/authtestpage")
+  public String authtestpage() {
+    return "authtestpage";
   }
 
   /**

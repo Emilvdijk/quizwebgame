@@ -19,4 +19,7 @@ class WebMvcConfigTest {
     //    System.out.println(result);
     assertTrue(passwordEncoder.matches("myPassword", result));
   }
+
+  // FIXME add more tests with:
+  //  https://docs.spring.io/spring-security/reference/servlet/test/mockmvc/authentication.html
 }

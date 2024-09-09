@@ -2,54 +2,54 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <meta charset="UTF-8">
-    <title>QuizNavBar</title>
+  <meta charset="UTF-8">
+  <title>QuizNavBar</title>
 </head>
 <body>
 <div th:fragment="navbar">
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-        <!-- Brand -->
-        <a class="navbar-brand" href="#"> Quiz game</a>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#"> Quiz game</a>
 
-        <!--    &lt;!&ndash; Toggler/collapsibe Button &ndash;&gt;-->
-        <!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">-->
-        <!--        <span class="navbar-toggler-icon"></span>-->
-        <!--    </button>-->
+    <!--    &lt;!&ndash; Toggler/collapsibe Button &ndash;&gt;-->
+    <!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">-->
+    <!--        <span class="navbar-toggler-icon"></span>-->
+    <!--    </button>-->
 
-        <!-- Navbar links -->
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
-                <div sec:authorize="hasAnyRole('ADMIN', 'USER')">
-                    <li class="nav-item">
-                        <form class="nav-link" th:action="@{/logout}" method="post">
-                            <button class="nav-link" type="submit">Logout</button>
-                        </form>
-                    </li>
-                </div>
-                <div sec:authorize="isAnonymous()">
-                    <li class="nav-item">
-                        <form class="nav-link" th:action="@{/login}" method="post">
-                            <button class="nav-link" type="submit">Login</button>
-                        </form>
-                    </li>
-                </div>
-                <li class="nav-item" sec:authorize="isAnonymous()">
-                    <p class="nav-link">Hello guest!
-                    </p>
-                </li>
-                <li class="nav-item" sec:authorize="!hasRole('ADMIN') and !isAnonymous()">
-                    <p class="nav-link" th:inline="text">Hello <span th:remove="tag"
-                                                                     sec:authentication="name">thymeleaf</span>!
-                    </p>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <p class="nav-link">Hello admin!
-                    </p>
-                </li>
-            </ul>
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <div sec:authorize="hasAnyRole('ADMIN', 'USER')">
+          <li class="nav-item">
+            <form class="nav-link" th:action="@{/logout}" method="post">
+              <button class="nav-link" type="submit">Logout</button>
+            </form>
+          </li>
         </div>
+        <div sec:authorize="isAnonymous()">
+          <li class="nav-item">
+            <form class="nav-link" th:action="@{/login}" method="get">
+              <button class="nav-link" type="submit">Login</button>
+            </form>
+          </li>
+        </div>
+        <li class="nav-item" sec:authorize="isAnonymous()">
+          <p class="nav-link">Hello guest!
+          </p>
+        </li>
+        <li class="nav-item" sec:authorize="!hasRole('ADMIN') and !isAnonymous()">
+          <p class="nav-link" th:inline="text">Hello <span th:remove="tag"
+                                                           sec:authentication="name">thymeleaf</span>!
+          </p>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+          <p class="nav-link">Hello admin!
+          </p>
+        </li>
+      </ul>
+    </div>
 
-    </nav>
+  </nav>
 </div>
 
 </body>
