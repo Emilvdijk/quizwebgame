@@ -11,16 +11,16 @@
          sec:authentication="authorities">thymeleaf</span></p>
 <p>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
-  This content is only shown to administrators.ROLE_ADMIN
+  your role: ROLE_ADMIN
 </div>
 <div sec:authorize="hasRole('ADMIN')">
-  This content is only shown 2ADMIN
+  your role: ADMIN
 </div>
 <div sec:authorize="hasRole('USER')">
-  This content is only shown 2USER
+  your role :USER
 </div>
 <div sec:authorize="hasRole('ROLE_USER')">
-  This content is only shown 2ROLE_USER
+  your role: ROLE_USER
 </div>
 </p>
 </body>

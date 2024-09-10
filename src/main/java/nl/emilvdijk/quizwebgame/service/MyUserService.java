@@ -3,16 +3,19 @@ package nl.emilvdijk.quizwebgame.service;
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
+import nl.emilvdijk.quizwebgame.entity.MyUserDto;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MyUserService implements UserDetailsService {
 
   @Autowired UserRepo userRepo;
+  @Autowired PasswordEncoder passwordEncoder;
 
   /**
    * save the user to the repository
@@ -20,7 +23,7 @@ public class MyUserService implements UserDetailsService {
    * @param user to be saved
    */
   public void save(MyUser user) {
-    if (userRepo.existsMyUserByUsername(user.getUsername())) {
+    if (checkIfUserExists(user.getUsername())) {
       //      FIXME make proper exception when username already exists
       return;
     }
@@ -37,7 +40,7 @@ public class MyUserService implements UserDetailsService {
   }
 
   /**
-   * adds 2 user profiles for testing. should be removed if moved from testing or development FIXME
+   * adds 2 user profiles for testing. FIXME should be removed if moved from testing or development
    * remove after testing or development
    */
   @PostConstruct
@@ -66,4 +69,32 @@ public class MyUserService implements UserDetailsService {
             .build();
     save(testsaveadmin);
   }
+
+  /**
+   * transform new user dto to a user object and save it to repo
+   * @param newUser user dto to be saved
+   */
+  public void registerNewUser(MyUserDto newUser) {
+    MyUser regesterUser = constructUser(newUser);
+    save(regesterUser);
+  }
+
+  /**
+   * transforms dto to user
+   * @param newUser to be transformed to user
+   * @return new user object
+   */
+  private MyUser constructUser(MyUserDto newUser) {
+    ArrayList<String> userroles = new ArrayList<>();
+    userroles.add("ROLE_USER");
+    return MyUser.builder()
+        .username(newUser.getUsername())
+        .password(passwordEncoder.encode(newUser.getPassword()))
+        .myRoles(userroles)
+        .enabled(true)
+        .build();
+  }
+
+  public Boolean checkIfUserExists(String username){
+    return userRepo.existsMyUserByUsername(username);  }
 }

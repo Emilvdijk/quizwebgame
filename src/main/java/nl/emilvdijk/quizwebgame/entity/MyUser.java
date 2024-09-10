@@ -26,15 +26,8 @@ public class MyUser implements UserDetails {
   private String password;
   private boolean enabled;
 
-  //  @ElementCollection
-  //  @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "OWNER_ID"))
-  //  @Column(name = "authoritiesnumber")
-  //    @ManyToMany(fetch = FetchType.EAGER)
-  //  private List<MyRoles> myRoles;
 
   @ElementCollection(fetch = FetchType.EAGER)
-  //  @ManyToOne(fetch = FetchType.EAGER)
-  //  @JoinColumn(columnDefinition = "VARCHAR")
   private List<String> myRoles;
 
   @Override
