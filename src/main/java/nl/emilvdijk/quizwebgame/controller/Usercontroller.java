@@ -1,18 +1,12 @@
 package nl.emilvdijk.quizwebgame.controller;
 
-
 import jakarta.validation.Valid;
-import nl.emilvdijk.quizwebgame.entity.MyUser;
-import nl.emilvdijk.quizwebgame.entity.MyUserDto;
+import nl.emilvdijk.quizwebgame.Dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -50,7 +44,6 @@ public class Usercontroller {
   @PostMapping("/register")
   public String registerUser(@Valid MyUserDto user, BindingResult bindingResult) {
 
-    //FIXME bug in validation plz fix
     if (bindingResult.hasErrors()) {
       return "register";
     }
@@ -65,5 +58,4 @@ public class Usercontroller {
   public String authtestpage() {
     return "authtestpage";
   }
-
 }

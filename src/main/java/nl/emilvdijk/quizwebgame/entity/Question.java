@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-@Table(name = "questions")
+@Table(name = "Question")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -28,16 +27,12 @@ import org.springframework.stereotype.Component;
 public class Question {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGen")
-  @SequenceGenerator(
-      name = "question_sequence",
-      sequenceName = "question_sequence",
-      allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long myid;
 
   String id;
 
-  @Column(length = 512, columnDefinition = "VARCHAR")
+  @Column(length = 512)
   HashMap<String, String> question;
 
   String category;

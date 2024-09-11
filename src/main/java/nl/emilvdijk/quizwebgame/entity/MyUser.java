@@ -3,6 +3,7 @@ package nl.emilvdijk.quizwebgame.entity;
 import jakarta.persistence.*;
 import java.util.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,6 @@ public class MyUser implements UserDetails {
 
   private String password;
   private boolean enabled;
-
 
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> myRoles;

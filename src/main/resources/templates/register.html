@@ -6,29 +6,27 @@
 </head>
 <body>
 
-<h1 >new user registration</h1>
+<h1>new user registration</h1>
 
 <form action="#" th:action="@{/register}" th:object="${myUserDto}" method="post">
   <table>
     <tr>
       <td>Name:</td>
-      <td><input type="text" th:field="*{username}" /></td>
+      <td><input type="text" th:field="*{username}"/></td>
       <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</td>
     </tr>
     <tr>
       <td>Age:</td>
-      <td><input type="password" th:field="*{password}" /></td>
+      <td><input type="password" th:field="*{password}"/></td>
       <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</td>
     </tr>
     <tr>
-      <td><button type="submit">Submit</button></td>
+      <td>
+        <button type="submit">Submit</button>
+      </td>
     </tr>
   </table>
 </form>
-
-
 <a th:href="@{/login}">login</a>
-
-
 </body>
 </html>

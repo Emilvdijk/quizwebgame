@@ -2,8 +2,8 @@ package nl.emilvdijk.quizwebgame.service;
 
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
+import nl.emilvdijk.quizwebgame.Dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
-import nl.emilvdijk.quizwebgame.entity.MyUserDto;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

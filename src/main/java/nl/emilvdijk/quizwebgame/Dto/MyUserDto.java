@@ -1,9 +1,6 @@
-package nl.emilvdijk.quizwebgame.entity;
+package nl.emilvdijk.quizwebgame.Dto;
 
-
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,11 +16,9 @@ public class MyUserDto {
   // FIXME add validation
 
   @NotEmpty(message = "please enter username")
-  @Min(value = 5, message = "username needs to be at least 5 characters long")
   @UserAlreadyExistsConstraint(message = "user already exists")
   String username;
 
-  @Min(value = 5, message = "passwords needs to be at least 5 characters long")
   @NotEmpty(message = "please enter password")
   String password;
 }

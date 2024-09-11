@@ -8,15 +8,7 @@
 <body>
 <div th:fragment="navbar">
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <!-- Brand -->
     <a class="navbar-brand" href="#"> Quiz game</a>
-
-    <!--    &lt;!&ndash; Toggler/collapsibe Button &ndash;&gt;-->
-    <!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">-->
-    <!--        <span class="navbar-toggler-icon"></span>-->
-    <!--    </button>-->
-
-    <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
       <ul class="navbar-nav">
         <div sec:authorize="hasAnyRole('ADMIN', 'USER')">
@@ -33,6 +25,13 @@
             </form>
           </li>
         </div>
+        <div sec:authorize="isAnonymous()">
+          <li class="nav-item">
+            <form class="nav-link" th:action="@{/register}" method="get">
+              <button class="nav-link" type="submit">Sign Up</button>
+            </form>
+          </li>
+        </div>
         <li class="nav-item" sec:authorize="isAnonymous()">
           <p class="nav-link">Hello guest!
           </p>
@@ -46,6 +45,13 @@
           <p class="nav-link">Hello admin!
           </p>
         </li>
+        <div sec:authorize="hasRole('ADMIN')">
+          <li class="nav-item">
+            <form class="nav-link" th:action="@{/h2-console}" method="post">
+              <button class="nav-link" type="submit">h2 console</button>
+            </form>
+          </li>
+        </div>
       </ul>
     </div>
 
