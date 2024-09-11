@@ -5,7 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,27 +27,33 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @ToString
-public class Question {
+public class Question implements Serializable {
+
+  @Serial private static final long serialVersionUID = -9154072220747380878L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long myid;
+  private Long myid;
 
-  String id;
+  private String id;
 
   @Column(length = 512)
-  HashMap<String, String> question;
+  private HashMap<String, String> question;
 
-  String category;
-  String correctAnswer;
-  List<String> incorrectAnswers;
-  List<String> tags;
-  String type;
-  String difficulty;
-  List<String> regions;
-  String isNiche;
-  List<String> answers;
-  LocalDateTime added = LocalDateTime.now();
+  private String category;
+  private String correctAnswer;
+  private List<String> incorrectAnswers;
+  private List<String> tags;
+  private String type;
+  private String difficulty;
+  private List<String> regions;
+  private String isNiche;
+  private List<String> answers;
+
+  @ManyToMany(mappedBy = "answeredQuestions")
+  private List<MyUser> user;
+
+  private LocalDateTime added = LocalDateTime.now();
 
   /** prepares and populates the answers field */
   public void prepareAnswers() {

@@ -36,7 +36,7 @@ class quizApiTest {
 
     List<Question> questions = QuestionsApi.getNewQuestion();
 
-    assertEquals(questions.size(), 10);
+    assertEquals(10, questions.size());
 
     for (Question question : questions) {
       System.out.println(question);

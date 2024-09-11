@@ -1,9 +1,10 @@
 package nl.emilvdijk.quizwebgame.entity;
 
 import jakarta.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 import lombok.*;
-import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,11 +17,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @Builder(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
-public class MyUser implements UserDetails {
+public class MyUser implements UserDetails, Serializable {
+
+  @Serial private static final long serialVersionUID = -8443145631573894870L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long myid;
+  private Long id;
 
   private String username;
 
@@ -29,6 +32,13 @@ public class MyUser implements UserDetails {
 
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> myRoles;
+
+  @ManyToMany
+  @JoinTable(
+      name = "user_questions",
+      joinColumns = @JoinColumn(name = "myuser_id"),
+      inverseJoinColumns = @JoinColumn(name = "question_myid"))
+  private List<Question> answeredQuestions;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
