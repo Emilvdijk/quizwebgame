@@ -2,6 +2,7 @@ package nl.emilvdijk.quizwebgame.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -50,7 +51,7 @@ public class Question implements Serializable {
   private String isNiche;
   private List<String> answers;
 
-  @ManyToMany(mappedBy = "answeredQuestions")
+  @ManyToMany(mappedBy = "answeredQuestions", fetch = FetchType.EAGER)
   private List<MyUser> user;
 
   private LocalDateTime added = LocalDateTime.now();
@@ -62,5 +63,41 @@ public class Question implements Serializable {
     preparedAnswers.addAll(this.incorrectAnswers);
     Collections.shuffle(preparedAnswers);
     this.answers = preparedAnswers;
+  }
+
+  @Override
+  public String toString() {
+    return "Question{"
+        + "myid="
+        + myid
+        + ", id='"
+        + id
+        + '\''
+        + ", question="
+        + question
+        + ", category='"
+        + category
+        + '\''
+        + ", correctAnswer='"
+        + correctAnswer
+        + '\''
+        + ", incorrectAnswers="
+        + incorrectAnswers
+        + ", tags="
+        + tags
+        + ", type='"
+        + type
+        + '\''
+        + ", difficulty='"
+        + difficulty
+        + '\''
+        + ", regions="
+        + regions
+        + ", isNiche='"
+        + isNiche
+        + '\''
+        + ", added="
+        + added
+        + '}';
   }
 }

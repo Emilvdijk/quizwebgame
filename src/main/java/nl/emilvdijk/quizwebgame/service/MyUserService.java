@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import nl.emilvdijk.quizwebgame.Dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
+import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -72,6 +73,7 @@ public class MyUserService implements UserDetailsService {
 
   /**
    * transform new user dto to a user object and save it to repo
+   *
    * @param newUser user dto to be saved
    */
   public void registerNewUser(MyUserDto newUser) {
@@ -81,6 +83,7 @@ public class MyUserService implements UserDetailsService {
 
   /**
    * transforms dto to user
+   *
    * @param newUser to be transformed to user
    * @return new user object
    */
@@ -95,6 +98,19 @@ public class MyUserService implements UserDetailsService {
         .build();
   }
 
-  public Boolean checkIfUserExists(String username){
-    return userRepo.existsMyUserByUsername(username);  }
+  /**
+   * adds a link of the question and the current user to the database. the link will signify that
+   * the question is already answered by the user
+   *
+   * @param question question to be linked to user
+   * @param myUser user to be linked to question
+   */
+  public void markQuestionDone(Question question, MyUser myUser) {
+    myUser.getAnsweredQuestions().add(question);
+    userRepo.save(myUser);
+  }
+
+  public Boolean checkIfUserExists(String username) {
+    return userRepo.existsMyUserByUsername(username);
+  }
 }

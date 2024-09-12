@@ -1,18 +1,23 @@
 package nl.emilvdijk.quizwebgame.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import lombok.Setter;
+import lombok.Getter;
 import nl.emilvdijk.quizwebgame.api.QuestionsApi;
+import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class QuizService {
 
   @Autowired QuestionRepo questionRepo;
-  @Setter Question question = null;
+  @Getter List<Question> questions = new ArrayList<>();
 
   /**
    * returns question held by quiz service
@@ -20,31 +25,36 @@ public class QuizService {
    * @return question held by quiz service
    */
   public Question getQuestion() {
-    if (this.question != null) {
-      return this.question;
-    } else {
-      getnewQuestion();
-
-      return this.question;
+    // FIXME needs to clean its list after login to prevent logged in user to get questions that are
+    // already answered
+    if (this.questions.isEmpty()) {
+      getnewQuestions();
     }
+    return this.questions.getFirst();
   }
 
-  /**
-   * gets a new question from the repo if it has questions and sets it to quiz service question if
-   * the repo is empty a call will be made to refill the repo
-   */
-  private void getnewQuestion() {
-    if (questionRepo.count() < 1) {
-      getNewQuestions();
+  private void getnewQuestions() {
+    // FIXME change behavior to check if user already answered question
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (!(authentication instanceof AnonymousAuthenticationToken)) {
+      MyUser myUser = (MyUser) authentication.getPrincipal();
+
+      List<Question> questionList = questionRepo.findByUserNotContaining(myUser);
+      if (questionList.size() < 1) {
+        addNewQuestoinsFromApi();
+        questionList = questionRepo.findByUserNotContaining(myUser);
+      }
+      questions = questionList;
+
+    } else {
+      questions = questionRepo.findAll();
     }
-    List<Question> questions = questionRepo.findAll();
-    this.question = questions.getFirst();
-    questionRepo.delete(questions.getFirst());
-    this.question.prepareAnswers();
+
+    this.questions.forEach(Question::prepareAnswers);
   }
 
   /** gets new questions from the question api and saves them to the repo */
-  private void getNewQuestions() {
+  private void addNewQuestoinsFromApi() {
     List<Question> newQuestions = QuestionsApi.getNewQuestion();
     questionRepo.saveAll(newQuestions);
   }

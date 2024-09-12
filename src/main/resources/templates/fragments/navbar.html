@@ -8,7 +8,7 @@
 <body>
 <div th:fragment="navbar">
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <a class="navbar-brand" href="#"> Quiz game</a>
+    <a class="navbar-brand" href="/"> Quiz game</a>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
       <ul class="navbar-nav">
         <div sec:authorize="hasAnyRole('ADMIN', 'USER')">

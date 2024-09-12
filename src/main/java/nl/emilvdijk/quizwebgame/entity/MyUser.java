@@ -33,9 +33,8 @@ public class MyUser implements UserDetails, Serializable {
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> myRoles;
 
-
-  //https://stackoverflow.com/questions/63451175/how-to-add-data-to-many-to-many-association-with-extra-column-using-jpa-hiberna
-  @ManyToMany
+  // https://stackoverflow.com/questions/63451175/how-to-add-data-to-many-to-many-association-with-extra-column-using-jpa-hiberna
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "user_questions",
       joinColumns = @JoinColumn(name = "myuser_id"),
@@ -59,5 +58,23 @@ public class MyUser implements UserDetails, Serializable {
   @Override
   public String getUsername() {
     return username;
+  }
+
+  @Override
+  public String toString() {
+    return "MyUser{"
+        + "myRoles="
+        + myRoles
+        + ", enabled="
+        + enabled
+        + ", password='"
+        + password
+        + '\''
+        + ", username='"
+        + username
+        + '\''
+        + ", id="
+        + id
+        + '}';
   }
 }
