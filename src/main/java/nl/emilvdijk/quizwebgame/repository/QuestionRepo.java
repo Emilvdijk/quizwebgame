@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QuestionRepo extends JpaRepository<Question, Long> {
-  // myuser_id
-  List<Question> findByUserNotContaining(MyUser user);
+  List<Question> findBymyidNotIn(List<Long> myIdList);
 }

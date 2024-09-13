@@ -11,10 +11,8 @@ import jakarta.persistence.Table;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,6 +39,8 @@ public class Question implements Serializable {
   @Column(length = 512)
   private HashMap<String, String> question;
 
+
+
   private String category;
   private String correctAnswer;
   private List<String> incorrectAnswers;
@@ -50,9 +50,6 @@ public class Question implements Serializable {
   private List<String> regions;
   private String isNiche;
   private List<String> answers;
-
-  @ManyToMany(mappedBy = "answeredQuestions", fetch = FetchType.EAGER)
-  private List<MyUser> user;
 
   private LocalDateTime added = LocalDateTime.now();
 
@@ -66,38 +63,16 @@ public class Question implements Serializable {
   }
 
   @Override
-  public String toString() {
-    return "Question{"
-        + "myid="
-        + myid
-        + ", id='"
-        + id
-        + '\''
-        + ", question="
-        + question
-        + ", category='"
-        + category
-        + '\''
-        + ", correctAnswer='"
-        + correctAnswer
-        + '\''
-        + ", incorrectAnswers="
-        + incorrectAnswers
-        + ", tags="
-        + tags
-        + ", type='"
-        + type
-        + '\''
-        + ", difficulty='"
-        + difficulty
-        + '\''
-        + ", regions="
-        + regions
-        + ", isNiche='"
-        + isNiche
-        + '\''
-        + ", added="
-        + added
-        + '}';
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Question question1 = (Question) o;
+    return Objects.equals(myid, question1.myid) && Objects.equals(id, question1.id) && Objects.equals(question, question1.question) && Objects.equals(category, question1.category) && Objects.equals(correctAnswer, question1.correctAnswer) && Objects.equals(incorrectAnswers, question1.incorrectAnswers) && Objects.equals(tags, question1.tags) && Objects.equals(type, question1.type) && Objects.equals(difficulty, question1.difficulty) && Objects.equals(regions, question1.regions) && Objects.equals(isNiche, question1.isNiche) && Objects.equals(answers, question1.answers) && Objects.equals(added, question1.added);
   }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(myid, id, question, category, correctAnswer, incorrectAnswers, tags, type, difficulty, regions, isNiche, answers, added);
+  }
+
 }

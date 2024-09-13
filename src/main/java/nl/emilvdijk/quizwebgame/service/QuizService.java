@@ -34,15 +34,19 @@ public class QuizService {
   }
 
   private void getnewQuestions() {
+    if(questionRepo.count()<10){
+      addNewQuestionsFromApi();
+    }
     // FIXME change behavior to check if user already answered question
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       MyUser myUser = (MyUser) authentication.getPrincipal();
-
-      List<Question> questionList = questionRepo.findByUserNotContaining(myUser);
-      if (questionList.size() < 1) {
-        addNewQuestoinsFromApi();
-        questionList = questionRepo.findByUserNotContaining(myUser);
+      List<Long> questionIdList = new ArrayList<>();
+      myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getMyid()));
+      List<Question> questionList = questionRepo.findBymyidNotIn(questionIdList);
+      if (questionList.size() < 10) {
+        addNewQuestionsFromApi();
+        questionList = questionRepo.findBymyidNotIn(questionIdList);
       }
       questions = questionList;
 
@@ -54,7 +58,7 @@ public class QuizService {
   }
 
   /** gets new questions from the question api and saves them to the repo */
-  private void addNewQuestoinsFromApi() {
+  private void addNewQuestionsFromApi() {
     List<Question> newQuestions = QuestionsApi.getNewQuestion();
     questionRepo.saveAll(newQuestions);
   }

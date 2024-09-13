@@ -1,13 +1,14 @@
 package nl.emilvdijk.quizwebgame.entity;
 
 import jakarta.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
 @Table(name = "myusers")
@@ -34,11 +35,7 @@ public class MyUser implements UserDetails, Serializable {
   private List<String> myRoles;
 
   // https://stackoverflow.com/questions/63451175/how-to-add-data-to-many-to-many-association-with-extra-column-using-jpa-hiberna
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(
-      name = "user_questions",
-      joinColumns = @JoinColumn(name = "myuser_id"),
-      inverseJoinColumns = @JoinColumn(name = "question_myid"))
+@ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private List<Question> answeredQuestions;
 
   @Override
@@ -61,20 +58,15 @@ public class MyUser implements UserDetails, Serializable {
   }
 
   @Override
-  public String toString() {
-    return "MyUser{"
-        + "myRoles="
-        + myRoles
-        + ", enabled="
-        + enabled
-        + ", password='"
-        + password
-        + '\''
-        + ", username='"
-        + username
-        + '\''
-        + ", id="
-        + id
-        + '}';
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    MyUser myUser = (MyUser) o;
+    return enabled == myUser.enabled && Objects.equals(id, myUser.id) && Objects.equals(username, myUser.username) && Objects.equals(password, myUser.password) && Objects.equals(myRoles, myUser.myRoles) && Objects.equals(answeredQuestions, myUser.answeredQuestions);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, username, password, enabled, myRoles, answeredQuestions);
   }
 }
