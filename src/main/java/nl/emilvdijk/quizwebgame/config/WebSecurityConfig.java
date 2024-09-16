@@ -19,7 +19,7 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(
             requests ->
-                requests // TODO maybe clean this up?
+                requests
                     .requestMatchers(
                         "/", "/home", "/quiz", "/images/*", "/register", "/authtestpage")
                     .permitAll()

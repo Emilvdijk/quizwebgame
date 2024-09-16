@@ -1,10 +1,12 @@
 package nl.emilvdijk.quizwebgame.api;
 
 import static nl.emilvdijk.quizwebgame.api.ApiSettings.QUIZ_API_URL;
-import static nl.emilvdijk.quizwebgame.api.ApiSettings.quizApiUriVariables;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import lombok.Setter;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -12,12 +14,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public class QuestionsApi {
 
-  /** private constructor to prevent instantiation */
+  @Setter static Map<String, String> quizApiUriVariables = new HashMap<>();
+
+  /** private constructor to prevent instantiation. */
   private QuestionsApi() {}
 
   /**
    * makes call to question api and returns a list of question objects applies api variables if
-   * present
+   * present.
    *
    * @return list of question objects
    */
@@ -41,5 +45,14 @@ public class QuestionsApi {
       ResponseEntity<Question[]> response = restTemplate.getForEntity(uri, Question[].class);
       return List.of(response.getBody());
     }
+  }
+
+  /**
+   * sets uri variables, so we can approach the restapi with arguments.
+   *
+   * @param newQuizApiUriVariables new variables map
+   */
+  static void setQuizApiUriVariables(Map<String, String> newQuizApiUriVariables) {
+    quizApiUriVariables = newQuizApiUriVariables;
   }
 }

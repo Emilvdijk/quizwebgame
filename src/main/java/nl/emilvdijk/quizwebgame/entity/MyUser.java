@@ -1,14 +1,30 @@
 package nl.emilvdijk.quizwebgame.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.*;
 
 @Entity
 @Table(name = "myusers")
@@ -35,16 +51,18 @@ public class MyUser implements UserDetails, Serializable {
   private List<String> myRoles;
 
   // https://stackoverflow.com/questions/63451175/how-to-add-data-to-many-to-many-association-with-extra-column-using-jpa-hiberna
-@ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @ManyToMany(
+      fetch = FetchType.EAGER,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private List<Question> answeredQuestions;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    Set<GrantedAuthority> userauth = new HashSet<>();
+    Set<GrantedAuthority> userAuth = new HashSet<>();
     for (String authority : myRoles) {
-      userauth.add(new SimpleGrantedAuthority(authority));
+      userAuth.add(new SimpleGrantedAuthority(authority));
     }
-    return userauth;
+    return userAuth;
   }
 
   @Override
@@ -55,18 +73,5 @@ public class MyUser implements UserDetails, Serializable {
   @Override
   public String getUsername() {
     return username;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    MyUser myUser = (MyUser) o;
-    return enabled == myUser.enabled && Objects.equals(id, myUser.id) && Objects.equals(username, myUser.username) && Objects.equals(password, myUser.password) && Objects.equals(myRoles, myUser.myRoles) && Objects.equals(answeredQuestions, myUser.answeredQuestions);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, username, password, enabled, myRoles, answeredQuestions);
   }
 }

@@ -1,17 +1,15 @@
 package nl.emilvdijk.quizwebgame.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import nl.emilvdijk.quizwebgame.QuizwebgameApplication;
+import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = QuizwebgameApplication.class)
+@SpringBootTest(classes = QuizWebGameApplication.class)
 class QuizServiceTest {
 
   @Autowired QuizService quizService;
@@ -33,7 +31,9 @@ class QuizServiceTest {
             .myRoles(roles)
             .enabled(true)
             .build();
-    List<Question> nice = quizService.questionRepo.findByUserNotContaining(myUser);
+    List<Long> idlist = new ArrayList<>();
+    idlist.add(myUser.getId());
+    List<Question> nice = quizService.questionRepo.findByMyidNotIn(idlist);
     for (Question question : nice) {
       System.out.println(question);
     }

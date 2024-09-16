@@ -1,8 +1,6 @@
 package nl.emilvdijk.quizwebgame.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class QuizcontrollerTest {
+class QuizControllerTest {
 
   //  https://docs.spring.io/spring-security/reference/servlet/test/mockmvc/authentication.html
 }

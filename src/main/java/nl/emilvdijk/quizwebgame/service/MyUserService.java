@@ -2,9 +2,7 @@ package nl.emilvdijk.quizwebgame.service;
 
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.List;
-
-import nl.emilvdijk.quizwebgame.Dto.MyUserDto;
+import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
@@ -21,11 +19,11 @@ public class MyUserService implements UserDetailsService {
   @Autowired PasswordEncoder passwordEncoder;
 
   /**
-   * save the user to the repository
+   * save the user to the repository.
    *
    * @param user to be saved
    */
-  public void save(MyUser user) {
+  public void saveUser(MyUser user) {
     if (checkIfUserExists(user.getUsername())) {
       //      FIXME make proper exception when username already exists
       return;
@@ -48,54 +46,52 @@ public class MyUserService implements UserDetailsService {
    */
   @PostConstruct
   public void addTestUsersAfterStartup() {
-    System.out.println("hello world, I have just started up");
-
-    ArrayList<String> userroles = new ArrayList<>();
-    userroles.add("ROLE_USER");
-    MyUser testsaveuser =
+    ArrayList<String> userRoles = new ArrayList<>();
+    userRoles.add("ROLE_USER");
+    MyUser testSaveUser =
         MyUser.builder()
             .username("user")
             .password("$2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG")
-            .myRoles(userroles)
+            .myRoles(userRoles)
             .enabled(true)
             .build();
-    save(testsaveuser);
+    saveUser(testSaveUser);
 
-    ArrayList<String> adminroles = new ArrayList<>();
-    adminroles.add("ROLE_ADMIN");
-    MyUser testsaveadmin =
+    ArrayList<String> adminRoles = new ArrayList<>();
+    adminRoles.add("ROLE_ADMIN");
+    MyUser testSaveAdmin =
         MyUser.builder()
             .username("1")
             .password("$2a$10$ixsefZtwnAoLc10H/R6Tu.NBQgWKnhgx5vXs.r2aYp32IjKE6YlCu")
-            .myRoles(adminroles)
+            .myRoles(adminRoles)
             .enabled(true)
             .build();
-    save(testsaveadmin);
+    saveUser(testSaveAdmin);
   }
 
   /**
-   * transform new user dto to a user object and save it to repo
+   * transform new user dto to a user object and save it to repo.
    *
    * @param newUser user dto to be saved
    */
   public void registerNewUser(MyUserDto newUser) {
-    MyUser regesterUser = constructUser(newUser);
-    save(regesterUser);
+    MyUser registerUser = constructUser(newUser);
+    saveUser(registerUser);
   }
 
   /**
-   * transforms dto to user
+   * transforms dto to user.
    *
    * @param newUser to be transformed to user
    * @return new user object
    */
   private MyUser constructUser(MyUserDto newUser) {
-    ArrayList<String> userroles = new ArrayList<>();
-    userroles.add("ROLE_USER");
+    ArrayList<String> userRoles = new ArrayList<>();
+    userRoles.add("ROLE_USER");
     return MyUser.builder()
         .username(newUser.getUsername())
         .password(passwordEncoder.encode(newUser.getPassword()))
-        .myRoles(userroles)
+        .myRoles(userRoles)
         .enabled(true)
         .build();
   }

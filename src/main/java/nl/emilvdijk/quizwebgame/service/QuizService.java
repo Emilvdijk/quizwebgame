@@ -1,8 +1,10 @@
 package nl.emilvdijk.quizwebgame.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 import nl.emilvdijk.quizwebgame.api.QuestionsApi;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
@@ -17,36 +19,34 @@ import org.springframework.stereotype.Service;
 public class QuizService {
 
   @Autowired QuestionRepo questionRepo;
-  @Getter List<Question> questions = new ArrayList<>();
+
+  @Getter @Setter List<Question> questions = new ArrayList<>();
 
   /**
-   * returns question held by quiz service
+   * returns question held by quiz service.
    *
    * @return question held by quiz service
    */
   public Question getQuestion() {
-    // FIXME needs to clean its list after login to prevent logged in user to get questions that are
-    // already answered
     if (this.questions.isEmpty()) {
-      getnewQuestions();
+      getNewQuestions();
     }
     return this.questions.getFirst();
   }
 
-  private void getnewQuestions() {
-    if(questionRepo.count()<10){
+  private void getNewQuestions() {
+    if (questionRepo.count() < 10) {
       addNewQuestionsFromApi();
     }
-    // FIXME change behavior to check if user already answered question
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       MyUser myUser = (MyUser) authentication.getPrincipal();
       List<Long> questionIdList = new ArrayList<>();
-      myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getMyid()));
-      List<Question> questionList = questionRepo.findBymyidNotIn(questionIdList);
+      myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getMyId()));
+      List<Question> questionList = questionRepo.findByMyidNotIn(questionIdList);
       if (questionList.size() < 10) {
         addNewQuestionsFromApi();
-        questionList = questionRepo.findBymyidNotIn(questionIdList);
+        questionList = questionRepo.findByMyidNotIn(questionIdList);
       }
       questions = questionList;
 
@@ -55,9 +55,10 @@ public class QuizService {
     }
 
     this.questions.forEach(Question::prepareAnswers);
+    Collections.shuffle(questions);
   }
 
-  /** gets new questions from the question api and saves them to the repo */
+  /** gets new questions from the question api and saves them to the repo. */
   private void addNewQuestionsFromApi() {
     List<Question> newQuestions = QuestionsApi.getNewQuestion();
     questionRepo.saveAll(newQuestions);

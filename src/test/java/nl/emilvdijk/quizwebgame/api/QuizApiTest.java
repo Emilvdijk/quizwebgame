@@ -1,7 +1,6 @@
 package nl.emilvdijk.quizwebgame.api;
 
 import static nl.emilvdijk.quizwebgame.api.ApiSettings.QUIZ_API_URL2;
-import static nl.emilvdijk.quizwebgame.api.ApiSettings.quizApiUriVariables;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -15,14 +14,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-class quizApiTest {
+class QuizApiTest {
 
   @Test
   void getNewQuestion() {
 
     List<Question> questions = QuestionsApi.getNewQuestion();
 
-    assertEquals(questions.size(), 10);
+    assertEquals(10, questions.size());
 
     for (Question question : questions) {
       System.out.println(question);
@@ -30,9 +29,9 @@ class quizApiTest {
   }
 
   @Test
-  void getNewQuestionwithparams() {
-    quizApiUriVariables.put("difficulties", "easy");
-    quizApiUriVariables.put("categories", "film_and_tv");
+  void getNewQuestionWithParams() {
+    QuestionsApi.quizApiUriVariables.put("difficulties", "easy");
+    QuestionsApi.quizApiUriVariables.put("categories", "film_and_tv");
 
     List<Question> questions = QuestionsApi.getNewQuestion();
 
@@ -46,8 +45,6 @@ class quizApiTest {
   @Test
   void getNewQuestionsWithOtherApi() throws JSONException {
     // https://opentdb.com/
-    //    FIXME check this out
-    // https://stackoverflow.com/questions/56601673/how-to-read-json-file-with-arrays-and-objects-in-java
     RestTemplate restTemplate = new RestTemplate();
 
     ResponseEntity<String> response = restTemplate.getForEntity(QUIZ_API_URL2, String.class);
@@ -75,7 +72,7 @@ class quizApiTest {
       question.setType(block.get("type").toString());
       questions.add(question);
     }
-    assertEquals(questions.size(), 10);
+    assertEquals(10, questions.size());
     for (Question question : questions) {
       System.out.println(question);
     }

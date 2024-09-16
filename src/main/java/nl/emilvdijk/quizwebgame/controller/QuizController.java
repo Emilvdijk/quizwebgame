@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
-public class Quizcontroller {
+public class QuizController {
 
   @Autowired QuizService quizService;
   @Autowired MyUserService userService;
@@ -32,7 +32,7 @@ public class Quizcontroller {
   }
 
   /**
-   * takes the quiz service question and returns quiz page
+   * takes the quiz service question and returns quiz page.
    *
    * @param model model to add attributes to
    * @return new quiz page
@@ -60,7 +60,8 @@ public class Quizcontroller {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     Question question = quizService.getQuestion();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
-      MyUser myUser = (MyUser) authentication.getPrincipal();
+      MyUser currentAuthUser = (MyUser) authentication.getPrincipal();
+      MyUser myUser = userService.loadUserByUsername(currentAuthUser.getUsername());
       userService.markQuestionDone(question, myUser);
     }
 

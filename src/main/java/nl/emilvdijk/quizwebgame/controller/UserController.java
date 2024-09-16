@@ -1,7 +1,7 @@
 package nl.emilvdijk.quizwebgame.controller;
 
 import jakarta.validation.Valid;
-import nl.emilvdijk.quizwebgame.Dto.MyUserDto;
+import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class Usercontroller {
+public class UserController {
 
   @Autowired MyUserService userService;
 
   /**
-   * custom login page
+   * login page.
    *
    * @return returns the html login page
    */
@@ -25,7 +25,7 @@ public class Usercontroller {
   }
 
   /**
-   * returns the registration html page so the user can register as a new user
+   * returns the registration html page so the user can register as a new user.
    *
    * @param myUserDto add new user model
    * @return return the registration html page
@@ -36,7 +36,7 @@ public class Usercontroller {
   }
 
   /**
-   * post request for the register new user method
+   * post request for the register new user method.
    *
    * @param user user to be saved
    * @return returns redirect to the login page
@@ -50,7 +50,7 @@ public class Usercontroller {
     userService.registerNewUser(user);
     // TODO explore flash attributes in spring
 
-    //    redirectAttributes.addFlashAttribute("message", "uccesful! Please log in.");
+    //    redirectAttributes.addFlashAttribute("message", "Successful! Please log in.");
     return "redirect:/login";
   }
 

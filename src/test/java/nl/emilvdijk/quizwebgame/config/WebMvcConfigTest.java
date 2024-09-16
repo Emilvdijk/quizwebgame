@@ -2,13 +2,13 @@ package nl.emilvdijk.quizwebgame.config;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import nl.emilvdijk.quizwebgame.QuizwebgameApplication;
+import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@SpringBootTest(classes = QuizwebgameApplication.class)
+@SpringBootTest(classes = QuizWebGameApplication.class)
 class WebMvcConfigTest {
 
   @Autowired PasswordEncoder passwordEncoder;

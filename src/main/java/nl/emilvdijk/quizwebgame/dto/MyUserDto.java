@@ -1,4 +1,4 @@
-package nl.emilvdijk.quizwebgame.Dto;
+package nl.emilvdijk.quizwebgame.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -12,8 +12,6 @@ import nl.emilvdijk.quizwebgame.annotation.UserAlreadyExistsConstraint;
 @NoArgsConstructor
 @ToString
 public class MyUserDto {
-
-  // FIXME add validation
 
   @NotEmpty(message = "please enter username")
   @UserAlreadyExistsConstraint(message = "user already exists")

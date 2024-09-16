@@ -1,17 +1,17 @@
 package nl.emilvdijk.quizwebgame.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class ApiSettings {
-  //  docs for api:https://the-trivia-api.com/docs/v2/#tag/Questions
+public final class ApiSettings {
+  /**
+   * the-trivia-api.com api. docs for api:<a
+   * href="https://the-trivia-api.com/docs/v2/#tag/Questions">...</a>
+   */
   static final String QUIZ_API_URL = "https://the-trivia-api.com/v2/questions";
-  static Map<String, String> quizApiUriVariables = new HashMap<>();
 
-  //  other option
+  /**
+   * opentdb an open trivia data base api. docs for api: <a
+   * href="https://opentdb.com/api_config.php">...</a>
+   */
   static final String QUIZ_API_URL2 = "https://opentdb.com/api.php?amount=10";
 
-  public static void setQuizApiUriVariables(Map<String, String> quizApiUriVariables) {
-    ApiSettings.quizApiUriVariables = quizApiUriVariables;
-  }
+  private ApiSettings() {}
 }
