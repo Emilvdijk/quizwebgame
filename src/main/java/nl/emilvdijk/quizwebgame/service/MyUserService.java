@@ -59,6 +59,7 @@ public class MyUserService implements UserDetailsService {
 
     ArrayList<String> adminRoles = new ArrayList<>();
     adminRoles.add("ROLE_ADMIN");
+    adminRoles.add("ROLE_USER");
     MyUser testSaveAdmin =
         MyUser.builder()
             .username("1")
