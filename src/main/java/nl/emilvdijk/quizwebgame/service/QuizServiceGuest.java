@@ -1,20 +1,17 @@
 package nl.emilvdijk.quizwebgame.service;
 
-import lombok.Getter;
-import lombok.Setter;
-import nl.emilvdijk.quizwebgame.api.QuestionsApi;
-import nl.emilvdijk.quizwebgame.entity.MyUser;
-import nl.emilvdijk.quizwebgame.entity.Question;
-import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import nl.emilvdijk.quizwebgame.api.QuestionsApi;
+import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class QuizServiceGuest implements QuizService {
 
   @Autowired QuestionRepo questionRepo;
@@ -44,5 +41,10 @@ public class QuizServiceGuest implements QuizService {
   public void addNewQuestionsFromApi() {
     List<Question> newQuestions = QuestionsApi.getNewQuestion();
     questionRepo.saveAll(newQuestions);
+  }
+
+  @Override
+  public void removeAnsweredQuestion() {
+    questions.removeFirst();
   }
 }

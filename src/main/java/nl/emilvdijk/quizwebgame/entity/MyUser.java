@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
@@ -50,7 +51,7 @@ public class MyUser implements UserDetails, Serializable {
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> myRoles;
 
-
+  @Transient private List<Question> questions;
 
   // https://stackoverflow.com/questions/63451175/how-to-add-data-to-many-to-many-association-with-extra-column-using-jpa-hiberna
   @ManyToMany(

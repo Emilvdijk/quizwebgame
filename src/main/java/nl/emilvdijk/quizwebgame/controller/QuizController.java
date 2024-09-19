@@ -1,11 +1,11 @@
 package nl.emilvdijk.quizwebgame.controller;
 
 import java.util.Objects;
-
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import nl.emilvdijk.quizwebgame.service.QuizServiceAuthenticated;
+import nl.emilvdijk.quizwebgame.service.QuizServiceGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class QuizController {
 
-  @Autowired
-  QuizServiceAuthenticated quizService;
   @Autowired MyUserService userService;
+  @Autowired QuizServiceAuthenticated quizServiceAuthenticated;
+  @Autowired QuizServiceGuest quizServiceGuest;
 
   /**
    * default page. returns homepage.
@@ -41,14 +41,12 @@ public class QuizController {
    * @return new quiz page
    */
   @GetMapping("/quiz")
-  public String showQuizQuestion(Model model,@AuthenticationPrincipal MyUser user) {
-if (user==null){
-      System.out.println("user is null");
-} else{
-      System.out.println("current user = "+user.getUsername());
-}
-
-  model.addAttribute("question", quizService.getNewQuestion());
+  public String showQuizQuestion(Model model, @AuthenticationPrincipal MyUser user) {
+    if (user == null) {
+      model.addAttribute("question", quizServiceGuest.getNewQuestion());
+    } else {
+      model.addAttribute("question", quizServiceAuthenticated.getNewQuestion());
+    }
     return "quiz";
   }
 
@@ -67,22 +65,35 @@ if (user==null){
     // https://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html#integration-with-requestdatavalueprocessor
     // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-form
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Question question = quizService.getNewQuestion();
+    Question question;
+    String chosenAnswer;
+    Question answeredQuestion = (Question) model.getAttribute("question");
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
+      question = quizServiceAuthenticated.getNewQuestion();
       MyUser currentAuthUser = (MyUser) authentication.getPrincipal();
       MyUser myUser = userService.loadUserByUsername(currentAuthUser.getUsername());
       userService.markQuestionDone(question, myUser);
+      chosenAnswer =
+          quizServiceAuthenticated
+              .getNewQuestion()
+              .getAnswers()
+              .get(Integer.parseInt(chosenAnswerStr.substring(13)));
+      quizServiceAuthenticated.removeAnsweredQuestion();
+    } else {
+      question = quizServiceGuest.getNewQuestion();
+      chosenAnswer =
+          quizServiceGuest
+              .getNewQuestion()
+              .getAnswers()
+              .get(Integer.parseInt(chosenAnswerStr.substring(13)));
+      quizServiceGuest.removeAnsweredQuestion();
     }
 
     model.addAttribute("question", question);
-    String chosenAnswer =
-        quizService.getNewQuestion().getAnswers().get(Integer.parseInt(chosenAnswerStr.substring(13)));
     model.addAttribute("chosenanswer", chosenAnswer);
-    if (Objects.equals(chosenAnswer, quizService.getNewQuestion().getCorrectAnswer())) {
-      quizService.getQuestions().removeFirst();
+    if (Objects.equals(chosenAnswer, question.getCorrectAnswer())) {
       return "resultpagegood";
     } else {
-      quizService.getQuestions().removeFirst();
       return "resultpagebad";
     }
   }

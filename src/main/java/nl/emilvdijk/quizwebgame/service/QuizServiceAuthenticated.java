@@ -3,48 +3,20 @@ package nl.emilvdijk.quizwebgame.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 import nl.emilvdijk.quizwebgame.api.QuestionsApi;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
+import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class QuizServiceAuthenticated implements QuizService{
+public class QuizServiceAuthenticated implements QuizService {
 
   @Autowired QuestionRepo questionRepo;
-
-  @Override
-  public void getNewQuestions() {
-    if (questionRepo.count() < 10) {
-      addNewQuestionsFromApi();
-    }
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (!(authentication instanceof AnonymousAuthenticationToken)) {
-      MyUser myUser = (MyUser) authentication.getPrincipal();
-      List<Long> questionIdList = new ArrayList<>();
-      myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getMyId()));
-      List<Question> questionList = questionRepo.findByMyidNotIn(questionIdList);
-      if (questionList.size() < 10) {
-        addNewQuestionsFromApi();
-        questionList = questionRepo.findByMyidNotIn(questionIdList);
-      }
-      questions = questionList;
-
-    } else {
-      questions = questionRepo.findAll();
-    }
-
-    this.questions.forEach(Question::prepareAnswers);
-    Collections.shuffle(questions);
-  }
+  @Autowired UserRepo userRepo;
 
   /**
    * returns question held by quiz service.
@@ -53,10 +25,30 @@ public class QuizServiceAuthenticated implements QuizService{
    */
   @Override
   public Question getNewQuestion() {
-    if (this.questions.isEmpty()) {
+    MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    if (user.getQuestions() == null || user.getQuestions().isEmpty()) {
       getNewQuestions();
     }
-    return this.questions.getFirst();
+    return user.getQuestions().getFirst();
+  }
+
+  @Override
+  public void getNewQuestions() {
+    MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    if (questionRepo.count() < 10) {
+      addNewQuestionsFromApi();
+    }
+    MyUser myUser = userRepo.findByUsername(user.getUsername());
+    List<Long> questionIdList = new ArrayList<>();
+    myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getMyId()));
+    List<Question> questionList = questionRepo.findByMyidNotIn(questionIdList);
+    if (questionList.size() < 10) {
+      addNewQuestionsFromApi();
+      questionList = questionRepo.findByMyidNotIn(questionIdList);
+    }
+    questionList.forEach(Question::prepareAnswers);
+    Collections.shuffle(questionList);
+    user.setQuestions(questionList);
   }
 
   /** gets new questions from the question api and saves them to the repo. */
@@ -64,5 +56,11 @@ public class QuizServiceAuthenticated implements QuizService{
   public void addNewQuestionsFromApi() {
     List<Question> newQuestions = QuestionsApi.getNewQuestion();
     questionRepo.saveAll(newQuestions);
+  }
+
+  @Override
+  public void removeAnsweredQuestion() {
+    MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    user.getQuestions().removeFirst();
   }
 }
