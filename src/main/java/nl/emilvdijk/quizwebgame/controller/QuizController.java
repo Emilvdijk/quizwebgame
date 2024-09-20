@@ -1,8 +1,11 @@
 package nl.emilvdijk.quizwebgame.controller;
 
 import java.util.Objects;
+
+import nl.emilvdijk.quizwebgame.dto.QuestionDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.entity.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import nl.emilvdijk.quizwebgame.service.QuizServiceAuthenticated;
 import nl.emilvdijk.quizwebgame.service.QuizServiceGuest;
@@ -65,25 +68,25 @@ public class QuizController {
     // https://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html#integration-with-requestdatavalueprocessor
     // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-form
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Question question;
+    QuestionDto questionDto;
     String chosenAnswer;
-    Question answeredQuestion = (Question) model.getAttribute("question");
+    Question question;
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
-      question = quizServiceAuthenticated.getNewQuestion();
+      questionDto = quizServiceAuthenticated.getNewQuestion();
       MyUser currentAuthUser = (MyUser) authentication.getPrincipal();
       MyUser myUser = userService.loadUserByUsername(currentAuthUser.getUsername());
+      question = quizServiceAuthenticated.getQuestionByMyid(questionDto.getMyId());
       userService.markQuestionDone(question, myUser);
       chosenAnswer =
-          quizServiceAuthenticated
-              .getNewQuestion()
+              questionDto
               .getAnswers()
               .get(Integer.parseInt(chosenAnswerStr.substring(13)));
       quizServiceAuthenticated.removeAnsweredQuestion();
     } else {
-      question = quizServiceGuest.getNewQuestion();
+      questionDto = quizServiceGuest.getNewQuestion();
+      question = quizServiceAuthenticated.getQuestionByMyid(questionDto.getMyId());
       chosenAnswer =
-          quizServiceGuest
-              .getNewQuestion()
+              questionDto
               .getAnswers()
               .get(Integer.parseInt(chosenAnswerStr.substring(13)));
       quizServiceGuest.removeAnsweredQuestion();

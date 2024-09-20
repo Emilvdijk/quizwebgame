@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.entity.QuestionTriviaApi;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +57,7 @@ class QuizApiTest {
 
     for (int i = 0; i < json.length(); i++) {
       JSONObject block = json.getJSONObject(i);
-      Question question = new Question();
+      QuestionTriviaApi question = new QuestionTriviaApi();
       HashMap<String, String> map = new HashMap<>();
       map.put("text", block.get("question").toString());
       question.setQuestion(map);

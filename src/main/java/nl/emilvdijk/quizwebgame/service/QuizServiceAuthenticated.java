@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import nl.emilvdijk.quizwebgame.api.QuestionsApi;
+import nl.emilvdijk.quizwebgame.dto.QuestionDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.entity.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,12 @@ public class QuizServiceAuthenticated implements QuizService {
    * @return question held by quiz service
    */
   @Override
-  public Question getNewQuestion() {
+  public QuestionDto getNewQuestion() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     if (user.getQuestions() == null || user.getQuestions().isEmpty()) {
       getNewQuestions();
     }
-    return user.getQuestions().getFirst();
+    return user.getQuestions().getFirst().getQuestionDto();
   }
 
   @Override
@@ -46,7 +48,6 @@ public class QuizServiceAuthenticated implements QuizService {
       addNewQuestionsFromApi();
       questionList = questionRepo.findByMyidNotIn(questionIdList);
     }
-    questionList.forEach(Question::prepareAnswers);
     Collections.shuffle(questionList);
     user.setQuestions(questionList);
   }
@@ -55,6 +56,7 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public void addNewQuestionsFromApi() {
     List<Question> newQuestions = QuestionsApi.getNewQuestion();
+    newQuestions.forEach(Question::prepareAnswers);
     questionRepo.saveAll(newQuestions);
   }
 
@@ -62,5 +64,9 @@ public class QuizServiceAuthenticated implements QuizService {
   public void removeAnsweredQuestion() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     user.getQuestions().removeFirst();
+  }
+
+  public Question getQuestionByMyid(Long myid){
+    return questionRepo.findByMyid(myid);
   }
 }

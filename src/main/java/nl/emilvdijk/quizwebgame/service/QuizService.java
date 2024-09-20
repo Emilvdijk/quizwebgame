@@ -1,10 +1,11 @@
 package nl.emilvdijk.quizwebgame.service;
 
-import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.dto.QuestionDto;
+import nl.emilvdijk.quizwebgame.entity.QuestionTriviaApi;
 
 public interface QuizService {
 
-  Question getNewQuestion();
+  QuestionDto getNewQuestion();
 
   void getNewQuestions();
 

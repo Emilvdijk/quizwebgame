@@ -6,7 +6,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import nl.emilvdijk.quizwebgame.api.QuestionsApi;
+import nl.emilvdijk.quizwebgame.dto.QuestionDto;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.entity.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +21,11 @@ public class QuizServiceGuest implements QuizService {
   @Getter @Setter List<Question> questions = new ArrayList<>();
 
   @Override
-  public Question getNewQuestion() {
+  public QuestionDto getNewQuestion() {
     if (this.questions.isEmpty()) {
       getNewQuestions();
     }
-    return this.questions.getFirst();
+    return this.questions.getFirst().getQuestionDto();
   }
 
   @Override
@@ -32,7 +34,6 @@ public class QuizServiceGuest implements QuizService {
       addNewQuestionsFromApi();
     }
     questions = questionRepo.findAll();
-    this.questions.forEach(Question::prepareAnswers);
     Collections.shuffle(questions);
   }
 
@@ -40,6 +41,7 @@ public class QuizServiceGuest implements QuizService {
   @Override
   public void addNewQuestionsFromApi() {
     List<Question> newQuestions = QuestionsApi.getNewQuestion();
+    newQuestions.forEach(Question::prepareAnswers);
     questionRepo.saveAll(newQuestions);
   }
 

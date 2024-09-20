@@ -8,13 +8,14 @@ import java.util.List;
 import java.util.Map;
 import lombok.Setter;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.entity.QuestionTriviaApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public class QuestionsApi {
 
-  @Setter static Map<String, String> quizApiUriVariables = new HashMap<>();
+  static Map<String, String> quizApiUriVariables = new HashMap<>();
 
   /** private constructor to prevent instantiation. */
   private QuestionsApi() {}
@@ -30,8 +31,8 @@ public class QuestionsApi {
 
     if (quizApiUriVariables.isEmpty()) {
 
-      ResponseEntity<Question[]> response =
-          restTemplate.getForEntity(QUIZ_API_URL, Question[].class);
+      ResponseEntity<QuestionTriviaApi[]> response =
+          restTemplate.getForEntity(QUIZ_API_URL, QuestionTriviaApi[].class);
       return List.of(response.getBody());
 
     } else {
@@ -42,7 +43,7 @@ public class QuestionsApi {
               .query("difficulties={difficulties}")
               .buildAndExpand(quizApiUriVariables)
               .toUri();
-      ResponseEntity<Question[]> response = restTemplate.getForEntity(uri, Question[].class);
+      ResponseEntity<QuestionTriviaApi[]> response = restTemplate.getForEntity(uri, QuestionTriviaApi[].class);
       return List.of(response.getBody());
     }
   }
