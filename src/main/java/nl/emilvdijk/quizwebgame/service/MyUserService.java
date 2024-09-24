@@ -34,6 +34,7 @@ public class MyUserService implements UserDetailsService {
   @Override
   public MyUser loadUserByUsername(String username) throws UsernameNotFoundException {
     MyUser user = userRepo.findByUsername(username);
+    // FIXME change null check
     if (user == null) {
       throw new UsernameNotFoundException(username);
     }
@@ -105,6 +106,7 @@ public class MyUserService implements UserDetailsService {
    * @param myUser user to be linked to question
    */
   public void markQuestionDone(Question question, MyUser myUser) {
+
     myUser.getAnsweredQuestions().add(question);
     userRepo.save(myUser);
   }

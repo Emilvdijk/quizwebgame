@@ -1,11 +1,12 @@
 package nl.emilvdijk.quizwebgame.service;
 
-import nl.emilvdijk.quizwebgame.dto.QuestionDto;
-import nl.emilvdijk.quizwebgame.entity.QuestionTriviaApi;
+import nl.emilvdijk.quizwebgame.entity.Question;
 
 public interface QuizService {
 
-  QuestionDto getNewQuestion();
+  String getApplicableRole();
+
+  Question getNewQuestion();
 
   void getNewQuestions();
 
@@ -13,4 +14,6 @@ public interface QuizService {
   void addNewQuestionsFromApi();
 
   void removeAnsweredQuestion();
+
+  Question getQuestionByMyid(Long myid);
 }

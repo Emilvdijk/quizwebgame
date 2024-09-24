@@ -3,11 +3,9 @@ package nl.emilvdijk.quizwebgame.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import nl.emilvdijk.quizwebgame.api.QuestionsApi;
-import nl.emilvdijk.quizwebgame.dto.QuestionDto;
+import lombok.Getter;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
-import nl.emilvdijk.quizwebgame.entity.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,8 @@ public class QuizServiceAuthenticated implements QuizService {
 
   @Autowired QuestionRepo questionRepo;
   @Autowired UserRepo userRepo;
+  @Autowired QuestionsApiService questionsApiService;
+  @Getter private final String applicableRole = "ROLE_USER";
 
   /**
    * returns question held by quiz service.
@@ -26,12 +26,13 @@ public class QuizServiceAuthenticated implements QuizService {
    * @return question held by quiz service
    */
   @Override
-  public QuestionDto getNewQuestion() {
+  public Question getNewQuestion() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    // FIXME change null check
     if (user.getQuestions() == null || user.getQuestions().isEmpty()) {
       getNewQuestions();
     }
-    return user.getQuestions().getFirst().getQuestionDto();
+    return user.getQuestions().getFirst();
   }
 
   @Override
@@ -48,6 +49,7 @@ public class QuizServiceAuthenticated implements QuizService {
       addNewQuestionsFromApi();
       questionList = questionRepo.findByMyidNotIn(questionIdList);
     }
+    questionList.forEach(Question::prepareAnswers);
     Collections.shuffle(questionList);
     user.setQuestions(questionList);
   }
@@ -55,8 +57,7 @@ public class QuizServiceAuthenticated implements QuizService {
   /** gets new questions from the question api and saves them to the repo. */
   @Override
   public void addNewQuestionsFromApi() {
-    List<Question> newQuestions = QuestionsApi.getNewQuestion();
-    newQuestions.forEach(Question::prepareAnswers);
+    List<Question> newQuestions = questionsApiService.getNewQuestion();
     questionRepo.saveAll(newQuestions);
   }
 
@@ -66,7 +67,8 @@ public class QuizServiceAuthenticated implements QuizService {
     user.getQuestions().removeFirst();
   }
 
-  public Question getQuestionByMyid(Long myid){
-    return questionRepo.findByMyid(myid);
+  @Override
+  public Question getQuestionByMyid(Long myid) {
+    return questionRepo.findBymyId(myid);
   }
 }

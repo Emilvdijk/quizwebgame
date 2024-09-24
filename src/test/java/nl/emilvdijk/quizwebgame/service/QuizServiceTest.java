@@ -12,8 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = QuizWebGameApplication.class)
 class QuizServiceTest {
 
-  @Autowired
-  QuizServiceAuthenticated quizService;
+  @Autowired QuizServiceAuthenticated quizService;
 
   @Test
   void getQuestion() {

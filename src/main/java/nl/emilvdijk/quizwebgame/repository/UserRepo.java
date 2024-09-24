@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepo extends JpaRepository<MyUser, Long> {
-
+  // FIXME optional myuser
+  // https://codedamn.com/news/java/what-are-optional-parameters-in-java
   MyUser findByUsername(String username);
 
   boolean existsMyUserByUsername(String username);

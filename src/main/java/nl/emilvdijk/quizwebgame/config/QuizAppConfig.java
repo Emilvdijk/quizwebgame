@@ -17,12 +17,12 @@ public class QuizAppConfig {
     return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
   }
 
-//  @Bean
-//  @Lazy
-//  public QuizService quizService(@AuthenticationPrincipal MyUser myUser){
-//    if (myUser == null){
-//      return new QuizServiceGuest();
-//    }else return new QuizServiceAuthenticated();
-//  }
+  //  @Bean
+  //  @Lazy
+  //  public QuizService quizService(@AuthenticationPrincipal MyUser myUser){
+  //    if (myUser == null){
+  //      return new QuizServiceGuest();
+  //    }else return new QuizServiceAuthenticated();
+  //  }
 
 }

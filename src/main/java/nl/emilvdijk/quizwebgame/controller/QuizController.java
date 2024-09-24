@@ -1,19 +1,13 @@
 package nl.emilvdijk.quizwebgame.controller;
 
+import jakarta.servlet.http.HttpSession;
 import java.util.Objects;
-
-import nl.emilvdijk.quizwebgame.dto.QuestionDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
-import nl.emilvdijk.quizwebgame.entity.QuestionTriviaApi;
+import nl.emilvdijk.quizwebgame.service.DynamicQuizService;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
-import nl.emilvdijk.quizwebgame.service.QuizServiceAuthenticated;
-import nl.emilvdijk.quizwebgame.service.QuizServiceGuest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class QuizController {
 
   @Autowired MyUserService userService;
-  @Autowired QuizServiceAuthenticated quizServiceAuthenticated;
-  @Autowired QuizServiceGuest quizServiceGuest;
+  @Autowired DynamicQuizService dynamicQuizService;
 
   /**
    * default page. returns homepage.
@@ -44,12 +37,11 @@ public class QuizController {
    * @return new quiz page
    */
   @GetMapping("/quiz")
-  public String showQuizQuestion(Model model, @AuthenticationPrincipal MyUser user) {
-    if (user == null) {
-      model.addAttribute("question", quizServiceGuest.getNewQuestion());
-    } else {
-      model.addAttribute("question", quizServiceAuthenticated.getNewQuestion());
-    }
+  public String showQuizQuestion(
+      Model model, @AuthenticationPrincipal MyUser user, HttpSession httpSession) {
+    Question question = dynamicQuizService.getService(user).getNewQuestion();
+    httpSession.setAttribute("question", question);
+    model.addAttribute("question", question);
     return "quiz";
   }
 
@@ -62,36 +54,28 @@ public class QuizController {
    * @return either the correct answer html page or the incorrect answer html page
    */
   @PostMapping("/quiz")
-  public String questionAnswer(@RequestBody String chosenAnswerStr, Model model) {
+  public String questionAnswer(
+      @RequestBody String chosenAnswerStr,
+      Model model,
+      @AuthenticationPrincipal MyUser user,
+      HttpSession httpSession) {
     // FIXME fix csrf settings for this page
     // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-components
     // https://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html#integration-with-requestdatavalueprocessor
     // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-form
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    QuestionDto questionDto;
-    String chosenAnswer;
-    Question question;
-    if (!(authentication instanceof AnonymousAuthenticationToken)) {
-      questionDto = quizServiceAuthenticated.getNewQuestion();
-      MyUser currentAuthUser = (MyUser) authentication.getPrincipal();
-      MyUser myUser = userService.loadUserByUsername(currentAuthUser.getUsername());
-      question = quizServiceAuthenticated.getQuestionByMyid(questionDto.getMyId());
-      userService.markQuestionDone(question, myUser);
-      chosenAnswer =
-              questionDto
-              .getAnswers()
-              .get(Integer.parseInt(chosenAnswerStr.substring(13)));
-      quizServiceAuthenticated.removeAnsweredQuestion();
-    } else {
-      questionDto = quizServiceGuest.getNewQuestion();
-      question = quizServiceAuthenticated.getQuestionByMyid(questionDto.getMyId());
-      chosenAnswer =
-              questionDto
-              .getAnswers()
-              .get(Integer.parseInt(chosenAnswerStr.substring(13)));
-      quizServiceGuest.removeAnsweredQuestion();
-    }
 
+    Question answeredQuestion = (Question) httpSession.getAttribute("question");
+
+    Question question =
+        dynamicQuizService.getService(user).getQuestionByMyid(answeredQuestion.getMyId());
+
+    if (user != null) {
+      MyUser myUser = userService.loadUserByUsername(user.getUsername());
+      userService.markQuestionDone(question, myUser);
+    }
+    String chosenAnswer =
+        answeredQuestion.getAnswers().get(Integer.parseInt(chosenAnswerStr.substring(13)));
+    dynamicQuizService.getService(user).removeAnsweredQuestion();
     model.addAttribute("question", question);
     model.addAttribute("chosenanswer", chosenAnswer);
     if (Objects.equals(chosenAnswer, question.getCorrectAnswer())) {
