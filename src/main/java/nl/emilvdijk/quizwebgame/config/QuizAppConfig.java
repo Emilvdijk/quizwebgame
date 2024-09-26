@@ -16,13 +16,4 @@ public class QuizAppConfig {
       ApplicationEventPublisher applicationEventPublisher) {
     return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
   }
-
-  //  @Bean
-  //  @Lazy
-  //  public QuizService quizService(@AuthenticationPrincipal MyUser myUser){
-  //    if (myUser == null){
-  //      return new QuizServiceGuest();
-  //    }else return new QuizServiceAuthenticated();
-  //  }
-
 }

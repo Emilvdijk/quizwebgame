@@ -14,7 +14,7 @@ import nl.emilvdijk.quizwebgame.annotation.UserAlreadyExistsConstraint;
 public class MyUserDto {
 
   @NotEmpty(message = "please enter username")
-  @UserAlreadyExistsConstraint(message = "user already exists")
+  @UserAlreadyExistsConstraint(message = "username already exists")
   String username;
 
   @NotEmpty(message = "please enter password")

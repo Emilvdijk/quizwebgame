@@ -1,6 +1,7 @@
 package nl.emilvdijk.quizwebgame.entity;
 
 import jakarta.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import org.hibernate.annotations.CreationTimestamp;
 @Setter
 @ToString
 public class Question implements Serializable {
+
+  @Serial private static final long serialVersionUID = -4638285421950167006L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

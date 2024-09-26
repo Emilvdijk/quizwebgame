@@ -22,15 +22,8 @@ public class QuestionsApiService {
 
   @Autowired QuestionApiMapperService questionApiMapperService;
 
-  /**
-   * -- SETTER -- sets uri variables, so we can approach the restapi with arguments.
-   *
-   * @param newQuizApiUriVariables new variables map
-   */
+  /** -- SETTER -- sets uri variables, so we can approach the restapi with arguments. */
   private Map<String, String> quizApiUriVariables = new HashMap<>();
-
-  /** private constructor to prevent instantiation. */
-  private QuestionsApiService() {}
 
   /**
    * makes call to question api and returns a list of question objects applies api variables if
