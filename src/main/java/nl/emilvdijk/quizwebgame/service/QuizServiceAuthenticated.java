@@ -28,8 +28,7 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public Question getNewQuestion() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    // FIXME change null check
-    if (user.getQuestions() == null || user.getQuestions().isEmpty()) {
+    if (user.getQuestions().isEmpty()) {
       getNewQuestions();
     }
     return user.getQuestions().getFirst();

@@ -70,9 +70,9 @@ public class QuizController {
         dynamicQuizService.getService(user).getQuestionByMyid(answeredQuestion.getMyId());
 
     if (user != null) {
-      MyUser myUser = userService.loadUserByUsername(user.getUsername());
-      userService.markQuestionDone(question, myUser);
+      userService.markQuestionDone(question, user);
     }
+
     String chosenAnswer =
         answeredQuestion.getAnswers().get(Integer.parseInt(chosenAnswerStr.substring(13)));
     dynamicQuizService.getService(user).removeAnsweredQuestion();

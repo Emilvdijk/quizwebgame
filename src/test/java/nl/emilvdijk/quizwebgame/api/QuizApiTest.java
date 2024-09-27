@@ -1,6 +1,5 @@
 package nl.emilvdijk.quizwebgame.api;
 
-import static nl.emilvdijk.quizwebgame.api.ApiSettings.QUIZ_API_URL2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -13,15 +12,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+@SpringBootTest
 class QuizApiTest {
+  @Autowired QuestionsApiService questionsApiService;
 
   @Test
   void getNewQuestion() {
 
-    List<Question> questions = QuestionsApiService.getNewQuestion();
+    List<Question> questions = questionsApiService.getNewQuestion();
 
     assertEquals(10, questions.size());
 
@@ -32,10 +35,10 @@ class QuizApiTest {
 
   @Test
   void getNewQuestionWithParams() {
-    QuestionsApiService.quizApiUriVariables.put("difficulties", "easy");
-    QuestionsApiService.quizApiUriVariables.put("categories", "film_and_tv");
+    questionsApiService.getQuizApiUriVariables().put("difficulties", "easy");
+    questionsApiService.getQuizApiUriVariables().put("categories", "film_and_tv");
 
-    List<Question> questions = QuestionsApiService.getNewQuestion();
+    List<Question> questions = questionsApiService.getNewQuestion();
 
     assertEquals(10, questions.size());
 
@@ -49,12 +52,13 @@ class QuizApiTest {
     // https://opentdb.com/
     RestTemplate restTemplate = new RestTemplate();
 
-    ResponseEntity<String> response = restTemplate.getForEntity(QUIZ_API_URL2, String.class);
+    ResponseEntity<String> response =
+        restTemplate.getForEntity("https://opentdb.com/api.php?amount=10", String.class);
 
     JSONObject jsonob = new JSONObject(response.getBody());
     JSONArray json = (JSONArray) jsonob.get("results");
 
-    List<Question> questions = new ArrayList<>();
+    List<QuestionTriviaApiDto> questions = new ArrayList<>();
 
     for (int i = 0; i < json.length(); i++) {
       JSONObject block = json.getJSONObject(i);
@@ -74,8 +78,10 @@ class QuizApiTest {
       question.setType(block.get("type").toString());
       questions.add(question);
     }
+    List<Question> mappedQuestions =
+        questionsApiService.getQuestionApiMapperService().mapQuestions(questions);
     assertEquals(10, questions.size());
-    for (Question question : questions) {
+    for (Question question : mappedQuestions) {
       System.out.println(question);
     }
   }

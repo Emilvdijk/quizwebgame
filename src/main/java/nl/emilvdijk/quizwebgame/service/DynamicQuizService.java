@@ -22,8 +22,10 @@ public class DynamicQuizService {
   public QuizService getService(MyUser user) {
     if (user == null) {
       return quizServiceByAuthentication.get("ANONYMOUS");
-    } else {
+    } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
       return quizServiceByAuthentication.get("ROLE_USER");
+    } else {
+      return quizServiceByAuthentication.get("ANONYMOUS");
     }
   }
 }

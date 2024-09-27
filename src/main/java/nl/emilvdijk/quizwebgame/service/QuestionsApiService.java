@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 import lombok.Setter;
 import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApiDto;
 import nl.emilvdijk.quizwebgame.entity.Question;
@@ -14,11 +15,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Setter
+@Getter
 @Service
 public class QuestionsApiService {
-  static final String QUIZ_API_URL = "https://the-trivia-api.com/v2/questions";
 
-  static final String QUIZ_API_URL2 = "https://opentdb.com/api.php?amount=10";
+  private static final String QUIZ_API_URL = "https://the-trivia-api.com/v2/questions";
+
+  private static final String QUIZ_API_URL2 = "https://opentdb.com/api.php?amount=10";
 
   @Autowired QuestionApiMapperService questionApiMapperService;
 
@@ -38,7 +41,7 @@ public class QuestionsApiService {
 
       ResponseEntity<QuestionTriviaApiDto[]> response =
           restTemplate.getForEntity(QUIZ_API_URL, QuestionTriviaApiDto[].class);
-      return questionApiMapperService.mapQuestion(List.of(response.getBody()));
+      return questionApiMapperService.mapQuestions(List.of(response.getBody()));
 
     } else {
 
@@ -50,7 +53,7 @@ public class QuestionsApiService {
               .toUri();
       ResponseEntity<QuestionTriviaApiDto[]> response =
           restTemplate.getForEntity(uri, QuestionTriviaApiDto[].class);
-      return questionApiMapperService.mapQuestion(List.of(response.getBody()));
+      return questionApiMapperService.mapQuestions(List.of(response.getBody()));
     }
   }
 }

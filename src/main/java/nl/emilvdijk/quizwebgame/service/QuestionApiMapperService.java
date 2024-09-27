@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QuestionApiMapperService {
 
-  public List<Question> mapQuestion(List<QuestionTriviaApiDto> questionTriviaApiDtos) {
+  public List<Question> mapQuestions(List<QuestionTriviaApiDto> questionTriviaApiDtos) {
     List<Question> questionList = new ArrayList<>();
     for (QuestionTriviaApiDto questionTriviaApiDto : questionTriviaApiDtos) {
       Question question = new Question();

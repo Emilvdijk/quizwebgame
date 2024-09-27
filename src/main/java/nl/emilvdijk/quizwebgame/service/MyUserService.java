@@ -49,26 +49,26 @@ public class MyUserService implements UserDetailsService {
   public void addTestUsersAfterStartup() {
     ArrayList<String> userRoles = new ArrayList<>();
     userRoles.add("ROLE_USER");
-    MyUser testSaveUser =
+    MyUser testUser =
         MyUser.builder()
             .username("user")
             .password("$2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG")
             .myRoles(userRoles)
             .enabled(true)
             .build();
-    saveUser(testSaveUser);
+    saveUser(testUser);
 
     ArrayList<String> adminRoles = new ArrayList<>();
     adminRoles.add("ROLE_ADMIN");
     adminRoles.add("ROLE_USER");
-    MyUser testSaveAdmin =
+    MyUser testAdmin =
         MyUser.builder()
             .username("1")
             .password("$2a$10$ixsefZtwnAoLc10H/R6Tu.NBQgWKnhgx5vXs.r2aYp32IjKE6YlCu")
             .myRoles(adminRoles)
             .enabled(true)
             .build();
-    saveUser(testSaveAdmin);
+    saveUser(testAdmin);
   }
 
   /**
@@ -103,10 +103,10 @@ public class MyUserService implements UserDetailsService {
    * the question is already answered by the user
    *
    * @param question question to be linked to user
-   * @param myUser user to be linked to question
+   * @param user user to be linked to question
    */
-  public void markQuestionDone(Question question, MyUser myUser) {
-
+  public void markQuestionDone(Question question, MyUser user) {
+    MyUser myUser = loadUserByUsername(user.getUsername());
     myUser.getAnsweredQuestions().add(question);
     userRepo.save(myUser);
   }
