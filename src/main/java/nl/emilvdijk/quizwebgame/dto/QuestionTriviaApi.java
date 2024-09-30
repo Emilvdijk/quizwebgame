@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class QuestionTriviaApiDto {
+public class QuestionTriviaApi {
 
   private String id;
   private HashMap<String, String> question;

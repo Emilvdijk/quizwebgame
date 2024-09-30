@@ -2,25 +2,25 @@ package nl.emilvdijk.quizwebgame.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApiDto;
+import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import org.springframework.stereotype.Service;
 
 @Service
 public class QuestionApiMapperService {
 
-  public List<Question> mapQuestions(List<QuestionTriviaApiDto> questionTriviaApiDtos) {
+  public List<Question> mapQuestions(List<QuestionTriviaApi> questionTriviaApis) {
     List<Question> questionList = new ArrayList<>();
-    for (QuestionTriviaApiDto questionTriviaApiDto : questionTriviaApiDtos) {
+    for (QuestionTriviaApi questionTriviaApi : questionTriviaApis) {
       Question question = new Question();
-      question.setQuestionText(questionTriviaApiDto.getQuestion().get("text"));
-      question.setCorrectAnswer(questionTriviaApiDto.getCorrectAnswer());
-      question.setIncorrectAnswers(questionTriviaApiDto.getIncorrectAnswers());
+      question.setQuestionText(questionTriviaApi.getQuestion().get("text"));
+      question.setCorrectAnswer(questionTriviaApi.getCorrectAnswer());
+      question.setIncorrectAnswers(questionTriviaApi.getIncorrectAnswers());
       // FIXME combine similar categories
-      question.setCategory(questionTriviaApiDto.getCategory());
-      question.setTags(questionTriviaApiDto.getTags());
-      question.setType(questionTriviaApiDto.getType());
-      question.setDifficulty(questionTriviaApiDto.getDifficulty());
+      question.setCategory(questionTriviaApi.getCategory());
+      question.setTags(questionTriviaApi.getTags());
+      question.setType(questionTriviaApi.getType());
+      question.setDifficulty(questionTriviaApi.getDifficulty());
       questionList.add(question);
     }
     return questionList;

@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -60,6 +61,8 @@ public class MyUser implements UserDetails, Serializable {
       fetch = FetchType.EAGER,
       cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private List<Question> answeredQuestions;
+
+  private ApiChoiceEnum apiChoiceEnum = ApiChoiceEnum.TRIVIAAPI;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApiDto;
+import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.QuestionsApiService;
 import org.json.JSONArray;
@@ -24,7 +24,7 @@ class QuizApiTest {
   @Test
   void getNewQuestion() {
 
-    List<Question> questions = questionsApiService.getNewQuestion();
+    List<Question> questions = questionsApiService.getNewQuestions();
 
     assertEquals(10, questions.size());
 
@@ -38,7 +38,7 @@ class QuizApiTest {
     questionsApiService.getQuizApiUriVariables().put("difficulties", "easy");
     questionsApiService.getQuizApiUriVariables().put("categories", "film_and_tv");
 
-    List<Question> questions = questionsApiService.getNewQuestion();
+    List<Question> questions = questionsApiService.getNewQuestions();
 
     assertEquals(10, questions.size());
 
@@ -58,11 +58,11 @@ class QuizApiTest {
     JSONObject jsonob = new JSONObject(response.getBody());
     JSONArray json = (JSONArray) jsonob.get("results");
 
-    List<QuestionTriviaApiDto> questions = new ArrayList<>();
+    List<QuestionTriviaApi> questions = new ArrayList<>();
 
     for (int i = 0; i < json.length(); i++) {
       JSONObject block = json.getJSONObject(i);
-      QuestionTriviaApiDto question = new QuestionTriviaApiDto();
+      QuestionTriviaApi question = new QuestionTriviaApi();
       HashMap<String, String> map = new HashMap<>();
       map.put("text", block.get("question").toString());
       question.setQuestion(map);

@@ -15,7 +15,7 @@ public class QuizServiceGuest implements QuizService {
 
   @Autowired QuestionRepo questionRepo;
   @Autowired QuestionsApiService questionsApiService;
-  @Getter private final String applicableRole = "ANONYMOUS";
+  private final String APPLICABLE_ROLE = "ANONYMOUS";
 
   // FIXME store in session?
   @Getter @Setter List<Question> questions = new ArrayList<>();
@@ -41,7 +41,7 @@ public class QuizServiceGuest implements QuizService {
   /** gets new questions from the question api and saves them to the repo. */
   @Override
   public void addNewQuestionsFromApi() {
-    List<Question> newQuestions = questionsApiService.getNewQuestion();
+    List<Question> newQuestions = questionsApiService.getNewQuestions();
     newQuestions.forEach(Question::prepareAnswers);
     questionRepo.saveAll(newQuestions);
   }
@@ -54,5 +54,10 @@ public class QuizServiceGuest implements QuizService {
   @Override
   public Question getQuestionByMyid(Long myid) {
     return questionRepo.findBymyId(myid);
+  }
+
+  @Override
+  public String getApplicableRole() {
+    return APPLICABLE_ROLE;
   }
 }

@@ -3,7 +3,6 @@ package nl.emilvdijk.quizwebgame.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import lombok.Getter;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
@@ -18,7 +17,7 @@ public class QuizServiceAuthenticated implements QuizService {
   @Autowired QuestionRepo questionRepo;
   @Autowired UserRepo userRepo;
   @Autowired QuestionsApiService questionsApiService;
-  @Getter private final String applicableRole = "ROLE_USER";
+  private static final String APPLICABLE_ROLE = "ROLE_USER";
 
   /**
    * returns question held by quiz service.
@@ -37,12 +36,19 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public void getNewQuestions() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    MyUser myUser = userRepo.findByUsername(user.getUsername());
     if (questionRepo.count() < 10) {
       addNewQuestionsFromApi();
     }
-    MyUser myUser = userRepo.findByUsername(user.getUsername());
     List<Long> questionIdList = new ArrayList<>();
+
     myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getMyId()));
+    switch (myUser.getApiChoiceEnum()) {
+      case TRIVIAAPI:
+        return getNewTriviaApiQuestions();
+      case OPENTDB:
+        return getNewOpentdbQuestions();
+    }
     List<Question> questionList = questionRepo.findByMyidNotIn(questionIdList);
     if (questionList.size() < 10) {
       addNewQuestionsFromApi();
@@ -56,7 +62,8 @@ public class QuizServiceAuthenticated implements QuizService {
   /** gets new questions from the question api and saves them to the repo. */
   @Override
   public void addNewQuestionsFromApi() {
-    List<Question> newQuestions = questionsApiService.getNewQuestion();
+    List<Question> newQuestions = questionsApiService.getNewQuestions();
+    newQuestions.forEach(Question::prepareAnswers);
     questionRepo.saveAll(newQuestions);
   }
 
@@ -69,5 +76,10 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public Question getQuestionByMyid(Long myid) {
     return questionRepo.findBymyId(myid);
+  }
+
+  @Override
+  public String getApplicableRole() {
+    return APPLICABLE_ROLE;
   }
 }
