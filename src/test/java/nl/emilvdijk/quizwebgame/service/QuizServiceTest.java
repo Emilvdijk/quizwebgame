@@ -33,7 +33,7 @@ class QuizServiceTest {
             .build();
     List<Long> idlist = new ArrayList<>();
     idlist.add(myUser.getId());
-    List<Question> nice = quizService.questionRepo.findByMyidNotIn(idlist);
+    List<Question> nice = quizService.questionRepo.findBymyIdNotIn(idlist);
     for (Question question : nice) {
       System.out.println(question);
     }

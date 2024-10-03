@@ -63,6 +63,7 @@ public class MyUser implements UserDetails, Serializable {
   private List<Question> answeredQuestions;
 
   private ApiChoiceEnum apiChoiceEnum = ApiChoiceEnum.TRIVIAAPI;
+  @ElementCollection private Map<String, String> quizApiUriVariables = new HashMap<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

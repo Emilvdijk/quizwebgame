@@ -46,4 +46,5 @@ class MyUserServiceTest {
     assertTrue(passwordEncoder.matches("testpassword", testloadUser.getPassword()));
     assertEquals("[TESTROLE]", testloadUser.getAuthorities().toString());
   }
+
 }

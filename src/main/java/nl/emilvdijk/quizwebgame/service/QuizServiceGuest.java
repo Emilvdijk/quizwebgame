@@ -41,8 +41,7 @@ public class QuizServiceGuest implements QuizService {
   /** gets new questions from the question api and saves them to the repo. */
   @Override
   public void addNewQuestionsFromApi() {
-    List<Question> newQuestions = questionsApiService.getNewQuestions();
-    newQuestions.forEach(Question::prepareAnswers);
+    List<Question> newQuestions = questionsApiService.getDefaultQuestions();
     questionRepo.saveAll(newQuestions);
   }
 

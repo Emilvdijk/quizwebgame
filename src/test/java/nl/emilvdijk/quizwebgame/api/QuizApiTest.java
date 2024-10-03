@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.QuestionsApiService;
@@ -35,8 +36,9 @@ class QuizApiTest {
 
   @Test
   void getNewQuestionWithParams() {
-    questionsApiService.getQuizApiUriVariables().put("difficulties", "easy");
-    questionsApiService.getQuizApiUriVariables().put("categories", "film_and_tv");
+    Map<String, String> map = new HashMap<>();
+    map.put("difficulties", "easy");
+    map.put("categories", "film_and_tv");
 
     List<Question> questions = questionsApiService.getNewQuestions();
 

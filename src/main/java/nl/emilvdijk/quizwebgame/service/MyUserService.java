@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,6 +56,7 @@ public class MyUserService implements UserDetailsService {
             .password("$2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG")
             .myRoles(userRoles)
             .enabled(true)
+            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
             .build();
     saveUser(testUser);
 
@@ -67,6 +69,7 @@ public class MyUserService implements UserDetailsService {
             .password("$2a$10$ixsefZtwnAoLc10H/R6Tu.NBQgWKnhgx5vXs.r2aYp32IjKE6YlCu")
             .myRoles(adminRoles)
             .enabled(true)
+            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
             .build();
     saveUser(testAdmin);
   }
@@ -95,6 +98,7 @@ public class MyUserService implements UserDetailsService {
         .password(passwordEncoder.encode(newUser.getPassword()))
         .myRoles(userRoles)
         .enabled(true)
+        .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
         .build();
   }
 

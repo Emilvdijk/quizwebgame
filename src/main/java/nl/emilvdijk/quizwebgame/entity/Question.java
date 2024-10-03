@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
@@ -36,6 +37,7 @@ public class Question implements Serializable {
   @Transient private List<String> answers;
 
   @CreationTimestamp private Instant added;
+  private ApiChoiceEnum origin;
 
   /** prepares and populates the answers field. */
   public void prepareAnswers() {
