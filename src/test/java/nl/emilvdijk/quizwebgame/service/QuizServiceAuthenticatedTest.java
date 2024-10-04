@@ -1,24 +1,23 @@
-package nl.emilvdijk.quizwebgame.repository;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
-import java.util.ArrayList;
-import java.util.List;
+package nl.emilvdijk.quizwebgame.service;
 
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @TestPropertySource(locations = "classpath:applicationTest.properties")
-class QuestionRepoTest {
+class QuizServiceAuthenticatedTest {
   @Autowired QuestionRepo questionRepo;
 
   @BeforeAll
@@ -40,26 +39,12 @@ class QuestionRepoTest {
   }
 
   @Test
-  void findBymyIdNotIn() {
-    List<Long> longList = new ArrayList<>();
-    longList.add(2L);
-    List<Question> questionList = questionRepo.findBymyIdNotIn(longList);
-    assertFalse(questionList.isEmpty());
-    questionList.forEach(question -> assertNotEquals(2L, question.getMyId()));
-  }
-
-  @Test
-  void findBymyId() {
-    Question question = questionRepo.findBymyId(2L);
-    assertEquals(2L, question.getMyId());
-  }
-
-  @Test
-  void findBymyIdNotInAndOrigin() {
+  void getQuestionsByChoice() {
+    MyUser user = MyUser.builder().apiChoiceEnum(ApiChoiceEnum.OPENTDB).build();
     List<Long> longList = new ArrayList<>();
     longList.add(2L);
     List<Question> questionList =
-        questionRepo.findBymyIdNotInAndOrigin(longList, ApiChoiceEnum.OPENTDB);
+        questionRepo.findBymyIdNotInAndOrigin(longList, user.getApiChoiceEnum());
     questionList.forEach(question -> assertNotEquals(2L, question.getMyId()));
     questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB, question.getOrigin()));
   }

@@ -5,16 +5,18 @@ import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 @Service
 public class QuizServiceGuest implements QuizService {
 
   @Autowired QuestionRepo questionRepo;
-  @Autowired QuestionsApiService questionsApiService;
+  @Autowired QuestionApiMapperService questionApiMapperService;
   private final String APPLICABLE_ROLE = "ANONYMOUS";
 
   // FIXME store in session?
@@ -41,7 +43,10 @@ public class QuizServiceGuest implements QuizService {
   /** gets new questions from the question api and saves them to the repo. */
   @Override
   public void addNewQuestionsFromApi() {
-    List<Question> newQuestions = questionsApiService.getDefaultQuestions();
+    QuestionsApiService questionsApiService =
+        new QuestionsApiService<>(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
+    List<Question> newQuestions =
+        questionApiMapperService.mapQuestions(questionsApiService.getDefaultQuestions());
     questionRepo.saveAll(newQuestions);
   }
 

@@ -3,12 +3,13 @@ package nl.emilvdijk.quizwebgame.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
-import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class QuizServiceAuthenticated implements QuizService {
 
   @Autowired QuestionRepo questionRepo;
   @Autowired UserRepo userRepo;
-  @Autowired QuestionsApiService questionsApiService;
+  @Autowired QuestionApiMapperService questionApiMapperService;
   private static final String APPLICABLE_ROLE = "ROLE_USER";
 
   /**
@@ -39,34 +40,33 @@ public class QuizServiceAuthenticated implements QuizService {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     MyUser myUser = userRepo.findByUsername(user.getUsername());
 
-    List<Question> questions = getQuestionsByChoice(myUser);
+    List<Long> questionIdList = new ArrayList<>();
+    myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getMyId()));
+    List<Question> questions = getQuestionsByChoice(myUser, questionIdList);
 
     if (questions.size() < 10) {
       addNewQuestionsFromApi();
-      questions = getQuestionsByChoice(myUser);
+      questions = getQuestionsByChoice(myUser, questionIdList);
     }
     questions.forEach(Question::prepareAnswers);
     Collections.shuffle(questions);
     user.setQuestions(questions);
   }
 
-  private List<Question> getQuestionsByChoice(MyUser myUser) {
-    List<Long> questionIdList = new ArrayList<>();
-    myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getMyId()));
-    switch (myUser.getApiChoiceEnum()) {
-      case TRIVIAAPI:
-        return questionRepo.findBymyIdNotInAndOrigin(questionIdList, ApiChoiceEnum.TRIVIAAPI);
-      case OPENTDB:
-        return questionRepo.findBymyIdNotInAndOrigin(questionIdList, ApiChoiceEnum.OPENTDB);
-      default:
-        return questionRepo.findBymyIdNotIn(questionIdList);
-    }
+  public List<Question> getQuestionsByChoice(MyUser myUser, List<Long> questionIdList) {
+    return questionRepo.findBymyIdNotInAndOrigin(questionIdList, myUser.getApiChoiceEnum());
   }
 
   /** gets new questions from the question api and saves them to the repo. */
   @Override
   public void addNewQuestionsFromApi() {
-    List<Question> newQuestions = questionsApiService.getNewQuestions();
+    MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    MyUser myUser = userRepo.findByUsername(user.getUsername());
+
+    QuestionsApiService questionsApiService =
+        new QuestionsApiService<>(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
+    List<Question> newQuestions =
+        questionApiMapperService.mapQuestions(questionsApiService.getNewQuestions(myUser));
     questionRepo.saveAll(newQuestions);
   }
 

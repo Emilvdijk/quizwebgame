@@ -1,15 +1,6 @@
 package nl.emilvdijk.quizwebgame.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
@@ -62,8 +53,11 @@ public class MyUser implements UserDetails, Serializable {
       cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private List<Question> answeredQuestions;
 
-  private ApiChoiceEnum apiChoiceEnum = ApiChoiceEnum.TRIVIAAPI;
-  @ElementCollection private Map<String, String> quizApiUriVariables = new HashMap<>();
+  // FIXME this one buggy
+  @Enumerated private ApiChoiceEnum apiChoiceEnum = ApiChoiceEnum.TRIVIAAPI;
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Map<String, String> quizApiUriVariables = new HashMap<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

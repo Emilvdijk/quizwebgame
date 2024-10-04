@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,7 @@ public class QuestionApiMapperService {
       question.setTags(questionTriviaApi.getTags());
       question.setType(questionTriviaApi.getType());
       question.setDifficulty(questionTriviaApi.getDifficulty());
+      question.setOrigin(ApiChoiceEnum.TRIVIAAPI);
       questionList.add(question);
     }
     return questionList;

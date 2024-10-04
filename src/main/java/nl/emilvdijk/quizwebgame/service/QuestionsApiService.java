@@ -6,63 +6,59 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
-import nl.emilvdijk.quizwebgame.entity.Question;
-import nl.emilvdijk.quizwebgame.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Setter
 @Getter
-@Service
-public class QuestionsApiService {
+public class QuestionsApiService<T> {
 
   private static final String QUIZ_API_URL = "https://the-trivia-api.com/v2/questions";
 
   private static final String QUIZ_API_URL2 = "https://opentdb.com/api.php?amount=10";
 
-  @Autowired QuestionApiMapperService questionApiMapperService;
-  @Autowired UserRepo userRepo;
+  private ParameterizedTypeReference<List<T>> responseType;
 
-  /**
-   * makes call to question api and returns a list of question objects applies api variables if
-   * present.
-   *
-   * @return list of question objects
-   */
-  public List<Question> getNewQuestions() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+  public QuestionsApiService(ParameterizedTypeReference<List<T>> responseType) {
+    this.responseType = responseType;
+  }
+
+  public List<T> getNewQuestions(MyUser user) {
     RestTemplate restTemplate = new RestTemplate();
-    MyUser myuser = userRepo.findByUsername(auth.getName());
-    // FIXME add choice functionality
-    if (myuser.getQuizApiUriVariables().isEmpty()) {
 
-      ResponseEntity<QuestionTriviaApi[]> response =
-          restTemplate.getForEntity(QUIZ_API_URL, QuestionTriviaApi[].class);
-      return questionApiMapperService.mapQuestions(List.of(response.getBody()));
-
+    String url;
+    switch (user.getApiChoiceEnum()) {
+      case OPENTDB:
+        {
+          url = QUIZ_API_URL2;
+          break;
+        }
+      default:
+        {
+          url = QUIZ_API_URL;
+          break;
+        }
+    }
+    if (user.getQuizApiUriVariables().isEmpty()) {
+      return restTemplate.exchange(url, HttpMethod.GET, null, responseType).getBody();
     } else {
-
       URI uri =
-          UriComponentsBuilder.fromUriString(QUIZ_API_URL)
+          UriComponentsBuilder.fromUriString(url)
               .query("categories={categories}")
               .query("difficulties={difficulties}")
-              .buildAndExpand(myuser.getQuizApiUriVariables())
+              .buildAndExpand(user.getQuizApiUriVariables())
               .toUri();
-      ResponseEntity<QuestionTriviaApi[]> response =
-          restTemplate.getForEntity(uri, QuestionTriviaApi[].class);
-      return questionApiMapperService.mapQuestions(List.of(response.getBody()));
+      return restTemplate.exchange(uri, HttpMethod.GET, null, responseType).getBody();
     }
   }
 
-  public List<Question> getDefaultQuestions() {
+  public List<QuestionTriviaApi> getDefaultQuestions() {
     RestTemplate restTemplate = new RestTemplate();
     ResponseEntity<QuestionTriviaApi[]> response =
         restTemplate.getForEntity(QUIZ_API_URL, QuestionTriviaApi[].class);
-    return questionApiMapperService.mapQuestions(List.of(response.getBody()));
+    return List.of(response.getBody());
   }
 }
