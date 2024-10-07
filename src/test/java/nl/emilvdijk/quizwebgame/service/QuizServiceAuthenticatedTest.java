@@ -1,5 +1,9 @@
 package nl.emilvdijk.quizwebgame.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
@@ -9,11 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:applicationTest.properties")
@@ -47,5 +46,12 @@ class QuizServiceAuthenticatedTest {
         questionRepo.findBymyIdNotInAndOrigin(longList, user.getApiChoiceEnum());
     questionList.forEach(question -> assertNotEquals(2L, question.getMyId()));
     questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB, question.getOrigin()));
+
+    MyUser user2 = MyUser.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build();
+
+    List<Question> questionList2 =
+        questionRepo.findBymyIdNotInAndOrigin(longList, user2.getApiChoiceEnum());
+    questionList2.forEach(question -> assertNotEquals(2L, question.getMyId()));
+    questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI, question.getOrigin()));
   }
 }

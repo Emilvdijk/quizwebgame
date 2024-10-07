@@ -6,6 +6,7 @@ import java.util.List;
 import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,16 @@ public class QuizServiceAuthenticated implements QuizService {
 
   @Override
   public void getNewQuestions() {
+    // FIXME remove these tests
+    List<Question> questionList1 = questionRepo.findByOrigin(ApiChoiceEnum.TRIVIAAPI);
+    List<Question> questionList2 = questionRepo.findByOrigin(ApiChoiceEnum.OPENTDB);
+
+    MyUser testUser = MyUser.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build();
+    List<Long> longListTest = new ArrayList<>();
+    List<Question> questionListTest =
+        questionRepo.findBymyIdNotInAndOrigin(longListTest, testUser.getApiChoiceEnum());
+
+    // end of tests
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     MyUser myUser = userRepo.findByUsername(user.getUsername());
 

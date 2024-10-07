@@ -14,4 +14,6 @@ public interface QuestionRepo extends JpaRepository<Question, Long> {
   Question findBymyId(Long myId);
 
   List<Question> findBymyIdNotInAndOrigin(List<Long> myIdList, ApiChoiceEnum choiceEnum);
+
+  List<Question> findByOrigin(ApiChoiceEnum origin);
 }

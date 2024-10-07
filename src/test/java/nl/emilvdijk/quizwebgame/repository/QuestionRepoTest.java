@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import org.junit.jupiter.api.BeforeAll;
@@ -62,5 +60,10 @@ class QuestionRepoTest {
         questionRepo.findBymyIdNotInAndOrigin(longList, ApiChoiceEnum.OPENTDB);
     questionList.forEach(question -> assertNotEquals(2L, question.getMyId()));
     questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB, question.getOrigin()));
+
+    List<Question> questionList2 =
+        questionRepo.findBymyIdNotInAndOrigin(longList, ApiChoiceEnum.TRIVIAAPI);
+    questionList2.forEach(question -> assertNotEquals(2L, question.getMyId()));
+    questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI, question.getOrigin()));
   }
 }
