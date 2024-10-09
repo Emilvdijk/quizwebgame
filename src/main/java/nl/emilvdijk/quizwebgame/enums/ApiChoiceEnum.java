@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 public enum ApiChoiceEnum {
   TRIVIAAPI,
-  OPENTDB;
+  OPENTDB,
+  ALL;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

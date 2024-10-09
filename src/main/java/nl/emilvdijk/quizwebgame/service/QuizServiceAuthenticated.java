@@ -38,16 +38,6 @@ public class QuizServiceAuthenticated implements QuizService {
 
   @Override
   public void getNewQuestions() {
-    // FIXME remove these tests
-    List<Question> questionList1 = questionRepo.findByOrigin(ApiChoiceEnum.TRIVIAAPI);
-    List<Question> questionList2 = questionRepo.findByOrigin(ApiChoiceEnum.OPENTDB);
-
-    MyUser testUser = MyUser.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build();
-    List<Long> longListTest = new ArrayList<>();
-    List<Question> questionListTest =
-        questionRepo.findBymyIdNotInAndOrigin(longListTest, testUser.getApiChoiceEnum());
-
-    // end of tests
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     MyUser myUser = userRepo.findByUsername(user.getUsername());
 
@@ -65,7 +55,18 @@ public class QuizServiceAuthenticated implements QuizService {
   }
 
   public List<Question> getQuestionsByChoice(MyUser myUser, List<Long> questionIdList) {
-    return questionRepo.findBymyIdNotInAndOrigin(questionIdList, myUser.getApiChoiceEnum());
+    if (myUser.getApiChoiceEnum() == ApiChoiceEnum.ALL) {
+      if (questionIdList.isEmpty()) {
+        return questionRepo.findAll();
+      } else {
+        return questionRepo.findBymyIdNotIn(questionIdList);
+      }
+    }
+    if (questionIdList.isEmpty()) {
+      return questionRepo.findByOrigin(myUser.getApiChoiceEnum());
+    } else {
+      return questionRepo.findBymyIdNotInAndOrigin(questionIdList, myUser.getApiChoiceEnum());
+    }
   }
 
   /** gets new questions from the question api and saves them to the repo. */
@@ -73,7 +74,7 @@ public class QuizServiceAuthenticated implements QuizService {
   public void addNewQuestionsFromApi() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     MyUser myUser = userRepo.findByUsername(user.getUsername());
-
+    // FIXME add uri builder class to help questionApiService
     QuestionsApiService questionsApiService =
         new QuestionsApiService<>(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
     List<Question> newQuestions =

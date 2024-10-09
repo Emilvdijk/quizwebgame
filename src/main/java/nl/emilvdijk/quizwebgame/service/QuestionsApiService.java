@@ -28,12 +28,18 @@ public class QuestionsApiService<T> {
 
   public List<T> getNewQuestions(MyUser user) {
     RestTemplate restTemplate = new RestTemplate();
+    // FIXME add uri builder in another class
 
     String url;
     switch (user.getApiChoiceEnum()) {
       case OPENTDB:
         {
           url = QUIZ_API_URL2;
+          break;
+        }
+      case TRIVIAAPI:
+        {
+          url = QUIZ_API_URL;
           break;
         }
       default:

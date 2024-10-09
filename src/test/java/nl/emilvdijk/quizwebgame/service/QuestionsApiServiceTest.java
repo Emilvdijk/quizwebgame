@@ -12,6 +12,7 @@ import org.springframework.core.ParameterizedTypeReference;
 @SpringBootTest
 class QuestionsApiServiceTest {
 
+  /** actually calls api service */
   @Test
   void getNewQuestions() {
     MyUser user =

@@ -3,6 +3,7 @@ package nl.emilvdijk.quizwebgame.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,11 @@ class QuestionRepoTest {
     List<Question> questionList = questionRepo.findBymyIdNotIn(longList);
     assertFalse(questionList.isEmpty());
     questionList.forEach(question -> assertNotEquals(2L, question.getMyId()));
+
+    // NotIn derived query will fail if given empty list
+    List<Long> longList2 = new ArrayList<>();
+    List<Question> questionList2 = questionRepo.findBymyIdNotIn(longList2);
+    assertTrue(questionList2.isEmpty());
   }
 
   @Test
@@ -65,5 +71,11 @@ class QuestionRepoTest {
         questionRepo.findBymyIdNotInAndOrigin(longList, ApiChoiceEnum.TRIVIAAPI);
     questionList2.forEach(question -> assertNotEquals(2L, question.getMyId()));
     questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI, question.getOrigin()));
+
+    // NotIn derived query will fail if given empty list
+    List<Long> longList3 = new ArrayList<>();
+    List<Question> questionList3 =
+        questionRepo.findBymyIdNotInAndOrigin(longList3, ApiChoiceEnum.TRIVIAAPI);
+    assertTrue(questionList3.isEmpty());
   }
 }

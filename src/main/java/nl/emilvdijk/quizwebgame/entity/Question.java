@@ -37,6 +37,8 @@ public class Question implements Serializable {
   @Transient private List<String> answers;
 
   @CreationTimestamp private Instant added;
+
+  @Enumerated(EnumType.STRING)
   private ApiChoiceEnum origin;
 
   /** prepares and populates the answers field. */
