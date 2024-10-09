@@ -8,8 +8,10 @@ import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
+@TestPropertySource(locations = "classpath:applicationTest.properties")
 class QuestionsApiServiceTest {
 
   /** actually calls api service */
