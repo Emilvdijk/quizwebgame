@@ -5,6 +5,7 @@ import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,5 +58,15 @@ public class UserController {
   @GetMapping("/authtestpage")
   public String authtestpage() {
     return "authtestpage";
+  }
+
+  @GetMapping("/userPreferences")
+  public String userPreferences(Model model) {
+    return "userPreferences";
+  }
+
+  @PostMapping("/userPreferences")
+  public String updateUserPreferences() {
+    return "redirect:/";
   }
 }

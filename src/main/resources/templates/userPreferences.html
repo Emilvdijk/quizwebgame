@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Preferences</title>
+</head>
+<body>
+<P>welcome to user preferences</P>
+
+<form th:value="@{/userPreferences}" method="post">
+  <div>
+    <button type="submit">Update</button>
+  </div>
+</form>
+</body>
+</html>

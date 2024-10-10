@@ -23,6 +23,8 @@ public class WebSecurityConfig {
                     .requestMatchers(
                         "/", "/home", "/quiz", "/images/*", "/register", "/authtestpage")
                     .permitAll()
+                    .requestMatchers("/userPreferences")
+                    .hasRole("USER")
                     .requestMatchers("/h2-console/**")
                     .hasRole("ADMIN")
                     .anyRequest()
