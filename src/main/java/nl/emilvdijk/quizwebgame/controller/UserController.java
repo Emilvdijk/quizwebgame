@@ -1,9 +1,15 @@
 package nl.emilvdijk.quizwebgame.controller;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import nl.emilvdijk.quizwebgame.dto.MyUserDto;
+import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
 
   @Autowired MyUserService userService;
+  Logger logger = LoggerFactory.getLogger(UserController.class);
 
   /**
    * login page.
@@ -43,16 +50,22 @@ public class UserController {
    * @return returns redirect to the login page
    */
   @PostMapping("/register")
-  public String registerUser(@Valid MyUserDto user, BindingResult bindingResult) {
+  public String registerUser(
+      HttpServletRequest request, @Valid MyUserDto user, BindingResult bindingResult) {
 
     if (bindingResult.hasErrors()) {
       return "register";
     }
     userService.registerNewUser(user);
+    try {
+      request.login(user.getUsername(), user.getPassword());
+    } catch (ServletException e) {
+      logger.error("Error while login ", e);
+    }
     // TODO explore flash attributes in spring
 
     //    redirectAttributes.addFlashAttribute("message", "Successful! Please log in.");
-    return "redirect:/login";
+    return "redirect:/";
   }
 
   @GetMapping("/authtestpage")
@@ -61,7 +74,8 @@ public class UserController {
   }
 
   @GetMapping("/userPreferences")
-  public String userPreferences(Model model) {
+  public String userPreferences(Model model, @AuthenticationPrincipal MyUser myUser) {
+    model.addAttribute("userPreferences", myUser.getUserPreferences());
     return "userPreferences";
   }
 

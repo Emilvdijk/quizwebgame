@@ -31,7 +31,7 @@ public class QuestionsApiService<T> {
     // FIXME add uri builder in another class
 
     String url;
-    switch (user.getApiChoiceEnum()) {
+    switch (user.getUserPreferences().getApiChoiceEnum()) {
       case OPENTDB:
         {
           url = QUIZ_API_URL2;
@@ -48,14 +48,14 @@ public class QuestionsApiService<T> {
           break;
         }
     }
-    if (user.getQuizApiUriVariables().isEmpty()) {
+    if (user.getUserPreferences().getQuizApiUriVariables().isEmpty()) {
       return restTemplate.exchange(url, HttpMethod.GET, null, responseType).getBody();
     } else {
       URI uri =
           UriComponentsBuilder.fromUriString(url)
               .query("categories={categories}")
               .query("difficulties={difficulties}")
-              .buildAndExpand(user.getQuizApiUriVariables())
+              .buildAndExpand(user.getUserPreferences().getQuizApiUriVariables())
               .toUri();
       return restTemplate.exchange(uri, HttpMethod.GET, null, responseType).getBody();
     }

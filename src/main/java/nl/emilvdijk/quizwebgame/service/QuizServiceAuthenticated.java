@@ -55,7 +55,7 @@ public class QuizServiceAuthenticated implements QuizService {
   }
 
   public List<Question> getQuestionsByChoice(MyUser myUser, List<Long> questionIdList) {
-    if (myUser.getApiChoiceEnum() == ApiChoiceEnum.ALL) {
+    if (myUser.getUserPreferences().getApiChoiceEnum() == ApiChoiceEnum.ALL) {
       if (questionIdList.isEmpty()) {
         return questionRepo.findAll();
       } else {
@@ -63,9 +63,10 @@ public class QuizServiceAuthenticated implements QuizService {
       }
     }
     if (questionIdList.isEmpty()) {
-      return questionRepo.findByOrigin(myUser.getApiChoiceEnum());
+      return questionRepo.findByOrigin(myUser.getUserPreferences().getApiChoiceEnum());
     } else {
-      return questionRepo.findBymyIdNotInAndOrigin(questionIdList, myUser.getApiChoiceEnum());
+      return questionRepo.findBymyIdNotInAndOrigin(
+          questionIdList, myUser.getUserPreferences().getApiChoiceEnum());
     }
   }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.model.UserPreferences;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,9 @@ class QuizServiceAuthenticatedTest {
 
   @Test
   void getQuestionsByChoice() {
-    MyUser user = MyUser.builder().apiChoiceEnum(ApiChoiceEnum.OPENTDB).build();
+    UserPreferences userPreferences =
+        UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.OPENTDB).build();
+    MyUser user = MyUser.builder().userPreferences(userPreferences).build();
     List<Long> longList = new ArrayList<>();
     longList.add(2L);
     List<Question> questionList = quizServiceAuthenticated.getQuestionsByChoice(user, longList);
@@ -53,7 +56,9 @@ class QuizServiceAuthenticatedTest {
     questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB, question.getOrigin()));
     assertEquals(8, questionList.size());
 
-    MyUser user2 = MyUser.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build();
+    UserPreferences userPreferences2 =
+        UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build();
+    MyUser user2 = MyUser.builder().userPreferences(userPreferences2).build();
 
     List<Question> questionList2 = quizServiceAuthenticated.getQuestionsByChoice(user2, longList);
     questionList2.forEach(question -> assertNotEquals(2L, question.getMyId()));

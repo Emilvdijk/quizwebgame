@@ -2,10 +2,12 @@ package nl.emilvdijk.quizwebgame.service;
 
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.model.UserPreferences;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -50,26 +52,37 @@ public class MyUserService implements UserDetailsService {
   public void addTestUsersAfterStartup() {
     ArrayList<String> userRoles = new ArrayList<>();
     userRoles.add("ROLE_USER");
+    UserPreferences userPreferences =
+        UserPreferences.builder()
+            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .quizApiUriVariables(new HashMap<>())
+            .build();
     MyUser testUser =
         MyUser.builder()
             .username("user")
             .password("$2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG")
             .myRoles(userRoles)
             .enabled(true)
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .userPreferences(userPreferences)
             .build();
     saveUser(testUser);
 
     ArrayList<String> adminRoles = new ArrayList<>();
     adminRoles.add("ROLE_ADMIN");
     adminRoles.add("ROLE_USER");
+    UserPreferences adminPreferences =
+        UserPreferences.builder()
+            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .quizApiUriVariables(new HashMap<>())
+            .build();
+
     MyUser testAdmin =
         MyUser.builder()
             .username("1")
             .password("$2a$10$ixsefZtwnAoLc10H/R6Tu.NBQgWKnhgx5vXs.r2aYp32IjKE6YlCu")
             .myRoles(adminRoles)
             .enabled(true)
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .userPreferences(adminPreferences)
             .build();
     saveUser(testAdmin);
   }
@@ -93,12 +106,17 @@ public class MyUserService implements UserDetailsService {
   private MyUser constructUser(MyUserDto newUser) {
     ArrayList<String> userRoles = new ArrayList<>();
     userRoles.add("ROLE_USER");
+    UserPreferences userPreferences =
+        UserPreferences.builder()
+            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .quizApiUriVariables(new HashMap<>())
+            .build();
     return MyUser.builder()
         .username(newUser.getUsername())
         .password(passwordEncoder.encode(newUser.getPassword()))
         .myRoles(userRoles)
         .enabled(true)
-        .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+        .userPreferences(userPreferences)
         .build();
   }
 

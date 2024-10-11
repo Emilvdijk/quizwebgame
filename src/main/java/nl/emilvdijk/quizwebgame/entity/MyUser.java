@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.model.UserPreferences;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -53,11 +53,9 @@ public class MyUser implements UserDetails, Serializable {
       cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private List<Question> answeredQuestions;
 
-  // FIXME this one buggy
-  @Enumerated private ApiChoiceEnum apiChoiceEnum = ApiChoiceEnum.TRIVIAAPI;
-
-  @ElementCollection(fetch = FetchType.EAGER)
-  private Map<String, String> quizApiUriVariables = new HashMap<>();
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "user_preferences_id")
+  private UserPreferences userPreferences;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
