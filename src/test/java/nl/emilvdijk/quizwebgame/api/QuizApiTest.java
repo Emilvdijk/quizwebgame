@@ -1,22 +1,6 @@
 package nl.emilvdijk.quizwebgame.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
-import nl.emilvdijk.quizwebgame.entity.Question;
-import nl.emilvdijk.quizwebgame.service.QuestionsApiService;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest
 class QuizApiTest {

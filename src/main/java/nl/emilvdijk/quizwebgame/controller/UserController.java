@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
+import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -75,12 +77,23 @@ public class UserController {
 
   @GetMapping("/userPreferences")
   public String userPreferences(Model model, @AuthenticationPrincipal MyUser myUser) {
-    model.addAttribute("userPreferences", myUser.getUserPreferences());
+    MyUser user = userService.loadUserByUsername(myUser.getUsername());
+    model.addAttribute("userPreferences", user.getUserPreferences());
+    System.out.println(user.getUserPreferences().toString());
+    System.out.println("get");
+
+    //    model.addAttribute("userPreferences", new UserPreferences());
     return "userPreferences";
   }
 
   @PostMapping("/userPreferences")
-  public String updateUserPreferences() {
+  public String updateUserPreferences(
+      @ModelAttribute(name = "userPreferences") UserPreferences userPreferences,
+      @AuthenticationPrincipal MyUser myUser) {
+    myUser.setUserPreferences(userPreferences);
+    MyUser user = userService.loadUserByUsername(myUser.getUsername());
+    user.setUserPreferences(userPreferences);
+    userService.updateUser(user);
     return "redirect:/";
   }
 }

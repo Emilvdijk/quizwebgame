@@ -2,22 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <meta charset="UTF-8">
-    <title>Preferences</title>
+  <meta charset="UTF-8">
+  <title>Preferences</title>
 </head>
 <body>
 <P>welcome to user preferences <span th:remove="tag"
                                      sec:authentication="name">user</span></P>
 
-<form action="#" th:action="@{/userPreferences}" th:object="${userPreferences}" method="post">
-    <select th:field="*{apiChoiceEnum}">
-        <option th:each="apichoice : ${T(nl.emilvdijk.quizwebgame.enums).values()}"
-                th:value="${apichoice}"
-                th:text="${apichoice.displayValue}">
-        </option>
-    </select>
-    <button type="submit">Update</button>
-
+<form th:action="@{/userPreferences}" th:object="${userPreferences}" method="post">
+  <input type="hidden" th:field="*{id}"/>
+  <select name="apiChoice" th:field="*{apiChoiceEnum}">
+    <option th:each="apiChoiceOpt : ${T(nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum).values()}"
+            th:value="${apiChoiceOpt}" th:text="${apiChoiceOpt.displayValue}"></option>
+  </select>
+  <input type="submit" value="Update"/>
 </form>
 </body>
 </html>

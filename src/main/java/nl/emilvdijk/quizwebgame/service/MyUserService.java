@@ -6,8 +6,8 @@ import java.util.HashMap;
 import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
-import nl.emilvdijk.quizwebgame.model.UserPreferences;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +29,14 @@ public class MyUserService implements UserDetailsService {
   public void saveUser(MyUser user) {
     if (checkIfUserExists(user.getUsername())) {
       //      FIXME make proper exception when username already exists
+      return;
+    }
+    userRepo.save(user);
+  }
+
+  public void updateUser(MyUser user) {
+    if (!checkIfUserExists(user.getUsername())) {
+      //      FIXME make proper exception when user doesnt exists
       return;
     }
     userRepo.save(user);
