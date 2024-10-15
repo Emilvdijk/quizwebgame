@@ -3,6 +3,7 @@ package nl.emilvdijk.quizwebgame.controller;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
 import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
@@ -91,6 +92,7 @@ public class UserController {
       @ModelAttribute(name = "userPreferences") UserPreferences userPreferences,
       @AuthenticationPrincipal MyUser myUser) {
     myUser.setUserPreferences(userPreferences);
+    myUser.setQuestions(new ArrayList<>());
     MyUser user = userService.loadUserByUsername(myUser.getUsername());
     user.setUserPreferences(userPreferences);
     userService.updateUser(user);

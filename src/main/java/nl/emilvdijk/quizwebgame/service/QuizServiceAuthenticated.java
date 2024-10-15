@@ -9,6 +9,9 @@ import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
+import nl.emilvdijk.quizwebgame.service.api.QuestionApiMapperService;
+import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
+import nl.emilvdijk.quizwebgame.service.api.QuestionsApiCaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +22,7 @@ public class QuizServiceAuthenticated implements QuizService {
 
   @Autowired QuestionRepo questionRepo;
   @Autowired UserRepo userRepo;
-  @Autowired QuestionApiMapperService questionApiMapperService;
+  @Autowired QuestionApiService questionApiService;
   private static final String APPLICABLE_ROLE = "ROLE_USER";
 
   /**
@@ -75,11 +78,7 @@ public class QuizServiceAuthenticated implements QuizService {
   public void addNewQuestionsFromApi() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     MyUser myUser = userRepo.findByUsername(user.getUsername());
-    // FIXME add uri builder class to help questionApiService
-    QuestionsApiService questionsApiService =
-        new QuestionsApiService<>(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
-    List<Question> newQuestions =
-        questionApiMapperService.mapQuestions(questionsApiService.getNewQuestions(myUser));
+    List<Question> newQuestions = questionApiService.getNewQuestions(myUser);
     questionRepo.saveAll(newQuestions);
   }
 

@@ -1,7 +1,8 @@
-package nl.emilvdijk.quizwebgame.service;
+package nl.emilvdijk.quizwebgame.service.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import nl.emilvdijk.quizwebgame.dto.QuestionOpentdb;
 import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QuestionApiMapperService {
 
-  public List<Question> mapQuestions(List<QuestionTriviaApi> questionTriviaApis) {
+  public List<Question> mapTriviaApiQuestions(List<QuestionTriviaApi> questionTriviaApis) {
     List<Question> questionList = new ArrayList<>();
     for (QuestionTriviaApi questionTriviaApi : questionTriviaApis) {
       Question question = new Question();
@@ -26,5 +27,9 @@ public class QuestionApiMapperService {
       questionList.add(question);
     }
     return questionList;
+  }
+
+  public List<Question> mapOpenTDBQuestions(List<QuestionOpentdb> newQuestions) {
+    return QuestionMapStructMapper.INSTANCE.QuestionOpentdbToQuestion(newQuestions);
   }
 }
