@@ -17,7 +17,7 @@ public class QuestionOpentdb {
   @AllArgsConstructor
   @NoArgsConstructor
   @ToString
-  private static class QuestionOpentdbQuestion {
+  public static class QuestionOpentdbQuestion {
     private String type;
     private String difficulty;
     private String category;

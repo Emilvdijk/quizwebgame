@@ -29,7 +29,11 @@ public class QuestionApiMapperService {
     return questionList;
   }
 
-  public List<Question> mapOpenTDBQuestions(List<QuestionOpentdb> newQuestions) {
-    return QuestionMapStructMapper.INSTANCE.QuestionOpentdbToQuestion(newQuestions);
+  public List<Question> mapOpenTDBQuestions(QuestionOpentdb newQuestions) {
+    List<Question> questionList =
+        QuestionMapStructMapper.INSTANCE.QuestionOpentdbListToQuestionList(
+            newQuestions.getResults());
+    questionList.forEach(question -> question.setOrigin(ApiChoiceEnum.OPENTDB));
+    return questionList;
   }
 }

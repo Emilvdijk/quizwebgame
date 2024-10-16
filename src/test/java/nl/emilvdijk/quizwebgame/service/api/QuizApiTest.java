@@ -1,4 +1,4 @@
-package nl.emilvdijk.quizwebgame.api;
+package nl.emilvdijk.quizwebgame.service.api;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

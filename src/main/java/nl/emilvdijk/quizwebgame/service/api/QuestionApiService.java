@@ -37,8 +37,9 @@ public class QuestionApiService {
   private List<Question> getNewOpenTDBQuestions(MyUser user) {
     URI uri = generateURI(user, QUIZ_API_URL2);
     QuestionsApiCaller questionsApiService =
-        new QuestionsApiCaller(new ParameterizedTypeReference<List<QuestionOpentdb>>() {});
-    return questionApiMapperService.mapOpenTDBQuestions(questionsApiService.getNewQuestions(uri));
+        new QuestionsApiCaller(new ParameterizedTypeReference<QuestionOpentdb>() {});
+    return questionApiMapperService.mapOpenTDBQuestions(
+        (QuestionOpentdb) questionsApiService.getNewQuestion(uri));
   }
 
   private List<Question> getNewQuestionsFromAll(MyUser user) {
