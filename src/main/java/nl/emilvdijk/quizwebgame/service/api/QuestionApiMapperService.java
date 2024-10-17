@@ -7,6 +7,7 @@ import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 @Service
 public class QuestionApiMapperService {
@@ -34,6 +35,8 @@ public class QuestionApiMapperService {
         QuestionMapStructMapper.INSTANCE.QuestionOpentdbListToQuestionList(
             newQuestions.getResults());
     questionList.forEach(question -> question.setOrigin(ApiChoiceEnum.OPENTDB));
+    questionList.forEach(
+        question -> question.setQuestionText(HtmlUtils.htmlUnescape(question.getQuestionText())));
     return questionList;
   }
 }

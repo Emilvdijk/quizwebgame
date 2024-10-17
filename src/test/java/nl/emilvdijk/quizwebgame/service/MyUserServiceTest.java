@@ -12,10 +12,10 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = QuizWebGameApplication.class)
-@TestPropertySource(locations = "classpath:applicationTest.properties")
+@ActiveProfiles("test")
 @TestMethodOrder(OrderAnnotation.class)
 class MyUserServiceTest {
 

@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:applicationTest.properties")
+@ActiveProfiles("test")
 class QuizServiceAuthenticatedTest {
   @Autowired QuestionRepo questionRepo;
   @Autowired QuizServiceAuthenticated quizServiceAuthenticated;

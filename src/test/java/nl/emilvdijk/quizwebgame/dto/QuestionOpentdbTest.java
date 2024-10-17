@@ -3,17 +3,10 @@ package nl.emilvdijk.quizwebgame.dto;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
 import nl.emilvdijk.quizwebgame.service.api.QuestionsApiCaller;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 class QuestionOpentdbTest {

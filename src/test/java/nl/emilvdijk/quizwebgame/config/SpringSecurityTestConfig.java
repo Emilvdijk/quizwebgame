@@ -1,8 +1,8 @@
 package nl.emilvdijk.quizwebgame.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 
 @TestConfiguration
-@TestPropertySource(locations = "classpath:applicationTest.properties")
+@ActiveProfiles("test")
 public class SpringSecurityTestConfig {}

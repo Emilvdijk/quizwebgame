@@ -9,10 +9,10 @@ import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:applicationTest.properties")
+@ActiveProfiles("test")
 class QuestionsApiCallerTest {
 
   @Test
