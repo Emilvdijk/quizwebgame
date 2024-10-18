@@ -7,15 +7,14 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder(access = AccessLevel.PUBLIC)
 @Getter
 @Setter
 @ToString

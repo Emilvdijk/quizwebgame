@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 public class QuizServiceGuest implements QuizService {
 
   @Autowired QuestionRepo questionRepo;
-  @Autowired
-  QuestionApiService questionApiService;
+  @Autowired QuestionApiService questionApiService;
   private final String APPLICABLE_ROLE = "ANONYMOUS";
 
   // FIXME store in session?
@@ -44,8 +43,7 @@ public class QuizServiceGuest implements QuizService {
   @Override
   public void addNewQuestionsFromApi() {
 
-    List<Question> newQuestions =
-        questionApiService.getDefaultQuestions();
+    List<Question> newQuestions = questionApiService.getDefaultQuestions();
     questionRepo.saveAll(newQuestions);
   }
 

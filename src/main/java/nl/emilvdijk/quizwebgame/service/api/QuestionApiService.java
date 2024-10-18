@@ -14,10 +14,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class QuestionApiService {
-  @Autowired QuestionApiMapperService questionApiMapperService;
-  private static final String QUIZ_API_URL = "https://the-trivia-api.com/v2/questions";
+  QuestionApiMapperService questionApiMapperService;
 
-  private static final String QUIZ_API_URL2 = "https://opentdb.com/api.php?amount=10";
+  private static final String QUIZ_API_URL = "https://the-trivia-api.com/v2/questions?limit=50";
+
+  private static final String QUIZ_API_URL2 = "https://opentdb.com/api.php?amount=50";
+
+  public QuestionApiService(@Autowired QuestionApiMapperService questionApiMapperService) {
+    this.questionApiMapperService = questionApiMapperService;
+  }
 
   public List<Question> getNewQuestions(MyUser user) {
     return switch (user.getUserPreferences().getApiChoiceEnum()) {
@@ -36,10 +41,9 @@ public class QuestionApiService {
 
   private List<Question> getNewOpenTDBQuestions(MyUser user) {
     URI uri = generateURI(user, QUIZ_API_URL2);
-    QuestionsApiCaller questionsApiService =
+    QuestionsApiCaller<QuestionOpentdb> questionsApiCaller =
         new QuestionsApiCaller(new ParameterizedTypeReference<QuestionOpentdb>() {});
-    return questionApiMapperService.mapOpenTDBQuestions(
-        (QuestionOpentdb) questionsApiService.getNewQuestion(uri));
+    return questionApiMapperService.mapOpenTDBQuestions(questionsApiCaller.getNewQuestion(uri));
   }
 
   private List<Question> getNewQuestionsFromAll(MyUser user) {

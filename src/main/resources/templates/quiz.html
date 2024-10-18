@@ -15,7 +15,8 @@
 <br>
 <br>
 <tr th:each="answer: ${question.answers}">
-  <form th:value="@{/quiz}" method="post">
+  <form th:action="@{/quiz}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" name="chosenAnswer" th:value="${answerStat.index}"/>
     <button class="btn btn-outline-primary btn-lg btn-block" type="submit"
             th:text="${answer}"></button>

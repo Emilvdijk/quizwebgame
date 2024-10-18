@@ -3,17 +3,13 @@ package nl.emilvdijk.quizwebgame.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
-import nl.emilvdijk.quizwebgame.service.api.QuestionApiMapperService;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
-import nl.emilvdijk.quizwebgame.service.api.QuestionsApiCaller;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
