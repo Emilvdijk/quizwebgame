@@ -35,7 +35,7 @@ public class WebSecurityConfig {
     //    FIXME remove after testing
     http.headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin));
     //    http.csrf(csrf -> csrf.disable());
-    http.csrf(csrf -> csrf.ignoringRequestMatchers("/quiz/**", "/h2-console/**"));
+    http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
     return http.build();
   }
 
