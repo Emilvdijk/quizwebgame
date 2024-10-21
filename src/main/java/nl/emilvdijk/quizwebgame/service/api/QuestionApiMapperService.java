@@ -37,6 +37,13 @@ public class QuestionApiMapperService {
     questionList.forEach(question -> question.setOrigin(ApiChoiceEnum.OPENTDB));
     questionList.forEach(
         question -> question.setQuestionText(HtmlUtils.htmlUnescape(question.getQuestionText())));
+    questionList.forEach(
+        question -> question.setCorrectAnswer(HtmlUtils.htmlUnescape(question.getCorrectAnswer())));
+
+    questionList.forEach(
+        question ->
+            question.setIncorrectAnswers(
+                question.getIncorrectAnswers().stream().map(HtmlUtils::htmlUnescape).toList()));
     return questionList;
   }
 }

@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @AllArgsConstructor
+@Builder(access = AccessLevel.PUBLIC)
 public class QuestionOpentdb {
   private String response_code;
   private List<QuestionOpentdbQuestion> results;
@@ -17,6 +18,7 @@ public class QuestionOpentdb {
   @AllArgsConstructor
   @NoArgsConstructor
   @ToString
+  @Builder(access = AccessLevel.PUBLIC)
   public static class QuestionOpentdbQuestion {
     private String type;
     private String difficulty;
