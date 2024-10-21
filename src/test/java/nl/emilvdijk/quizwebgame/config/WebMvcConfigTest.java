@@ -16,7 +16,6 @@ class WebMvcConfigTest {
   @Test
   void passwordEncoder() {
     String result = passwordEncoder.encode("myPassword");
-    //    System.out.println(result);
     assertTrue(passwordEncoder.matches("myPassword", result));
   }
 
