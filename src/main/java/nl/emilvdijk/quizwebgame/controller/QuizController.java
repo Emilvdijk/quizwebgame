@@ -11,8 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class QuizController {
@@ -55,15 +55,10 @@ public class QuizController {
    */
   @PostMapping("/quiz")
   public String questionAnswer(
-      @RequestBody String chosenAnswerStr,
+      @ModelAttribute(name = "chosenAnswer") String chosenAnswerStr,
       Model model,
       @AuthenticationPrincipal MyUser user,
       HttpSession httpSession) {
-    // FIXME fix csrf settings for this page
-    // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-components
-    // https://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html#integration-with-requestdatavalueprocessor
-    // https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-form
-
     Question answeredQuestion = (Question) httpSession.getAttribute("question");
 
     Question question =
@@ -73,8 +68,7 @@ public class QuizController {
       userService.markQuestionDone(question, user);
     }
 
-    String chosenAnswer =
-        answeredQuestion.getAnswers().get(Integer.parseInt(chosenAnswerStr.substring(13)));
+    String chosenAnswer = answeredQuestion.getAnswers().get(Integer.parseInt(chosenAnswerStr));
     dynamicQuizService.getService(user).removeAnsweredQuestion();
     model.addAttribute("question", question);
     model.addAttribute("chosenanswer", chosenAnswer);
