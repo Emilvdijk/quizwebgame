@@ -56,9 +56,8 @@ public class QuestionApiService {
   public List<Question> getDefaultQuestions() {
     QuestionsApiCaller questionsApiService =
         new QuestionsApiCaller(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
-    List<Question> newQuestions =
-        questionApiMapperService.mapTriviaApiQuestions(questionsApiService.getDefaultQuestions());
-    return newQuestions;
+    return questionApiMapperService.mapTriviaApiQuestions(
+        questionsApiService.getDefaultQuestions());
   }
 
   private URI generateURI(MyUser user, String url) {

@@ -17,8 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class QuizController {
 
-  @Autowired MyUserService userService;
-  @Autowired DynamicQuizService dynamicQuizService;
+  MyUserService userService;
+  DynamicQuizService dynamicQuizService;
+
+  public QuizController(
+      @Autowired MyUserService userService, @Autowired DynamicQuizService dynamicQuizService) {
+    this.userService = userService;
+    this.dynamicQuizService = dynamicQuizService;
+  }
 
   /**
    * default page. returns homepage.

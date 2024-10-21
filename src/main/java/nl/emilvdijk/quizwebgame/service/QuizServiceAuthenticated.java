@@ -16,10 +16,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class QuizServiceAuthenticated implements QuizService {
 
-  @Autowired QuestionRepo questionRepo;
-  @Autowired UserRepo userRepo;
-  @Autowired QuestionApiService questionApiService;
+  QuestionRepo questionRepo;
+  UserRepo userRepo;
+  QuestionApiService questionApiService;
   private static final String APPLICABLE_ROLE = "ROLE_USER";
+
+  public QuizServiceAuthenticated(
+      @Autowired QuestionRepo questionRepo,
+      @Autowired UserRepo userRepo,
+      @Autowired QuestionApiService questionApiService) {
+    this.questionRepo = questionRepo;
+    this.userRepo = userRepo;
+    this.questionApiService = questionApiService;
+  }
 
   /**
    * returns question held by quiz service.

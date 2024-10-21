@@ -43,7 +43,6 @@ public class MyUser implements UserDetails, Serializable {
 
   @CreationTimestamp private Instant added;
 
-  // FIXME save in session?
   @Transient private List<Question> questions = new ArrayList<>();
 
   // https://stackoverflow.com/questions/63451175/how-to-add-data-to-many-to-many-association-with-extra-column-using-jpa-hiberna

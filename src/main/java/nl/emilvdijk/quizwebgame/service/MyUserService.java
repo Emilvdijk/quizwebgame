@@ -18,8 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class MyUserService implements UserDetailsService {
 
-  @Autowired UserRepo userRepo;
-  @Autowired PasswordEncoder passwordEncoder;
+  UserRepo userRepo;
+  PasswordEncoder passwordEncoder;
+
+  public MyUserService(@Autowired PasswordEncoder passwordEncoder, @Autowired UserRepo userRepo) {
+    this.passwordEncoder = passwordEncoder;
+    this.userRepo = userRepo;
+  }
 
   /**
    * save the user to the repository.
@@ -45,7 +50,6 @@ public class MyUserService implements UserDetailsService {
   @Override
   public MyUser loadUserByUsername(String username) throws UsernameNotFoundException {
     MyUser user = userRepo.findByUsername(username);
-    // FIXME change null check
     if (user == null) {
       throw new UsernameNotFoundException(username);
     }

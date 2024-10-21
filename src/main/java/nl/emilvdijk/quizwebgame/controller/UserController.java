@@ -22,8 +22,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
 
-  @Autowired MyUserService userService;
+  MyUserService userService;
   Logger logger = LoggerFactory.getLogger(UserController.class);
+
+  public UserController(@Autowired MyUserService userService) {
+    this.userService = userService;
+  }
 
   /**
    * login page.
@@ -65,9 +69,6 @@ public class UserController {
     } catch (ServletException e) {
       logger.error("Error while login ", e);
     }
-    // TODO explore flash attributes in spring
-
-    //    redirectAttributes.addFlashAttribute("message", "Successful! Please log in.");
     return "redirect:/";
   }
 
@@ -80,10 +81,6 @@ public class UserController {
   public String userPreferences(Model model, @AuthenticationPrincipal MyUser myUser) {
     MyUser user = userService.loadUserByUsername(myUser.getUsername());
     model.addAttribute("userPreferences", user.getUserPreferences());
-    System.out.println(user.getUserPreferences().toString());
-    System.out.println("get");
-
-    //    model.addAttribute("userPreferences", new UserPreferences());
     return "userPreferences";
   }
 

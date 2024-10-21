@@ -32,9 +32,8 @@ public class WebSecurityConfig {
         .httpBasic(withDefaults())
         .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true).permitAll())
         .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
-    //    FIXME remove after testing
+    //    FIXME remove after developing only h2 needs frameoptions same origin
     http.headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin));
-    //    http.csrf(csrf -> csrf.disable());
     http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
     return http.build();
   }
