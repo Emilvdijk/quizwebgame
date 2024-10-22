@@ -6,28 +6,27 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.exceptions.QuestionNotFoundException;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class QuizServiceGuest implements QuizService {
+public class RESTQuizService {
 
   QuestionRepo questionRepo;
   QuestionApiService questionApiService;
-  private final String APPLICABLE_ROLE = "ANONYMOUS";
 
   // FIXME store in session?
   @Getter @Setter List<Question> questions = new ArrayList<>();
 
-  public QuizServiceGuest(
+  public RESTQuizService(
       @Autowired QuestionRepo questionRepo, @Autowired QuestionApiService questionApiService) {
     this.questionRepo = questionRepo;
     this.questionApiService = questionApiService;
   }
 
-  @Override
   public Question getNewQuestion() {
     if (this.questions.isEmpty()) {
       getNewQuestions();
@@ -35,7 +34,6 @@ public class QuizServiceGuest implements QuizService {
     return this.questions.getFirst();
   }
 
-  @Override
   public void getNewQuestions() {
     if (questionRepo.count() < 10) {
       addNewQuestionsFromApi();
@@ -45,24 +43,21 @@ public class QuizServiceGuest implements QuizService {
     Collections.shuffle(questions);
   }
 
-  /** gets new questions from the question api and saves them to the repo. */
-  @Override
-  public void addNewQuestionsFromApi() {
-    questionRepo.saveAll(questionApiService.getDefaultQuestions());
-  }
+  public void addNewQuestionsFromApi() {}
 
-  @Override
   public void removeAnsweredQuestion() {
     questions.removeFirst();
   }
 
-  @Override
   public Question getQuestionByMyid(Long myid) {
     return questionRepo.findBymyId(myid);
   }
 
-  @Override
-  public String getApplicableRole() {
-    return APPLICABLE_ROLE;
+  public List<Question> findAll() {
+    return questionRepo.findAll();
+  }
+
+  public Question findById(Long id) {
+    return questionRepo.findOptionalBymyId(id).orElseThrow(() -> new QuestionNotFoundException(id));
   }
 }

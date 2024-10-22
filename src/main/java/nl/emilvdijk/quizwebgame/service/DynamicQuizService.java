@@ -13,9 +13,9 @@ public class DynamicQuizService {
   private final Map<String, QuizService> quizServiceByAuthentication;
 
   @Autowired
-  public DynamicQuizService(List<QuizService> regionServices) {
+  public DynamicQuizService(List<QuizService> quizServices) {
     quizServiceByAuthentication =
-        regionServices.stream()
+        quizServices.stream()
             .collect(Collectors.toMap(QuizService::getApplicableRole, Function.identity()));
   }
 
