@@ -50,7 +50,7 @@ public class QuizServiceAuthenticated implements QuizService {
     MyUser myUser = userRepo.findByUsername(user.getUsername());
 
     List<Long> questionIdList = new ArrayList<>();
-    myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getMyId()));
+    myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getId()));
     List<Question> questions = getQuestionsByChoice(myUser, questionIdList);
 
     if (questions.size() < 10) {
@@ -67,13 +67,13 @@ public class QuizServiceAuthenticated implements QuizService {
       if (questionIdList.isEmpty()) {
         return questionRepo.findAll();
       } else {
-        return questionRepo.findBymyIdNotIn(questionIdList);
+        return questionRepo.findByIdNotIn(questionIdList);
       }
     }
     if (questionIdList.isEmpty()) {
       return questionRepo.findByOrigin(myUser.getUserPreferences().getApiChoiceEnum());
     } else {
-      return questionRepo.findBymyIdNotInAndOrigin(
+      return questionRepo.findByIdNotInAndOrigin(
           questionIdList, myUser.getUserPreferences().getApiChoiceEnum());
     }
   }
@@ -95,7 +95,7 @@ public class QuizServiceAuthenticated implements QuizService {
 
   @Override
   public Question getQuestionByMyid(Long myid) {
-    return questionRepo.findBymyId(myid);
+    return questionRepo.findById(myid).orElseThrow();
   }
 
   @Override

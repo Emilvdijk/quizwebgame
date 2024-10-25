@@ -58,7 +58,7 @@ public class QuizServiceGuest implements QuizService {
 
   @Override
   public Question getQuestionByMyid(Long myid) {
-    return questionRepo.findBymyId(myid);
+    return questionRepo.findById(myid).orElseThrow();
   }
 
   @Override

@@ -26,7 +26,7 @@ class QuizServiceAuthenticatedTest {
   static void createTestQuestions(@Autowired QuestionRepo questionRepo) {
     for (long i = 1L; i < 10; i++) {
       Question newTestQuestion = new Question();
-      newTestQuestion.setMyId(i);
+      newTestQuestion.setId(i);
       newTestQuestion.setOrigin(ApiChoiceEnum.OPENTDB);
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
@@ -35,7 +35,7 @@ class QuizServiceAuthenticatedTest {
 
     for (long i = 10L; i < 20; i++) {
       Question newTestQuestion = new Question();
-      newTestQuestion.setMyId(i);
+      newTestQuestion.setId(i);
       newTestQuestion.setOrigin(ApiChoiceEnum.TRIVIAAPI);
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
@@ -51,7 +51,7 @@ class QuizServiceAuthenticatedTest {
     List<Long> longList = new ArrayList<>();
     longList.add(2L);
     List<Question> questionList = quizServiceAuthenticated.getQuestionsByChoice(user, longList);
-    questionList.forEach(question -> assertNotEquals(2L, question.getMyId()));
+    questionList.forEach(question -> assertNotEquals(2L, question.getId()));
     questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB, question.getOrigin()));
     assertEquals(8, questionList.size());
 
@@ -60,7 +60,7 @@ class QuizServiceAuthenticatedTest {
     MyUser user2 = MyUser.builder().userPreferences(userPreferences2).build();
 
     List<Question> questionList2 = quizServiceAuthenticated.getQuestionsByChoice(user2, longList);
-    questionList2.forEach(question -> assertNotEquals(2L, question.getMyId()));
+    questionList2.forEach(question -> assertNotEquals(2L, question.getId()));
     questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI, question.getOrigin()));
     assertEquals(10, questionList2.size());
   }

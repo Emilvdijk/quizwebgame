@@ -68,7 +68,7 @@ public class QuizController {
     Question answeredQuestion = (Question) httpSession.getAttribute("question");
 
     Question question =
-        dynamicQuizService.getService(user).getQuestionByMyid(answeredQuestion.getMyId());
+        dynamicQuizService.getService(user).getQuestionByMyid(answeredQuestion.getId());
 
     if (user != null) {
       userService.markQuestionDone(question, user);

@@ -10,13 +10,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuestionRepo extends JpaRepository<Question, Long> {
 
-  List<Question> findBymyIdNotIn(List<Long> myIdList);
+  List<Question> findByIdNotIn(List<Long> IdList);
 
-  Question findBymyId(Long myId);
+  Optional<Question> findById(Long Id);
 
-  Optional<Question> findOptionalBymyId(Long myId);
+  Optional<Question> findOptionalById(Long Id);
 
-  List<Question> findBymyIdNotInAndOrigin(List<Long> myIdList, ApiChoiceEnum origin);
+  List<Question> findByIdNotInAndOrigin(List<Long> myIdList, ApiChoiceEnum origin);
 
   List<Question> findByOrigin(ApiChoiceEnum origin);
 }

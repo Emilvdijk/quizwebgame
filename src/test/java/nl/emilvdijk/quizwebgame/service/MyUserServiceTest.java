@@ -81,7 +81,7 @@ class MyUserServiceTest {
   void markQuestionDone() {
     MyUser testUser = myUserService.loadUserByUsername("testuser");
     assertEquals(0, testUser.getAnsweredQuestions().size());
-    myUserService.markQuestionDone(Question.builder().myId(2L).build(), testUser);
+    myUserService.markQuestionDone(Question.builder().id(2L).build(), testUser);
     testUser = myUserService.loadUserByUsername("testuser");
     assertEquals(1, testUser.getAnsweredQuestions().size());
   }

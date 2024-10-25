@@ -3,16 +3,13 @@ package nl.emilvdijk.quizwebgame.entity;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.*;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,15 +20,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Setter
 @ToString
 @NoArgsConstructor
-@Builder(access = AccessLevel.PUBLIC)
+@SuperBuilder
 @AllArgsConstructor
-public class MyUser implements UserDetails, Serializable {
+public class MyUser extends BaseEntity implements UserDetails, Serializable {
 
   @Serial private static final long serialVersionUID = -8443145631573894870L;
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
 
   private String username;
 
@@ -40,8 +33,6 @@ public class MyUser implements UserDetails, Serializable {
 
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> myRoles;
-
-  @CreationTimestamp private Instant added;
 
   @Transient private List<Question> questions = new ArrayList<>();
 

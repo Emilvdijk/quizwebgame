@@ -23,17 +23,17 @@ class QuestionRepoTest {
   @BeforeAll
   static void createTestQuestions(@Autowired QuestionRepo questionRepo) {
     Question question = new Question();
-    question.setMyId(1L);
+    question.setId(1L);
     question.setOrigin(ApiChoiceEnum.TRIVIAAPI);
     questionRepo.save(question);
 
     Question question2 = new Question();
-    question2.setMyId(2L);
+    question2.setId(2L);
     question2.setOrigin(ApiChoiceEnum.TRIVIAAPI);
     questionRepo.save(question2);
 
     Question question3 = new Question();
-    question3.setMyId(3L);
+    question3.setId(3L);
     question3.setOrigin(ApiChoiceEnum.OPENTDB);
     questionRepo.save(question3);
   }
@@ -42,20 +42,20 @@ class QuestionRepoTest {
   void findBymyIdNotIn() {
     List<Long> longList = new ArrayList<>();
     longList.add(2L);
-    List<Question> questionList = questionRepo.findBymyIdNotIn(longList);
+    List<Question> questionList = questionRepo.findByIdNotIn(longList);
     assertFalse(questionList.isEmpty());
-    questionList.forEach(question -> assertNotEquals(2L, question.getMyId()));
+    questionList.forEach(question -> assertNotEquals(2L, question.getId()));
 
     // NotIn derived query will fail if given empty list
     List<Long> longList2 = new ArrayList<>();
-    List<Question> questionList2 = questionRepo.findBymyIdNotIn(longList2);
+    List<Question> questionList2 = questionRepo.findByIdNotIn(longList2);
     assertTrue(questionList2.isEmpty());
   }
 
   @Test
   void findBymyId() {
-    Question question = questionRepo.findBymyId(2L);
-    assertEquals(2L, question.getMyId());
+    Question question = questionRepo.findById(2L).orElseThrow();
+    assertEquals(2L, question.getId());
   }
 
   @Test
@@ -63,19 +63,19 @@ class QuestionRepoTest {
     List<Long> longList = new ArrayList<>();
     longList.add(2L);
     List<Question> questionList =
-        questionRepo.findBymyIdNotInAndOrigin(longList, ApiChoiceEnum.OPENTDB);
-    questionList.forEach(question -> assertNotEquals(2L, question.getMyId()));
+        questionRepo.findByIdNotInAndOrigin(longList, ApiChoiceEnum.OPENTDB);
+    questionList.forEach(question -> assertNotEquals(2L, question.getId()));
     questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB, question.getOrigin()));
 
     List<Question> questionList2 =
-        questionRepo.findBymyIdNotInAndOrigin(longList, ApiChoiceEnum.TRIVIAAPI);
-    questionList2.forEach(question -> assertNotEquals(2L, question.getMyId()));
+        questionRepo.findByIdNotInAndOrigin(longList, ApiChoiceEnum.TRIVIAAPI);
+    questionList2.forEach(question -> assertNotEquals(2L, question.getId()));
     questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI, question.getOrigin()));
 
     // NotIn derived query will fail if given empty list
     List<Long> longList3 = new ArrayList<>();
     List<Question> questionList3 =
-        questionRepo.findBymyIdNotInAndOrigin(longList3, ApiChoiceEnum.TRIVIAAPI);
+        questionRepo.findByIdNotInAndOrigin(longList3, ApiChoiceEnum.TRIVIAAPI);
     assertTrue(questionList3.isEmpty());
   }
 }

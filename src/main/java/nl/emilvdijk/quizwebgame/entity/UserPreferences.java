@@ -6,23 +6,19 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 
 @Entity
 @Getter
 @Setter
-@Builder(access = AccessLevel.PUBLIC)
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserPreferences implements Serializable {
+public class UserPreferences extends BaseEntity implements Serializable {
 
   @Serial private static final long serialVersionUID = -682768038923270772L;
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private Long id;
 
   @Enumerated(EnumType.STRING)
   private ApiChoiceEnum apiChoiceEnum;

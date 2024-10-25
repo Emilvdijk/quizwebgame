@@ -50,7 +50,7 @@ public class RESTQuizService {
   }
 
   public Question getQuestionByMyid(Long myid) {
-    return questionRepo.findBymyId(myid);
+    return questionRepo.findById(myid).orElseThrow();
   }
 
   public List<Question> findAll() {
@@ -58,6 +58,6 @@ public class RESTQuizService {
   }
 
   public Question findById(Long id) {
-    return questionRepo.findOptionalBymyId(id).orElseThrow(() -> new QuestionNotFoundException(id));
+    return questionRepo.findOptionalById(id).orElseThrow(() -> new QuestionNotFoundException(id));
   }
 }
