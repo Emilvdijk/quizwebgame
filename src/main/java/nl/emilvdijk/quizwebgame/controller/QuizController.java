@@ -2,6 +2,7 @@ package nl.emilvdijk.quizwebgame.controller;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.DynamicQuizService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@Slf4j
 public class QuizController {
 
   MyUserService userService;
@@ -48,6 +50,11 @@ public class QuizController {
     Question question = dynamicQuizService.getService(user).getNewQuestion();
     httpSession.setAttribute("question", question);
     model.addAttribute("question", question);
+    if (user == null) {
+      log.debug("Anonymous GET Requested with question Id: {}", question.getId());
+    } else {
+      log.debug("{} GET Requested with question Id: {}", user.getQuestions(), question.getId());
+    }
     return "quiz";
   }
 
@@ -66,6 +73,7 @@ public class QuizController {
       @AuthenticationPrincipal MyUser user,
       HttpSession httpSession) {
     Question answeredQuestion = (Question) httpSession.getAttribute("question");
+    httpSession.removeAttribute("question");
 
     Question question =
         dynamicQuizService.getService(user).getQuestionByMyid(answeredQuestion.getId());
@@ -78,6 +86,11 @@ public class QuizController {
     dynamicQuizService.getService(user).removeAnsweredQuestion();
     model.addAttribute("question", question);
     model.addAttribute("chosenanswer", chosenAnswer);
+    if (user == null) {
+      log.debug("Anonymous POST Requested with question Id: {}", question.getId());
+    } else {
+      log.debug("{} POST Requested with question Id: {}", user.getQuestions(), question.getId());
+    }
     if (Objects.equals(chosenAnswer, question.getCorrectAnswer())) {
       return "resultpagegood";
     } else {

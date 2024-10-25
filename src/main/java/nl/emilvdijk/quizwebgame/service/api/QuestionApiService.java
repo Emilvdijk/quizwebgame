@@ -3,6 +3,7 @@ package nl.emilvdijk.quizwebgame.service.api;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.dto.QuestionOpentdb;
 import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
+@Slf4j
 public class QuestionApiService {
   QuestionApiMapperService questionApiMapperService;
 
@@ -65,7 +67,6 @@ public class QuestionApiService {
     if (user.getUserPreferences().getQuizApiUriVariables().isEmpty()) {
       uri = URI.create(url);
     } else {
-
       uri =
           UriComponentsBuilder.fromUriString(url)
               .query("categories={categories}")
@@ -73,6 +74,7 @@ public class QuestionApiService {
               .buildAndExpand(user.getUserPreferences().getQuizApiUriVariables())
               .toUri();
     }
+    log.debug("URI generated: {} for user {}", uri, user.getUsername());
     return uri;
   }
 }

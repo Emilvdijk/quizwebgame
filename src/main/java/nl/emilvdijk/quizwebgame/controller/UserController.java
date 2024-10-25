@@ -5,12 +5,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
+import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,10 +21,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@Slf4j
 public class UserController {
 
   MyUserService userService;
-  Logger logger = LoggerFactory.getLogger(UserController.class);
 
   public UserController(@Autowired MyUserService userService) {
     this.userService = userService;
@@ -68,9 +67,11 @@ public class UserController {
     userService.registerNewUser(user);
     try {
       request.login(user.getUsername(), user.getPassword());
+      log.info("{} logged in", user.getUsername());
     } catch (ServletException e) {
-      logger.error("Error while login ", e);
+      log.error("Error while login ", e);
     }
+    log.debug("new account created with username: {}", user.getUsername());
     return "redirect:/";
   }
 
@@ -95,6 +96,10 @@ public class UserController {
     MyUser user = userService.loadUserByUsername(myUser.getUsername());
     user.setUserPreferences(userPreferences);
     userService.updateUser(user);
+    log.debug(
+        "{} updated their user preferences with id: {}",
+        user.getUsername(),
+        user.getUserPreferences().getId());
     return "redirect:/";
   }
 
@@ -103,6 +108,10 @@ public class UserController {
     userService.deleteUserById(myUser.getId());
     SecurityContextHolder.clearContext();
     httpSession.invalidate();
+    log.debug(
+        "{} deleted their account with id: {}",
+        myUser.getUsername(),
+        myUser.getUserPreferences().getId());
     return "redirect:/";
   }
 }

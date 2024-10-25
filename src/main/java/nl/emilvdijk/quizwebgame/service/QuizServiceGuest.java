@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class QuizServiceGuest implements QuizService {
 
   QuestionRepo questionRepo;
@@ -48,7 +50,9 @@ public class QuizServiceGuest implements QuizService {
   /** gets new questions from the question api and saves them to the repo. */
   @Override
   public void addNewQuestionsFromApi() {
-    questionRepo.saveAll(questionApiService.getDefaultQuestions());
+    List<Question> questionList = questionApiService.getDefaultQuestions();
+    questionRepo.saveAll(questionList);
+    log.debug("{} questions added to questionrepo", questionList.size());
   }
 
   @Override

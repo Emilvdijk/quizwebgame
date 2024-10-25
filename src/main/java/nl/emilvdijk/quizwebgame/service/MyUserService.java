@@ -3,6 +3,7 @@ package nl.emilvdijk.quizwebgame.service;
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class MyUserService implements UserDetailsService {
 
   UserRepo userRepo;
@@ -97,6 +99,7 @@ public class MyUserService implements UserDetailsService {
             .userPreferences(adminPreferences)
             .build();
     saveUser(testAdmin);
+    log.debug("added 2 users");
   }
 
   /**
