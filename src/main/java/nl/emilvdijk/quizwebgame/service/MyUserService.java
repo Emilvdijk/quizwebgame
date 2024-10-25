@@ -148,4 +148,8 @@ public class MyUserService implements UserDetailsService {
   public Boolean checkIfUserExists(String username) {
     return userRepo.existsMyUserByUsername(username);
   }
+
+  public void deleteUserById(Long id) {
+    userRepo.deleteById(id);
+  }
 }

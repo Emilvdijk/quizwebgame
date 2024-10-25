@@ -17,5 +17,11 @@
   </select>
   <input type="submit" value="Update"/>
 </form>
+<br>
+<div sec:authorize="!hasRole('ADMIN')">
+  <form th:action="@{/deteleAccount}" method="post"><input type="submit" value="Delete Account"
+                                                           th:onclick="if(!(confirm('Are you sure you want to delete your account?' ) )) return false"/>
+  </form>
+</div>
 </body>
 </html>

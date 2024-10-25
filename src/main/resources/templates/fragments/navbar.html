@@ -48,14 +48,14 @@
         <div sec:authorize="hasRole('USER')">
           <li class="nav-item">
             <form class="nav-link" th:action="@{/userPreferences}" method="get">
-              <button class="nav-link" type="submit">preferences</button>
+              <button class="nav-link" type="submit">Options</button>
             </form>
           </li>
         </div>
         <div sec:authorize="hasRole('ADMIN')">
           <li class="nav-item">
             <form class="nav-link" th:action="@{/h2-console}" method="get">
-              <button class="nav-link" type="submit">h2 console</button>
+              <button class="nav-link" type="submit">H2 console</button>
             </form>
           </li>
         </div>

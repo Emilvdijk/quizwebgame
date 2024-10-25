@@ -2,6 +2,7 @@ package nl.emilvdijk.quizwebgame.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import nl.emilvdijk.quizwebgame.dto.MyUserDto;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -93,6 +95,14 @@ public class UserController {
     MyUser user = userService.loadUserByUsername(myUser.getUsername());
     user.setUserPreferences(userPreferences);
     userService.updateUser(user);
+    return "redirect:/";
+  }
+
+  @PostMapping("/deteleAccount")
+  public String deleteCurrentUser(@AuthenticationPrincipal MyUser myUser, HttpSession httpSession) {
+    userService.deleteUserById(myUser.getId());
+    SecurityContextHolder.clearContext();
+    httpSession.invalidate();
     return "redirect:/";
   }
 }
