@@ -49,15 +49,11 @@ public class RESTQuizService {
     questions.removeFirst();
   }
 
-  public Question getQuestionByMyid(Long myid) {
-    return questionRepo.findById(myid).orElseThrow();
-  }
-
   public List<Question> findAll() {
     return questionRepo.findAll();
   }
 
   public Question findById(Long id) {
-    return questionRepo.findOptionalById(id).orElseThrow(() -> new QuestionNotFoundException(id));
+    return questionRepo.findById(id).orElseThrow(() -> new QuestionNotFoundException(id));
   }
 }

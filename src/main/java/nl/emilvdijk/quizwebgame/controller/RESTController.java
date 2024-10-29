@@ -2,14 +2,17 @@ package nl.emilvdijk.quizwebgame.controller;
 
 import java.util.List;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.exceptions.QuestionNotFoundException;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import nl.emilvdijk.quizwebgame.service.RESTQuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 public class RESTController {
 
   private RESTQuizService restQuizService;
@@ -21,13 +24,13 @@ public class RESTController {
     this.myUserService = myUserService;
   }
 
-  @GetMapping("/rest/questions")
+  @GetMapping("/questions")
   List<Question> findAllQuestions() {
     return restQuizService.findAll();
   }
 
-  @GetMapping("/rest/questions/{id}")
-  Question findQuestionById(@PathVariable Long id) {
+  @GetMapping("/questions/{id}")
+  Question findQuestionById(@PathVariable Long id) throws QuestionNotFoundException {
     return restQuizService.findById(id);
   }
 }
