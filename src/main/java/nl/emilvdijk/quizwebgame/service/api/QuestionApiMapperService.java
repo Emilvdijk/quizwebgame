@@ -39,7 +39,6 @@ public class QuestionApiMapperService {
         question -> question.setQuestionText(HtmlUtils.htmlUnescape(question.getQuestionText())));
     questionList.forEach(
         question -> question.setCorrectAnswer(HtmlUtils.htmlUnescape(question.getCorrectAnswer())));
-
     questionList.forEach(
         question ->
             question.setIncorrectAnswers(

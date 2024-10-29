@@ -89,7 +89,7 @@ public class QuizController {
     if (user == null) {
       log.debug("Anonymous POST Requested with question Id: {}", question.getId());
     } else {
-      log.debug("{} POST Requested with question Id: {}", user.getQuestions(), question.getId());
+      log.debug("{} POST Requested with question Id: {}", user.getUsername(), question.getId());
     }
     if (Objects.equals(chosenAnswer, question.getCorrectAnswer())) {
       return "resultpagegood";

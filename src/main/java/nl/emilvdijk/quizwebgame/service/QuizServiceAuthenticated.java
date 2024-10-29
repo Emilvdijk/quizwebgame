@@ -11,6 +11,7 @@ import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,7 +48,10 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public void getNewQuestions() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    MyUser myUser = userRepo.findByUsername(user.getUsername());
+    MyUser myUser =
+        userRepo
+            .findByUsername(user.getUsername())
+            .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
     List<Long> questionIdList = new ArrayList<>();
     myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getId()));
@@ -82,7 +86,10 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public void addNewQuestionsFromApi() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    MyUser myUser = userRepo.findByUsername(user.getUsername());
+    MyUser myUser =
+        userRepo
+            .findByUsername(user.getUsername())
+            .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     List<Question> newQuestions = questionApiService.getNewQuestions(myUser);
     questionRepo.saveAll(newQuestions);
   }

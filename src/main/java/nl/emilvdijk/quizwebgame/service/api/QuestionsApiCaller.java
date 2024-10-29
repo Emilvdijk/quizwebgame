@@ -44,10 +44,10 @@ public class QuestionsApiCaller<T> {
   }
 
   public List<QuestionTriviaApi> getDefaultQuestions() {
-    log.debug("attempting call to: https://the-trivia-api.com/v2/questions");
+    log.debug("attempting call to: https://the-trivia-api.com/v2/questions?limit=50");
     ResponseEntity<QuestionTriviaApi[]> response =
         restTemplate.getForEntity(
-            "https://the-trivia-api.com/v2/questions", QuestionTriviaApi[].class);
+            "https://the-trivia-api.com/v2/questions?limit=50", QuestionTriviaApi[].class);
     log.debug("call made with response code: {}", response.getStatusCode());
     return List.of(response.getBody());
   }
