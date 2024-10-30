@@ -24,5 +24,8 @@ public class UserPreferences extends BaseEntity implements Serializable {
   private ApiChoiceEnum apiChoiceEnum;
 
   @ElementCollection(fetch = FetchType.EAGER)
-  private Map<String, String> quizApiUriVariables = new HashMap<>();
+  private Map<String, String> quizApiUriVariablesTRIVIAAPI = new HashMap<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Map<String, String> quizApiUriVariablesOPENTDB = new HashMap<>();
 }

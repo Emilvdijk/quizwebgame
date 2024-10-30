@@ -29,6 +29,52 @@ public class MyUserService implements UserDetailsService {
   }
 
   /**
+   * adds 2 user profiles for testing. FIXME should be removed if moved from testing or development
+   * remove after testing or development
+   */
+  @PostConstruct
+  public void addTestUsersAfterStartup() {
+    ArrayList<String> userRoles = new ArrayList<>();
+    userRoles.add("ROLE_USER");
+    UserPreferences userPreferences =
+        UserPreferences.builder()
+            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
+            .quizApiUriVariablesOPENTDB(new HashMap<>())
+            .build();
+    MyUser testUser =
+        MyUser.builder()
+            .username("user")
+            .password("$2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG")
+            .myRoles(userRoles)
+            .enabled(true)
+            .userPreferences(userPreferences)
+            .build();
+    saveUser(testUser);
+
+    ArrayList<String> adminRoles = new ArrayList<>();
+    adminRoles.add("ROLE_ADMIN");
+    adminRoles.add("ROLE_USER");
+    UserPreferences adminPreferences =
+        UserPreferences.builder()
+            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
+            .quizApiUriVariablesOPENTDB(new HashMap<>())
+            .build();
+
+    MyUser testAdmin =
+        MyUser.builder()
+            .username("1")
+            .password("$2a$10$ixsefZtwnAoLc10H/R6Tu.NBQgWKnhgx5vXs.r2aYp32IjKE6YlCu")
+            .myRoles(adminRoles)
+            .enabled(true)
+            .userPreferences(adminPreferences)
+            .build();
+    saveUser(testAdmin);
+    log.debug("added 2 users");
+  }
+
+  /**
    * save the user to the repository.
    *
    * @param user to be saved
@@ -57,50 +103,6 @@ public class MyUserService implements UserDetailsService {
   }
 
   /**
-   * adds 2 user profiles for testing. FIXME should be removed if moved from testing or development
-   * remove after testing or development
-   */
-  @PostConstruct
-  public void addTestUsersAfterStartup() {
-    ArrayList<String> userRoles = new ArrayList<>();
-    userRoles.add("ROLE_USER");
-    UserPreferences userPreferences =
-        UserPreferences.builder()
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
-            .quizApiUriVariables(new HashMap<>())
-            .build();
-    MyUser testUser =
-        MyUser.builder()
-            .username("user")
-            .password("$2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG")
-            .myRoles(userRoles)
-            .enabled(true)
-            .userPreferences(userPreferences)
-            .build();
-    saveUser(testUser);
-
-    ArrayList<String> adminRoles = new ArrayList<>();
-    adminRoles.add("ROLE_ADMIN");
-    adminRoles.add("ROLE_USER");
-    UserPreferences adminPreferences =
-        UserPreferences.builder()
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
-            .quizApiUriVariables(new HashMap<>())
-            .build();
-
-    MyUser testAdmin =
-        MyUser.builder()
-            .username("1")
-            .password("$2a$10$ixsefZtwnAoLc10H/R6Tu.NBQgWKnhgx5vXs.r2aYp32IjKE6YlCu")
-            .myRoles(adminRoles)
-            .enabled(true)
-            .userPreferences(adminPreferences)
-            .build();
-    saveUser(testAdmin);
-    log.debug("added 2 users");
-  }
-
-  /**
    * transform new user dto to a user object and save it to repo.
    *
    * @param newUser user dto to be saved
@@ -108,6 +110,7 @@ public class MyUserService implements UserDetailsService {
   public void registerNewUser(MyUserDto newUser) {
     MyUser registerUser = constructUser(newUser);
     saveUser(registerUser);
+    log.debug("new account created with username: {}", registerUser.getUsername());
   }
 
   /**
@@ -122,7 +125,8 @@ public class MyUserService implements UserDetailsService {
     UserPreferences userPreferences =
         UserPreferences.builder()
             .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
-            .quizApiUriVariables(new HashMap<>())
+            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
+            .quizApiUriVariablesOPENTDB(new HashMap<>())
             .build();
     return MyUser.builder()
         .username(newUser.getUsername())

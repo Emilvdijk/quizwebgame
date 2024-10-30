@@ -11,6 +11,7 @@
 
 <form th:action="@{/userPreferences}" th:object="${userPreferences}" method="post">
   <input type="hidden" th:field="*{id}"/>
+  <input type="hidden" th:field="*{added}"/>
   <select name="apiChoice" th:field="*{apiChoiceEnum}">
     <option th:each="apiChoiceOpt : ${T(nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum).values()}"
             th:value="${apiChoiceOpt}" th:text="${apiChoiceOpt.displayValue}"></option>
@@ -19,7 +20,7 @@
 </form>
 <br>
 <div sec:authorize="!hasRole('ADMIN')">
-  <form th:action="@{/deteleAccount}" method="post"><input type="submit" value="Delete Account"
+  <form th:action="@{/deleteAccount}" method="post"><input type="submit" value="Delete Account"
                                                            th:onclick="if(!(confirm('Are you sure you want to delete your account?' ) )) return false"/>
   </form>
 </div>

@@ -71,7 +71,6 @@ public class UserController {
     } catch (ServletException e) {
       log.error("Error while login ", e);
     }
-    log.debug("new account created with username: {}", user.getUsername());
     return "redirect:/";
   }
 
@@ -103,7 +102,7 @@ public class UserController {
     return "redirect:/";
   }
 
-  @PostMapping("/deteleAccount")
+  @PostMapping("/deleteAccount")
   public String deleteCurrentUser(@AuthenticationPrincipal MyUser myUser, HttpSession httpSession) {
     userService.deleteUserById(myUser.getId());
     SecurityContextHolder.clearContext();

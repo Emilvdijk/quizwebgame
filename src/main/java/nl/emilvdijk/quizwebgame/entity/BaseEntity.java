@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
@@ -27,4 +28,6 @@ public abstract class BaseEntity {
   private Long id;
 
   @CreationTimestamp private Instant added;
+
+  @UpdateTimestamp private Instant lastUpdatedOn;
 }

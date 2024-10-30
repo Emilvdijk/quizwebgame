@@ -1,10 +1,12 @@
 package nl.emilvdijk.quizwebgame.service.api;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
@@ -27,7 +29,8 @@ class QuestionApiServiceTest {
     UserPreferences userPreferences =
         UserPreferences.builder()
             .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
-            .quizApiUriVariables(new HashMap<>())
+            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
+            .quizApiUriVariablesOPENTDB(new HashMap<>())
             .build();
     MyUser testUser = MyUser.builder().userPreferences(userPreferences).build();
 
@@ -43,12 +46,59 @@ class QuestionApiServiceTest {
     UserPreferences userPreferences =
         UserPreferences.builder()
             .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
-            .quizApiUriVariables(new HashMap<>())
+            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
+            .quizApiUriVariablesOPENTDB(new HashMap<>())
             .build();
     MyUser testUser = MyUser.builder().userPreferences(userPreferences).build();
 
     List<Question> questionList = questionApiService.getNewQuestions(testUser);
     questionList.forEach(System.out::println);
     assertEquals(50, questionList.size());
+  }
+
+  @Test
+  void generateTriviaApiURI()
+      throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    Method generateTriviaApiURIMethod =
+        QuestionApiService.class.getDeclaredMethod("generateTriviaApiURI", MyUser.class);
+    generateTriviaApiURIMethod.setAccessible(true);
+
+    MyUser user =
+        MyUser.builder()
+            .username("testUser")
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .quizApiUriVariablesTRIVIAAPI(Map.of("difficulties", "easy"))
+                    .quizApiUriVariablesOPENTDB(new HashMap<>())
+                    .build())
+            .build();
+
+    assertEquals(
+        "https://the-trivia-api.com/v2/questions?limit=50&difficulties=easy",
+        generateTriviaApiURIMethod.invoke(questionApiService, user).toString());
+  }
+
+  @Test
+  void generateURIOpenTDB()
+      throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    Method generateURIOpenTDBMethod =
+        QuestionApiService.class.getDeclaredMethod("generateURIOpenTDB", MyUser.class);
+    generateURIOpenTDBMethod.setAccessible(true);
+
+    MyUser user =
+        MyUser.builder()
+            .username("testUser")
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                    .quizApiUriVariablesTRIVIAAPI(Map.of("difficulties", "easy"))
+                    .quizApiUriVariablesOPENTDB(new HashMap<>())
+                    .build())
+            .build();
+
+    assertEquals(
+        "https://opentdb.com/api.php?amount=50",
+        generateURIOpenTDBMethod.invoke(questionApiService, user).toString());
   }
 }

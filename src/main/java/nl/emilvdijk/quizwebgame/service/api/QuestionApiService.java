@@ -3,6 +3,8 @@ package nl.emilvdijk.quizwebgame.service.api;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.dto.QuestionOpentdb;
 import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
@@ -16,10 +18,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 @Slf4j
 public class QuestionApiService {
+
   QuestionApiMapperService questionApiMapperService;
 
   private static final String QUIZ_API_URL = "https://the-trivia-api.com/v2/questions?limit=50";
-
   private static final String QUIZ_API_URL2 = "https://opentdb.com/api.php?amount=50";
 
   public QuestionApiService(@Autowired QuestionApiMapperService questionApiMapperService) {
@@ -35,14 +37,14 @@ public class QuestionApiService {
   }
 
   private List<Question> getNewTriviaApiQuestions(MyUser user) {
-    URI uri = generateURI(user, QUIZ_API_URL);
+    URI uri = generateTriviaApiURI(user);
     QuestionsApiCaller questionsApiService =
         new QuestionsApiCaller(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
     return questionApiMapperService.mapTriviaApiQuestions(questionsApiService.getNewQuestions(uri));
   }
 
   private List<Question> getNewOpenTDBQuestions(MyUser user) {
-    URI uri = generateURI(user, QUIZ_API_URL2);
+    URI uri = generateURIOpenTDB(user);
     QuestionsApiCaller<QuestionOpentdb> questionsApiCaller =
         new QuestionsApiCaller(new ParameterizedTypeReference<QuestionOpentdb>() {});
     return questionApiMapperService.mapOpenTDBQuestions(questionsApiCaller.getNewQuestion(uri));
@@ -62,19 +64,33 @@ public class QuestionApiService {
         questionsApiService.getDefaultQuestions());
   }
 
-  private URI generateURI(MyUser user, String url) {
-    URI uri;
-    if (user.getUserPreferences().getQuizApiUriVariables().isEmpty()) {
-      uri = URI.create(url);
-    } else {
-      uri =
-          UriComponentsBuilder.fromUriString(url)
-              .query("categories={categories}")
-              .query("difficulties={difficulties}")
-              .buildAndExpand(user.getUserPreferences().getQuizApiUriVariables())
+  private URI generateTriviaApiURI(MyUser user) {
+      Map<String, String> userUriVariables =
+          user.getUserPreferences().getQuizApiUriVariablesTRIVIAAPI();
+    URI uri =
+          UriComponentsBuilder.fromUriString(QUIZ_API_URL)
+              .queryParamIfPresent(
+                  "difficulties", Optional.ofNullable(userUriVariables.get("difficulties")))
+              .queryParamIfPresent(
+                  "categories", Optional.ofNullable(userUriVariables.get("categories")))
+              .build()
               .toUri();
-    }
-    log.debug("URI generated: {} for user {}", uri, user.getUsername());
+    log.debug("TriviaApi URI generated: {} for user {}", uri, user.getUsername());
+    return uri;
+  }
+
+  private URI generateURIOpenTDB(MyUser user) {
+    Map<String, String> userUriVariables =
+        user.getUserPreferences().getQuizApiUriVariablesOPENTDB();
+    URI uri =
+        UriComponentsBuilder.fromUriString(QUIZ_API_URL2)
+            .queryParamIfPresent(
+                "difficulty", Optional.ofNullable(userUriVariables.get("difficulty")))
+            .queryParamIfPresent(
+                "category", Optional.ofNullable(userUriVariables.get("category")))
+            .build()
+            .toUri();
+    log.debug("OpenTDB URI generated: {} for user {}", uri, user.getUsername());
     return uri;
   }
 }
