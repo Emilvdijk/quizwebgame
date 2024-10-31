@@ -8,6 +8,7 @@ import java.util.Map;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 
 @Entity
 @Getter
@@ -22,6 +23,9 @@ public class UserPreferences extends BaseEntity implements Serializable {
 
   @Enumerated(EnumType.STRING)
   private ApiChoiceEnum apiChoiceEnum;
+
+  @Enumerated(EnumType.STRING)
+  private DifficultyEnum difficultyEnum;
 
   @ElementCollection(fetch = FetchType.EAGER)
   private Map<String, String> quizApiUriVariablesTRIVIAAPI = new HashMap<>();

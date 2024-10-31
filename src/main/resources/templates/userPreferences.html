@@ -8,16 +8,28 @@
 <body>
 <P>welcome to user preferences <span th:remove="tag"
                                      sec:authentication="name">user</span></P>
-
+<br>
 <form th:action="@{/userPreferences}" th:object="${userPreferences}" method="post">
   <input type="hidden" th:field="*{id}"/>
   <input type="hidden" th:field="*{added}"/>
+  <P>choose which api to use:</P>
   <select name="apiChoice" th:field="*{apiChoiceEnum}">
     <option th:each="apiChoiceOpt : ${T(nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum).values()}"
             th:value="${apiChoiceOpt}" th:text="${apiChoiceOpt.displayValue}"></option>
   </select>
+  <P>choose the difficulty of questions:</P>
+
+  <!--  FIXME fix radiobutton for enum difficulty-->
+  <ul>
+    <li th:each="diff : ${T(nl.emilvdijk.quizwebgame.enums.DifficultyEnum).values()}">
+      <input type="radio" th:field="*{difficultyEnum}" th:value="${diff}"/>
+      <label th:for="${#ids.prev('difficultyEnum')}"
+             th:text="${diff.displayValue}"></label>
+    </li>
+  </ul>
   <input type="submit" value="Update"/>
 </form>
+<br>
 <br>
 <div sec:authorize="!hasRole('ADMIN')">
   <form th:action="@{/deleteAccount}" method="post"><input type="submit" value="Delete Account"

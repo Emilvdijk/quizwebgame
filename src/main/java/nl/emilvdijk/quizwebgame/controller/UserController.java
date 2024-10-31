@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
-import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
+import nl.emilvdijk.quizwebgame.model.MyUserDto;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -69,14 +69,12 @@ public class UserController {
       request.login(user.getUsername(), user.getPassword());
       log.info("{} logged in", user.getUsername());
     } catch (ServletException e) {
-      log.error("Error while login ", e);
+      log.error(
+          "Error while logging in after registration with account username: {}",
+          user.getUsername(),
+          e);
     }
     return "redirect:/";
-  }
-
-  @GetMapping("/authtestpage")
-  public String authtestpage() {
-    return "authtestpage";
   }
 
   @GetMapping("/userPreferences")
@@ -96,7 +94,7 @@ public class UserController {
     user.setUserPreferences(userPreferences);
     userService.updateUser(user);
     log.debug(
-        "{} updated their user preferences with id: {}",
+        "{} updated their user preferences with UserPreferences id: {}",
         user.getUsername(),
         user.getUserPreferences().getId());
     return "redirect:/";
@@ -107,10 +105,12 @@ public class UserController {
     userService.deleteUserById(myUser.getId());
     SecurityContextHolder.clearContext();
     httpSession.invalidate();
-    log.debug(
-        "{} deleted their account with id: {}",
-        myUser.getUsername(),
-        myUser.getUserPreferences().getId());
+    log.debug("{} deleted their account with user id: {}", myUser.getUsername(), myUser.getId());
     return "redirect:/";
+  }
+
+  @GetMapping("/authtestpage")
+  public String authtestpage() {
+    return "authtestpage";
   }
 }

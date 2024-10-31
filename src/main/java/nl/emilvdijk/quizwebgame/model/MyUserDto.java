@@ -1,4 +1,4 @@
-package nl.emilvdijk.quizwebgame.dto;
+package nl.emilvdijk.quizwebgame.model;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

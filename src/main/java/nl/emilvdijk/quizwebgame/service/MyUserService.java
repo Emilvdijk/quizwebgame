@@ -4,11 +4,12 @@ import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
-import nl.emilvdijk.quizwebgame.dto.MyUserDto;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
+import nl.emilvdijk.quizwebgame.model.MyUserDto;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,6 +40,7 @@ public class MyUserService implements UserDetailsService {
     UserPreferences userPreferences =
         UserPreferences.builder()
             .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .difficultyEnum(DifficultyEnum.ALL)
             .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
             .quizApiUriVariablesOPENTDB(new HashMap<>())
             .build();
@@ -58,6 +60,7 @@ public class MyUserService implements UserDetailsService {
     UserPreferences adminPreferences =
         UserPreferences.builder()
             .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .difficultyEnum(DifficultyEnum.ALL)
             .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
             .quizApiUriVariablesOPENTDB(new HashMap<>())
             .build();
