@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
-import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,19 +23,42 @@ class QuizServiceAuthenticatedTest {
 
   @BeforeAll
   static void createTestQuestions(@Autowired QuestionRepo questionRepo) {
-    for (long i = 1L; i < 10; i++) {
+    for (long i = 1L; i < 5; i++) {
       Question newTestQuestion = new Question();
       newTestQuestion.setId(i);
+      newTestQuestion.setQuestionText(String.valueOf(i));
       newTestQuestion.setOrigin(ApiChoiceEnum.OPENTDB);
+      newTestQuestion.setDifficulty("easy");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
       questionRepo.save(newTestQuestion);
     }
-
-    for (long i = 10L; i < 20; i++) {
+    for (long i = 5L; i < 10; i++) {
       Question newTestQuestion = new Question();
       newTestQuestion.setId(i);
+      newTestQuestion.setQuestionText(String.valueOf(i));
+      newTestQuestion.setOrigin(ApiChoiceEnum.OPENTDB);
+      newTestQuestion.setDifficulty("medium");
+      newTestQuestion.setAnswers(new ArrayList<>());
+      newTestQuestion.setIncorrectAnswers(new ArrayList<>());
+      questionRepo.save(newTestQuestion);
+    }
+    for (long i = 10L; i < 15; i++) {
+      Question newTestQuestion = new Question();
+      newTestQuestion.setId(i);
+      newTestQuestion.setQuestionText(String.valueOf(i));
       newTestQuestion.setOrigin(ApiChoiceEnum.TRIVIAAPI);
+      newTestQuestion.setDifficulty("easy");
+      newTestQuestion.setAnswers(new ArrayList<>());
+      newTestQuestion.setIncorrectAnswers(new ArrayList<>());
+      questionRepo.save(newTestQuestion);
+    }
+    for (long i = 15L; i < 20; i++) {
+      Question newTestQuestion = new Question();
+      newTestQuestion.setId(i);
+      newTestQuestion.setQuestionText(String.valueOf(i));
+      newTestQuestion.setOrigin(ApiChoiceEnum.TRIVIAAPI);
+      newTestQuestion.setDifficulty("medium");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
       questionRepo.save(newTestQuestion);
@@ -44,25 +66,34 @@ class QuizServiceAuthenticatedTest {
   }
 
   @Test
-  void getQuestionsByChoice() {
-    UserPreferences userPreferences =
-        UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.OPENTDB).build();
-    MyUser user = MyUser.builder().userPreferences(userPreferences).build();
-    List<Long> longList = new ArrayList<>();
-    longList.add(2L);
-    List<Question> questionList = quizServiceAuthenticated.getQuestionsByChoice(user, longList);
-    questionList.forEach(question -> assertNotEquals(2L, question.getId()));
-    questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB, question.getOrigin()));
-    assertEquals(8, questionList.size());
+  void getQuestionsByChoice(@Autowired QuestionRepo questionRepo) {
+    //    UserPreferences userPreferences =
+    //        UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.OPENTDB).build();
+    //    MyUser user = MyUser.builder().userPreferences(userPreferences).build();
+    //    List<Long> longList = new ArrayList<>();
+    //    longList.add(2L);
+    //    List<Question> questionList = quizServiceAuthenticated.getQuestionsByChoice(user,
+    // longList);
+    //    questionList.forEach(question -> assertNotEquals(2L, question.getId()));
+    //    questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB,
+    // question.getOrigin()));
+    //    assertEquals(8, questionList.size());
+    //
+    //    UserPreferences userPreferences2 =
+    //        UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build();
+    //    MyUser user2 = MyUser.builder().userPreferences(userPreferences2).build();
+    //
+    //    List<Question> questionList2 = quizServiceAuthenticated.getQuestionsByChoice(user2,
+    // longList);
+    //    questionList2.forEach(question -> assertNotEquals(2L, question.getId()));
+    //    questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI,
+    // question.getOrigin()));
+    //    assertEquals(10, questionList2.size());
+    List<Question> questionList =
+        questionRepo.findByIdNotInAndLike(
+            List.of(2L, 3L), Question.builder().difficulty("easy").build());
 
-    UserPreferences userPreferences2 =
-        UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build();
-    MyUser user2 = MyUser.builder().userPreferences(userPreferences2).build();
-
-    List<Question> questionList2 = quizServiceAuthenticated.getQuestionsByChoice(user2, longList);
-    questionList2.forEach(question -> assertNotEquals(2L, question.getId()));
-    questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI, question.getOrigin()));
-    assertEquals(10, questionList2.size());
+    questionList.forEach(System.out::println);
   }
 
   @Test

@@ -10,6 +10,7 @@ import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -113,5 +114,9 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public String getApplicableRole() {
     return APPLICABLE_ROLE;
+  }
+
+  public List<Question> findQuestion(Question probe) {
+    return questionRepo.findAll(Example.of(probe));
   }
 }
