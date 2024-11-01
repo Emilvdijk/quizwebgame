@@ -4,14 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,14 +24,14 @@ class QuestionApiServiceTest {
   /** actually calls api service */
   @Test
   void getNewQuestions() {
-
-    UserPreferences userPreferences =
-        UserPreferences.builder()
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
-            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
-            .quizApiUriVariablesOPENTDB(new HashMap<>())
+    MyUser testUser =
+        MyUser.builder()
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .difficultyEnum(DifficultyEnum.ALL)
+                    .build())
             .build();
-    MyUser testUser = MyUser.builder().userPreferences(userPreferences).build();
 
     List<Question> questionList = questionApiService.getNewQuestions(testUser);
     questionList.forEach(System.out::println);
@@ -42,14 +41,14 @@ class QuestionApiServiceTest {
   /** actually calls api service */
   @Test
   void getNewQuestion() {
-
-    UserPreferences userPreferences =
-        UserPreferences.builder()
-            .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
-            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
-            .quizApiUriVariablesOPENTDB(new HashMap<>())
+    MyUser testUser =
+        MyUser.builder()
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                    .difficultyEnum(DifficultyEnum.ALL)
+                    .build())
             .build();
-    MyUser testUser = MyUser.builder().userPreferences(userPreferences).build();
 
     List<Question> questionList = questionApiService.getNewQuestions(testUser);
     questionList.forEach(System.out::println);
@@ -69,14 +68,41 @@ class QuestionApiServiceTest {
             .userPreferences(
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
-                    .quizApiUriVariablesTRIVIAAPI(Map.of("difficulties", "easy"))
-                    .quizApiUriVariablesOPENTDB(new HashMap<>())
+                    .difficultyEnum(DifficultyEnum.EASY)
                     .build())
             .build();
 
     assertEquals(
         "https://the-trivia-api.com/v2/questions?limit=50&difficulties=easy",
         generateTriviaApiURIMethod.invoke(questionApiService, user).toString());
+
+    MyUser user2 =
+        MyUser.builder()
+            .username("testUser")
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .difficultyEnum(DifficultyEnum.MEDIUM)
+                    .build())
+            .build();
+
+    assertEquals(
+        "https://the-trivia-api.com/v2/questions?limit=50&difficulties=medium",
+        generateTriviaApiURIMethod.invoke(questionApiService, user2).toString());
+
+    MyUser user3 =
+        MyUser.builder()
+            .username("testUser")
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .difficultyEnum(DifficultyEnum.ALL)
+                    .build())
+            .build();
+
+    assertEquals(
+        "https://the-trivia-api.com/v2/questions?limit=50",
+        generateTriviaApiURIMethod.invoke(questionApiService, user3).toString());
   }
 
   @Test
@@ -92,13 +118,40 @@ class QuestionApiServiceTest {
             .userPreferences(
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
-                    .quizApiUriVariablesTRIVIAAPI(Map.of("difficulties", "easy"))
-                    .quizApiUriVariablesOPENTDB(new HashMap<>())
+                    .difficultyEnum(DifficultyEnum.EASY)
+                    .build())
+            .build();
+
+    assertEquals(
+        "https://opentdb.com/api.php?amount=50&difficulty=easy",
+        generateURIOpenTDBMethod.invoke(questionApiService, user).toString());
+
+    MyUser user2 =
+        MyUser.builder()
+            .username("testUser")
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                    .difficultyEnum(DifficultyEnum.MEDIUM)
+                    .build())
+            .build();
+
+    assertEquals(
+        "https://opentdb.com/api.php?amount=50&difficulty=medium",
+        generateURIOpenTDBMethod.invoke(questionApiService, user2).toString());
+
+    MyUser user3 =
+        MyUser.builder()
+            .username("testUser")
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                    .difficultyEnum(DifficultyEnum.ALL)
                     .build())
             .build();
 
     assertEquals(
         "https://opentdb.com/api.php?amount=50",
-        generateURIOpenTDBMethod.invoke(questionApiService, user).toString());
+        generateURIOpenTDBMethod.invoke(questionApiService, user3).toString());
   }
 }

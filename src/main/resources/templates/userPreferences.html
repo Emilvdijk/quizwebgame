@@ -18,8 +18,6 @@
             th:value="${apiChoiceOpt}" th:text="${apiChoiceOpt.displayValue}"></option>
   </select>
   <P>choose the difficulty of questions:</P>
-
-  <!--  FIXME fix radiobutton for enum difficulty-->
   <ul>
     <li th:each="diff : ${T(nl.emilvdijk.quizwebgame.enums.DifficultyEnum).values()}">
       <input type="radio" th:field="*{difficultyEnum}" th:value="${diff}"/>
@@ -27,6 +25,7 @@
              th:text="${diff.displayValue}"></label>
     </li>
   </ul>
+
   <input type="submit" value="Update"/>
 </form>
 <br>

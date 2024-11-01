@@ -3,8 +3,6 @@ package nl.emilvdijk.quizwebgame.entity;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
@@ -27,9 +25,17 @@ public class UserPreferences extends BaseEntity implements Serializable {
   @Enumerated(EnumType.STRING)
   private DifficultyEnum difficultyEnum;
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  private Map<String, String> quizApiUriVariablesTRIVIAAPI = new HashMap<>();
+  public String getDifficultyUriVariables() {
+    return switch (difficultyEnum) {
+      case EASY -> DifficultyEnum.EASY.getDisplayValue();
+      case MEDIUM -> DifficultyEnum.MEDIUM.getDisplayValue();
+      case HARD -> DifficultyEnum.HARD.getDisplayValue();
+      case ALL -> null;
+    };
+  }
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  private Map<String, String> quizApiUriVariablesOPENTDB = new HashMap<>();
+  public String getCatagoryUriVariables() {
+    // FIXME write method
+    return null;
+  }
 }

@@ -3,7 +3,6 @@ package nl.emilvdijk.quizwebgame.service.api;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.dto.QuestionOpentdb;
@@ -65,29 +64,29 @@ public class QuestionApiService {
   }
 
   private URI generateTriviaApiURI(MyUser user) {
-      Map<String, String> userUriVariables =
-          user.getUserPreferences().getQuizApiUriVariablesTRIVIAAPI();
     URI uri =
-          UriComponentsBuilder.fromUriString(QUIZ_API_URL)
-              .queryParamIfPresent(
-                  "difficulties", Optional.ofNullable(userUriVariables.get("difficulties")))
-              .queryParamIfPresent(
-                  "categories", Optional.ofNullable(userUriVariables.get("categories")))
-              .build()
-              .toUri();
+        UriComponentsBuilder.fromUriString(QUIZ_API_URL)
+            .queryParamIfPresent(
+                "difficulties",
+                Optional.ofNullable(user.getUserPreferences().getDifficultyUriVariables()))
+            .queryParamIfPresent(
+                "categories",
+                Optional.ofNullable(user.getUserPreferences().getCatagoryUriVariables()))
+            .build()
+            .toUri();
     log.debug("TriviaApi URI generated: {} for user {}", uri, user.getUsername());
     return uri;
   }
 
   private URI generateURIOpenTDB(MyUser user) {
-    Map<String, String> userUriVariables =
-        user.getUserPreferences().getQuizApiUriVariablesOPENTDB();
     URI uri =
         UriComponentsBuilder.fromUriString(QUIZ_API_URL2)
             .queryParamIfPresent(
-                "difficulty", Optional.ofNullable(userUriVariables.get("difficulty")))
+                "difficulty",
+                Optional.ofNullable(user.getUserPreferences().getDifficultyUriVariables()))
             .queryParamIfPresent(
-                "category", Optional.ofNullable(userUriVariables.get("category")))
+                "category",
+                Optional.ofNullable(user.getUserPreferences().getCatagoryUriVariables()))
             .build()
             .toUri();
     log.debug("OpenTDB URI generated: {} for user {}", uri, user.getUsername());

@@ -2,7 +2,7 @@ package nl.emilvdijk.quizwebgame.service;
 
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
@@ -41,8 +41,6 @@ public class MyUserService implements UserDetailsService {
         UserPreferences.builder()
             .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
             .difficultyEnum(DifficultyEnum.ALL)
-            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
-            .quizApiUriVariablesOPENTDB(new HashMap<>())
             .build();
     MyUser testUser =
         MyUser.builder()
@@ -61,8 +59,6 @@ public class MyUserService implements UserDetailsService {
         UserPreferences.builder()
             .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
             .difficultyEnum(DifficultyEnum.ALL)
-            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
-            .quizApiUriVariablesOPENTDB(new HashMap<>())
             .build();
 
     MyUser testAdmin =
@@ -84,7 +80,7 @@ public class MyUserService implements UserDetailsService {
    */
   public void saveUser(MyUser user) {
     if (checkIfUserExists(user.getUsername())) {
-      //      FIXME make proper exception when username already exists
+      log.error("could not save user because user already exists: {}", user.getUsername());
       return;
     }
     userRepo.save(user);
@@ -92,7 +88,7 @@ public class MyUserService implements UserDetailsService {
 
   public void updateUser(MyUser user) {
     if (!checkIfUserExists(user.getUsername())) {
-      //      FIXME make proper exception when user doesnt exists
+      log.error("could not update user because user couldnt be found: {}", user.getUsername());
       return;
     }
     userRepo.save(user);
@@ -123,20 +119,16 @@ public class MyUserService implements UserDetailsService {
    * @return new user object
    */
   private MyUser constructUser(MyUserDto newUser) {
-    ArrayList<String> userRoles = new ArrayList<>();
-    userRoles.add("ROLE_USER");
-    UserPreferences userPreferences =
-        UserPreferences.builder()
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
-            .quizApiUriVariablesTRIVIAAPI(new HashMap<>())
-            .quizApiUriVariablesOPENTDB(new HashMap<>())
-            .build();
     return MyUser.builder()
         .username(newUser.getUsername())
         .password(passwordEncoder.encode(newUser.getPassword()))
-        .myRoles(userRoles)
+        .myRoles(List.of("ROLE_USER"))
         .enabled(true)
-        .userPreferences(userPreferences)
+        .userPreferences(
+            UserPreferences.builder()
+                .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                .difficultyEnum(DifficultyEnum.ALL)
+                .build())
         .build();
   }
 
