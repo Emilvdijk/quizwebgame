@@ -25,15 +25,6 @@ public class UserPreferences extends BaseEntity implements Serializable {
   @Enumerated(EnumType.STRING)
   private DifficultyEnum difficultyEnum;
 
-  public String getDifficultyUriVariables() {
-    return switch (difficultyEnum) {
-      case EASY -> DifficultyEnum.EASY.getDisplayValue();
-      case MEDIUM -> DifficultyEnum.MEDIUM.getDisplayValue();
-      case HARD -> DifficultyEnum.HARD.getDisplayValue();
-      case ALL -> null;
-    };
-  }
-
   public String getCatagoryUriVariables() {
     // FIXME write method
     return null;

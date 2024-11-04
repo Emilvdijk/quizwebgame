@@ -9,6 +9,8 @@ import nl.emilvdijk.quizwebgame.dto.QuestionOpentdb;
 import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.entity.UserPreferences;
+import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -68,7 +70,7 @@ public class QuestionApiService {
         UriComponentsBuilder.fromUriString(QUIZ_API_URL)
             .queryParamIfPresent(
                 "difficulties",
-                Optional.ofNullable(user.getUserPreferences().getDifficultyUriVariables()))
+                Optional.ofNullable(getDifficultyUriVariables(user.getUserPreferences())))
             .queryParamIfPresent(
                 "categories",
                 Optional.ofNullable(user.getUserPreferences().getCatagoryUriVariables()))
@@ -83,7 +85,7 @@ public class QuestionApiService {
         UriComponentsBuilder.fromUriString(QUIZ_API_URL2)
             .queryParamIfPresent(
                 "difficulty",
-                Optional.ofNullable(user.getUserPreferences().getDifficultyUriVariables()))
+                Optional.ofNullable(getDifficultyUriVariables(user.getUserPreferences())))
             .queryParamIfPresent(
                 "category",
                 Optional.ofNullable(user.getUserPreferences().getCatagoryUriVariables()))
@@ -91,5 +93,14 @@ public class QuestionApiService {
             .toUri();
     log.debug("OpenTDB URI generated: {} for user {}", uri, user.getUsername());
     return uri;
+  }
+
+  private String getDifficultyUriVariables(UserPreferences userPreferences) {
+    return switch (userPreferences.getDifficultyEnum()) {
+      case EASY -> DifficultyEnum.EASY.getDisplayValue();
+      case MEDIUM -> DifficultyEnum.MEDIUM.getDisplayValue();
+      case HARD -> DifficultyEnum.HARD.getDisplayValue();
+      case ALL -> null;
+    };
   }
 }

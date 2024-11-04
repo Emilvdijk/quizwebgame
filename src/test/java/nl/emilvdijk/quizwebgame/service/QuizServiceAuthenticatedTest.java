@@ -1,12 +1,16 @@
 package nl.emilvdijk.quizwebgame.service;
 
+import static nl.emilvdijk.quizwebgame.entity.Question.DifficultyEquals;
+import static nl.emilvdijk.quizwebgame.entity.Question.IdNotIn;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.data.jpa.domain.Specification.where;
 
 import java.util.ArrayList;
 import java.util.List;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -89,9 +93,28 @@ class QuizServiceAuthenticatedTest {
     //    questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI,
     // question.getOrigin()));
     //    assertEquals(10, questionList2.size());
+
     List<Question> questionList =
-        questionRepo.findByIdNotInAndLike(
-            List.of(2L, 3L), Question.builder().difficulty("easy").build());
+        questionRepo.findAll(where(DifficultyEquals(DifficultyEnum.EASY)));
+
+    questionList.forEach(System.out::println);
+
+    System.out.println();
+    questionList = questionRepo.findAll();
+
+    questionList.forEach(System.out::println);
+
+    System.out.println();
+
+    questionList =
+        questionRepo.findAll(
+            where(DifficultyEquals(DifficultyEnum.MEDIUM)).and(IdNotIn(List.of(4L, 5L, 7L))));
+
+    questionList.forEach(System.out::println);
+
+    questionList =
+        questionRepo.findAll(
+            where(DifficultyEquals(DifficultyEnum.MEDIUM)).and(IdNotIn(new ArrayList<>())));
 
     questionList.forEach(System.out::println);
   }

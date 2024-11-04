@@ -80,7 +80,7 @@ public class MyUserService implements UserDetailsService {
    */
   public void saveUser(MyUser user) {
     if (checkIfUserExists(user.getUsername())) {
-      log.error("could not save user because user already exists: {}", user.getUsername());
+      log.debug("could not save user because user already exists: {}", user.getUsername());
       return;
     }
     userRepo.save(user);

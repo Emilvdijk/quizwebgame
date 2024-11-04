@@ -36,7 +36,6 @@ public class MyUser extends BaseEntity implements UserDetails, Serializable {
 
   @Transient private List<Question> questions = new ArrayList<>();
 
-  // https://stackoverflow.com/questions/63451175/how-to-add-data-to-many-to-many-association-with-extra-column-using-jpa-hiberna
   @ManyToMany(
       fetch = FetchType.EAGER,
       cascade = {CascadeType.PERSIST, CascadeType.MERGE})
