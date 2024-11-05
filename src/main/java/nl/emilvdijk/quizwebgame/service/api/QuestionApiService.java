@@ -73,7 +73,7 @@ public class QuestionApiService {
                 Optional.ofNullable(getDifficultyUriVariables(user.getUserPreferences())))
             .queryParamIfPresent(
                 "categories",
-                Optional.ofNullable(user.getUserPreferences().getCatagoryUriVariables()))
+                Optional.ofNullable(getCatagoryUriVariables(user.getUserPreferences())))
             .build()
             .toUri();
     log.debug("TriviaApi URI generated: {} for user {}", uri, user.getUsername());
@@ -87,8 +87,7 @@ public class QuestionApiService {
                 "difficulty",
                 Optional.ofNullable(getDifficultyUriVariables(user.getUserPreferences())))
             .queryParamIfPresent(
-                "category",
-                Optional.ofNullable(user.getUserPreferences().getCatagoryUriVariables()))
+                "category", Optional.ofNullable(getCatagoryUriVariables(user.getUserPreferences())))
             .build()
             .toUri();
     log.debug("OpenTDB URI generated: {} for user {}", uri, user.getUsername());
@@ -102,5 +101,10 @@ public class QuestionApiService {
       case HARD -> DifficultyEnum.HARD.getDisplayValue();
       case ALL -> null;
     };
+  }
+
+  public String getCatagoryUriVariables(UserPreferences userPreferences) {
+    // FIXME write method
+    return null;
   }
 }

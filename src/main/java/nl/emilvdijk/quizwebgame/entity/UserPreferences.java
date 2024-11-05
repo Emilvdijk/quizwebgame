@@ -3,9 +3,12 @@ package nl.emilvdijk.quizwebgame.entity;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.enums.Category;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 
 @Entity
@@ -25,8 +28,6 @@ public class UserPreferences extends BaseEntity implements Serializable {
   @Enumerated(EnumType.STRING)
   private DifficultyEnum difficultyEnum;
 
-  public String getCatagoryUriVariables() {
-    // FIXME write method
-    return null;
-  }
+  @ElementCollection(fetch = FetchType.EAGER)
+  private List<Category> categories = new ArrayList<>();
 }

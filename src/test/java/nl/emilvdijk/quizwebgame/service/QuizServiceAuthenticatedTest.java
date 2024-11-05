@@ -1,7 +1,6 @@
 package nl.emilvdijk.quizwebgame.service;
 
-import static nl.emilvdijk.quizwebgame.entity.Question.DifficultyEquals;
-import static nl.emilvdijk.quizwebgame.entity.Question.IdNotIn;
+import static nl.emilvdijk.quizwebgame.entity.Question.IsOfCategory;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -9,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
+import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.enums.Category;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,6 +43,7 @@ class QuizServiceAuthenticatedTest {
       newTestQuestion.setId(i);
       newTestQuestion.setQuestionText(String.valueOf(i));
       newTestQuestion.setOrigin(ApiChoiceEnum.OPENTDB);
+      newTestQuestion.setCategory("Entertainment: Video Games");
       newTestQuestion.setDifficulty("medium");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
@@ -57,7 +59,7 @@ class QuizServiceAuthenticatedTest {
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
       questionRepo.save(newTestQuestion);
     }
-    for (long i = 15L; i < 20; i++) {
+    for (long i = 15L; i < 21; i++) {
       Question newTestQuestion = new Question();
       newTestQuestion.setId(i);
       newTestQuestion.setQuestionText(String.valueOf(i));
@@ -70,53 +72,76 @@ class QuizServiceAuthenticatedTest {
   }
 
   @Test
-  void getQuestionsByChoice(@Autowired QuestionRepo questionRepo) {
-    //    UserPreferences userPreferences =
-    //        UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.OPENTDB).build();
-    //    MyUser user = MyUser.builder().userPreferences(userPreferences).build();
-    //    List<Long> longList = new ArrayList<>();
-    //    longList.add(2L);
-    //    List<Question> questionList = quizServiceAuthenticated.getQuestionsByChoice(user,
-    // longList);
-    //    questionList.forEach(question -> assertNotEquals(2L, question.getId()));
-    //    questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB,
-    // question.getOrigin()));
-    //    assertEquals(8, questionList.size());
-    //
-    //    UserPreferences userPreferences2 =
-    //        UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build();
-    //    MyUser user2 = MyUser.builder().userPreferences(userPreferences2).build();
-    //
-    //    List<Question> questionList2 = quizServiceAuthenticated.getQuestionsByChoice(user2,
-    // longList);
-    //    questionList2.forEach(question -> assertNotEquals(2L, question.getId()));
-    //    questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI,
-    // question.getOrigin()));
-    //    assertEquals(10, questionList2.size());
-
+  void getQuestionByCategory(@Autowired QuestionRepo questionRepo) {
     List<Question> questionList =
-        questionRepo.findAll(where(DifficultyEquals(DifficultyEnum.EASY)));
-
+        questionRepo.findAll(
+            where(
+                IsOfCategory(
+                    UserPreferences.builder()
+                        .categories(List.of(Category.ENTERTAINMENT_VIDEO_GAMES))
+                        .build())));
     questionList.forEach(System.out::println);
+    // FIXME expand test
+  }
 
-    System.out.println();
-    questionList = questionRepo.findAll();
-
-    questionList.forEach(System.out::println);
-
-    System.out.println();
+  @Test
+  void getQuestionsByChoice(@Autowired QuestionRepo questionRepo) {
+    List<Question> questionList = questionRepo.findAll();
+    assertEquals(20, questionList.size());
 
     questionList =
-        questionRepo.findAll(
-            where(DifficultyEquals(DifficultyEnum.MEDIUM)).and(IdNotIn(List.of(4L, 5L, 7L))));
-
-    questionList.forEach(System.out::println);
+        quizServiceAuthenticated.getQuestionsByChoice(
+            UserPreferences.builder()
+                .difficultyEnum(DifficultyEnum.EASY)
+                .apiChoiceEnum(ApiChoiceEnum.ALL)
+                .build(),
+            new ArrayList<>());
+    assertEquals(9, questionList.size());
+    questionList.forEach(
+        question -> assertEquals(DifficultyEnum.EASY.getDisplayValue(), question.getDifficulty()));
 
     questionList =
-        questionRepo.findAll(
-            where(DifficultyEquals(DifficultyEnum.MEDIUM)).and(IdNotIn(new ArrayList<>())));
+        quizServiceAuthenticated.getQuestionsByChoice(
+            UserPreferences.builder()
+                .difficultyEnum(DifficultyEnum.MEDIUM)
+                .apiChoiceEnum(ApiChoiceEnum.ALL)
+                .build(),
+            List.of(4L, 5L, 7L));
+    assertEquals(9, questionList.size());
+    questionList.forEach(
+        question ->
+            assertEquals(DifficultyEnum.MEDIUM.getDisplayValue(), question.getDifficulty()));
 
-    questionList.forEach(System.out::println);
+    questionList =
+        quizServiceAuthenticated.getQuestionsByChoice(
+            UserPreferences.builder()
+                .difficultyEnum(DifficultyEnum.MEDIUM)
+                .apiChoiceEnum(ApiChoiceEnum.ALL)
+                .build(),
+            new ArrayList<>());
+    assertEquals(11, questionList.size());
+    questionList.forEach(
+        question ->
+            assertEquals(DifficultyEnum.MEDIUM.getDisplayValue(), question.getDifficulty()));
+
+    questionList =
+        quizServiceAuthenticated.getQuestionsByChoice(
+            UserPreferences.builder()
+                .difficultyEnum(DifficultyEnum.ALL)
+                .apiChoiceEnum(ApiChoiceEnum.ALL)
+                .build(),
+            new ArrayList<>());
+    assertEquals(20, questionList.size());
+
+    questionList =
+        quizServiceAuthenticated.getQuestionsByChoice(
+            UserPreferences.builder()
+                .difficultyEnum(DifficultyEnum.ALL)
+                .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                .build(),
+            new ArrayList<>());
+    assertEquals(11, questionList.size());
+    questionList.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI, question.getOrigin()));
   }
 
   @Test
@@ -125,6 +150,6 @@ class QuizServiceAuthenticatedTest {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     assertEquals(0, user.getQuestions().size());
     quizServiceAuthenticated.getNewQuestions();
-    assertEquals(10, user.getQuestions().size());
+    assertEquals(11, user.getQuestions().size());
   }
 }

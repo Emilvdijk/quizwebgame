@@ -5,9 +5,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
+import nl.emilvdijk.quizwebgame.enums.Category;
 import nl.emilvdijk.quizwebgame.model.MyUserDto;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,5 +115,10 @@ public class UserController {
   @GetMapping("/authtestpage")
   public String authtestpage() {
     return "authtestpage";
+  }
+
+  @ModelAttribute("allCategories")
+  public List<Category> populateCategories() {
+    return Arrays.asList(Category.ALL);
   }
 }

@@ -1,11 +1,16 @@
 package nl.emilvdijk.quizwebgame.service;
 
+import static nl.emilvdijk.quizwebgame.entity.Question.DifficultyEquals;
+import static nl.emilvdijk.quizwebgame.entity.Question.IdNotIn;
+import static nl.emilvdijk.quizwebgame.entity.Question.OriginEquals;
+import static org.springframework.data.jpa.domain.Specification.where;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
-import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
@@ -61,31 +66,24 @@ public class QuizServiceAuthenticated implements QuizService {
 
     List<Long> questionIdList = new ArrayList<>();
     myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getId()));
-    List<Question> questions = getQuestionsByChoice(myUser, questionIdList);
+    List<Question> questions = getQuestionsByChoice(myUser.getUserPreferences(), questionIdList);
 
     if (questions.size() < 10) {
       addNewQuestionsFromApi();
-      questions = getQuestionsByChoice(myUser, questionIdList);
+      questions = getQuestionsByChoice(myUser.getUserPreferences(), questionIdList);
     }
     questions.forEach(Question::prepareAnswers);
     Collections.shuffle(questions);
     user.setQuestions(questions);
   }
 
-  public List<Question> getQuestionsByChoice(MyUser myUser, List<Long> questionIdList) {
-    if (myUser.getUserPreferences().getApiChoiceEnum() == ApiChoiceEnum.ALL) {
-      if (questionIdList.isEmpty()) {
-        return questionRepo.findAll();
-      } else {
-        return questionRepo.findByIdNotIn(questionIdList);
-      }
-    }
-    if (questionIdList.isEmpty()) {
-      return questionRepo.findByOrigin(myUser.getUserPreferences().getApiChoiceEnum());
-    } else {
-      return questionRepo.findByIdNotInAndOrigin(
-          questionIdList, myUser.getUserPreferences().getApiChoiceEnum());
-    }
+  public List<Question> getQuestionsByChoice(
+      // FIXME add category check
+      UserPreferences userPreferences, List<Long> questionIdList) {
+    return questionRepo.findAll(
+        where(DifficultyEquals(userPreferences.getDifficultyEnum()))
+            .and(IdNotIn(questionIdList))
+            .and(OriginEquals(userPreferences.getApiChoiceEnum())));
   }
 
   /** gets new questions from the question api and saves them to the repo. */

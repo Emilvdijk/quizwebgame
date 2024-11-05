@@ -25,6 +25,14 @@
              th:text="${diff.displayValue}"></label>
     </li>
   </ul>
+  <P>choose the categories of questions:</P>
+  <ul>
+    <li th:each="category : ${allCategories}">
+      <input type="checkbox" th:field="*{Categories}" th:value="${category}"/>
+      <label th:for="${#ids.prev('Categories')}"
+             th:text="${category.displayValue}"></label>
+    </li>
+  </ul>
 
   <input type="submit" value="Update"/>
 </form>
