@@ -72,8 +72,11 @@ public class Question extends BaseEntity implements Serializable {
   }
 
   public static Specification<Question> IsOfCategory(UserPreferences userPreferences) {
-    // FIXME check if it fully works correctly
+    //     FIXME check if it fully works correctly
     return (question, query, criteriaBuilder) -> {
+      if (userPreferences.getCategories().isEmpty()) {
+        return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+      }
       List<Predicate> predicates = new ArrayList<>();
       for (Category category : userPreferences.getCategories()) {
         predicates.add(criteriaBuilder.equal(question.get("category"), category.getDisplayValue()));

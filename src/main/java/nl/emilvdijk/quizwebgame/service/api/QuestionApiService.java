@@ -10,6 +10,7 @@ import nl.emilvdijk.quizwebgame.dto.QuestionTriviaApi;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
+import nl.emilvdijk.quizwebgame.enums.Category;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -73,7 +74,7 @@ public class QuestionApiService {
                 Optional.ofNullable(getDifficultyUriVariables(user.getUserPreferences())))
             .queryParamIfPresent(
                 "categories",
-                Optional.ofNullable(getCatagoryUriVariables(user.getUserPreferences())))
+                Optional.ofNullable(getTriviaApiCategoryUriVariables(user.getUserPreferences())))
             .build()
             .toUri();
     log.debug("TriviaApi URI generated: {} for user {}", uri, user.getUsername());
@@ -87,7 +88,8 @@ public class QuestionApiService {
                 "difficulty",
                 Optional.ofNullable(getDifficultyUriVariables(user.getUserPreferences())))
             .queryParamIfPresent(
-                "category", Optional.ofNullable(getCatagoryUriVariables(user.getUserPreferences())))
+                "category",
+                Optional.ofNullable(getOpenTDBCategoryUriVariables(user.getUserPreferences())))
             .build()
             .toUri();
     log.debug("OpenTDB URI generated: {} for user {}", uri, user.getUsername());
@@ -103,8 +105,29 @@ public class QuestionApiService {
     };
   }
 
-  public String getCatagoryUriVariables(UserPreferences userPreferences) {
-    // FIXME write method
-    return null;
+  private String getTriviaApiCategoryUriVariables(UserPreferences userPreferences) {
+    if (userPreferences.getCategories().isEmpty()) {
+      return null;
+    }
+    List<Category> categories = userPreferences.getCategories();
+    return String.join(",", userPreferences.getCategories().toString());
+  }
+
+  private String getOpenTDBCategoryUriVariables(UserPreferences userPreferences) {
+    if (userPreferences.getCategories().isEmpty()) {
+      return null;
+    }
+    List<Category> categories = new ArrayList<>();
+    userPreferences
+        .getCategories()
+        .forEach(
+            category -> {
+              if (List.of(Category.ALLOPENTDB).contains(category)) {
+                categories.add(category);
+              }
+            });
+    List<String> categoriesStrings = new ArrayList<>();
+    categories.forEach(category -> categoriesStrings.add(category.getDisplayValue()));
+    return String.join(",", categoriesStrings);
   }
 }

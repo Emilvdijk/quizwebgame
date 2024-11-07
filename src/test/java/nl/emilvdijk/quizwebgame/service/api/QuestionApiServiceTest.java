@@ -4,12 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.enums.Category;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
                     .difficultyEnum(DifficultyEnum.ALL)
+                    .categories(new ArrayList<>())
                     .build())
             .build();
 
@@ -47,6 +50,7 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
                     .difficultyEnum(DifficultyEnum.ALL)
+                    .categories(new ArrayList<>())
                     .build())
             .build();
 
@@ -69,6 +73,7 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
                     .difficultyEnum(DifficultyEnum.EASY)
+                    .categories(new ArrayList<>())
                     .build())
             .build();
 
@@ -83,6 +88,7 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
                     .difficultyEnum(DifficultyEnum.MEDIUM)
+                    .categories(new ArrayList<>())
                     .build())
             .build();
 
@@ -97,6 +103,7 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
                     .difficultyEnum(DifficultyEnum.ALL)
+                    .categories(new ArrayList<>())
                     .build())
             .build();
 
@@ -119,6 +126,7 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
                     .difficultyEnum(DifficultyEnum.EASY)
+                    .categories(new ArrayList<>())
                     .build())
             .build();
 
@@ -133,6 +141,7 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
                     .difficultyEnum(DifficultyEnum.MEDIUM)
+                    .categories(new ArrayList<>())
                     .build())
             .build();
 
@@ -147,11 +156,28 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
                     .difficultyEnum(DifficultyEnum.ALL)
+                    .categories(new ArrayList<>())
                     .build())
             .build();
 
     assertEquals(
         "https://opentdb.com/api.php?amount=50",
         generateURIOpenTDBMethod.invoke(questionApiService, user3).toString());
+
+    // FIXME opentdb only accepts one category per request and enumerated aswell
+    assertEquals(
+        "https://opentdb.com/api.php?amount=50",
+        generateURIOpenTDBMethod
+            .invoke(
+                questionApiService,
+                MyUser.builder()
+                    .userPreferences(
+                        UserPreferences.builder()
+                            .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                            .difficultyEnum(DifficultyEnum.ALL)
+                            .categories(List.of(Category.ANIMALS, Category.CELEBRITIES))
+                            .build())
+                    .build())
+            .toString());
   }
 }
