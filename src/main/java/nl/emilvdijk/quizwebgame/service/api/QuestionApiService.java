@@ -14,6 +14,7 @@ import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
 import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -24,8 +25,11 @@ public class QuestionApiService {
 
   QuestionApiMapperService questionApiMapperService;
 
-  private static final String QUIZ_API_URL = "https://the-trivia-api.com/v2/questions?limit=50";
-  private static final String QUIZ_API_URL2 = "https://opentdb.com/api.php?amount=50";
+  @Value("${myapp.url}")
+  private String QUIZ_API_URL;
+
+  @Value("${myapp.url2}")
+  private String QUIZ_API_URL2;
 
   public QuestionApiService(@Autowired QuestionApiMapperService questionApiMapperService) {
     this.questionApiMapperService = questionApiMapperService;
