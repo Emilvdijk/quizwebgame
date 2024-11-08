@@ -25,12 +25,20 @@
              th:text="${diff.displayValue}"></label>
     </li>
   </ul>
-  <P>choose the categories of questions:</P>
+  <P>choose the categories of TriviaApi questions:</P>
   <ul>
-    <li th:each="category : ${allCategories}">
-      <input type="checkbox" th:field="*{Categories}" th:value="${category}"/>
-      <label th:for="${#ids.prev('Categories')}"
-             th:text="${category.displayValue}"></label>
+    <li th:each="categoryTriviaApi : ${allCategoriesTriviaApi}">
+      <input type="checkbox" th:field="*{categoryTriviaApi}" th:value="${categoryTriviaApi}"/>
+      <label th:for="${#ids.prev('categoryTriviaApi')}"
+             th:text="${categoryTriviaApi.displayValue}"></label>
+    </li>
+  </ul>
+  <P>choose the categories of OpenTDB questions:</P>
+  <ul>
+    <li th:each="categoryOpenTDB : ${allCategoriesOpenTDB}">
+      <input type="checkbox" th:field="*{categoryOpenTDBS}" th:value="${categoryOpenTDB}"/>
+      <label th:for="${#ids.prev('categoryOpenTDBS')}"
+             th:text="${categoryOpenTDB.displayValue}"></label>
     </li>
   </ul>
 

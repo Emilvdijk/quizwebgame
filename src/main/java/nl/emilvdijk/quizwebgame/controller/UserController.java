@@ -10,7 +10,8 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
-import nl.emilvdijk.quizwebgame.enums.Category;
+import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
+import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.model.MyUserDto;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,8 +118,13 @@ public class UserController {
     return "authtestpage";
   }
 
-  @ModelAttribute("allCategories")
-  public List<Category> populateCategories() {
-    return Arrays.asList(Category.ALL);
+  @ModelAttribute("allCategoriesOpenTDB")
+  public List<CategoryOpenTDB> populateOpenTDBCategories() {
+    return Arrays.asList(CategoryOpenTDB.ALL);
+  }
+
+  @ModelAttribute("allCategoriesTriviaApi")
+  public List<CategoryTriviaApi> populateTriviaApiCategories() {
+    return Arrays.asList(CategoryTriviaApi.ALL);
   }
 }

@@ -22,5 +22,9 @@
   </form>
 </tr>
 <br>
+<br>
+<p th:text="'category: ' +${question.category}"></p>
+<p th:text="'difficulty: ' + ${question.difficulty}"></p>
+<p th:text="'origin: '+ ${question.origin.displayValue}"></p>
 </body>
 </html>

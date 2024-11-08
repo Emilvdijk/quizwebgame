@@ -1,9 +1,9 @@
 package nl.emilvdijk.quizwebgame.service;
 
-import static nl.emilvdijk.quizwebgame.entity.Question.DifficultyEquals;
-import static nl.emilvdijk.quizwebgame.entity.Question.IdNotIn;
-import static nl.emilvdijk.quizwebgame.entity.Question.IsOfCategory;
-import static nl.emilvdijk.quizwebgame.entity.Question.OriginEquals;
+import static nl.emilvdijk.quizwebgame.entity.Question.difficultyEquals;
+import static nl.emilvdijk.quizwebgame.entity.Question.idNotIn;
+import static nl.emilvdijk.quizwebgame.entity.Question.isOfCategory;
+import static nl.emilvdijk.quizwebgame.entity.Question.originEquals;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 import java.util.ArrayList;
@@ -82,10 +82,10 @@ public class QuizServiceAuthenticated implements QuizService {
       UserPreferences userPreferences, List<Long> questionIdList) {
     // FIXME make sure category check works
     return questionRepo.findAll(
-        where(DifficultyEquals(userPreferences.getDifficultyEnum()))
-            .and(IdNotIn(questionIdList))
-            .and(OriginEquals(userPreferences.getApiChoiceEnum()))
-            .and(IsOfCategory(userPreferences)));
+        where(difficultyEquals(userPreferences.getDifficultyEnum()))
+            .and(idNotIn(questionIdList))
+            .and(originEquals(userPreferences.getApiChoiceEnum()))
+            .and(isOfCategory(userPreferences)));
   }
 
   /** gets new questions from the question api and saves them to the repo. */

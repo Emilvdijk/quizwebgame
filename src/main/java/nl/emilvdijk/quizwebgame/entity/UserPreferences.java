@@ -8,7 +8,8 @@ import java.util.List;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
-import nl.emilvdijk.quizwebgame.enums.Category;
+import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
+import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 
 @Entity
@@ -29,5 +30,8 @@ public class UserPreferences extends BaseEntity implements Serializable {
   private DifficultyEnum difficultyEnum;
 
   @ElementCollection(fetch = FetchType.EAGER)
-  private List<Category> categories = new ArrayList<>();
+  private List<CategoryTriviaApi> categoryTriviaApi = new ArrayList<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private List<CategoryOpenTDB> categoryOpenTDBS = new ArrayList<>();
 }

@@ -10,7 +10,8 @@ import java.util.List;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
-import nl.emilvdijk.quizwebgame.enums.Category;
+import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
+import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -46,7 +47,7 @@ public class Question extends BaseEntity implements Serializable {
     this.answers = preparedAnswers;
   }
 
-  public static Specification<Question> DifficultyEquals(DifficultyEnum difficultyEnum) {
+  public static Specification<Question> difficultyEquals(DifficultyEnum difficultyEnum) {
     return (question, query, criteriaBuilder) -> {
       List<Predicate> predicates = new ArrayList<>();
       if (difficultyEnum != DifficultyEnum.ALL) {
@@ -57,11 +58,11 @@ public class Question extends BaseEntity implements Serializable {
     };
   }
 
-  public static Specification<Question> IdNotIn(List<Long> idList) {
+  public static Specification<Question> idNotIn(List<Long> idList) {
     return (question, query, criteriaBuilder) -> criteriaBuilder.not(question.get("id").in(idList));
   }
 
-  public static Specification<Question> OriginEquals(ApiChoiceEnum apiChoiceEnum) {
+  public static Specification<Question> originEquals(ApiChoiceEnum apiChoiceEnum) {
     return (question, query, criteriaBuilder) -> {
       List<Predicate> predicates = new ArrayList<>();
       if (apiChoiceEnum != ApiChoiceEnum.ALL) {
@@ -71,15 +72,20 @@ public class Question extends BaseEntity implements Serializable {
     };
   }
 
-  public static Specification<Question> IsOfCategory(UserPreferences userPreferences) {
+  public static Specification<Question> isOfCategory(UserPreferences userPreferences) {
     //     FIXME check if it fully works correctly
     return (question, query, criteriaBuilder) -> {
-      if (userPreferences.getCategories().isEmpty()) {
+      if (userPreferences.getCategoryOpenTDBS().isEmpty()) {
         return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
       }
       List<Predicate> predicates = new ArrayList<>();
-      for (Category category : userPreferences.getCategories()) {
-        predicates.add(criteriaBuilder.equal(question.get("category"), category.getDisplayValue()));
+      for (CategoryOpenTDB categoryOpenTDB : userPreferences.getCategoryOpenTDBS()) {
+        predicates.add(
+            criteriaBuilder.equal(question.get("category"), categoryOpenTDB.getDisplayValue()));
+      }
+      for (CategoryTriviaApi categoryTriviaApi : userPreferences.getCategoryTriviaApi()) {
+        predicates.add(
+            criteriaBuilder.equal(question.get("category"), categoryTriviaApi.getDisplayValue()));
       }
       return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
     };

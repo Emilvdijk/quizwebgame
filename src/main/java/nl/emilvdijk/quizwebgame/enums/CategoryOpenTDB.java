@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true)
-public enum Category {
-
-  // FIXME add all categories
+public enum CategoryOpenTDB {
   GENERAL_KNOWLEDGE("General Knowledge"),
   ENTERTAINMENT_BOOKS("Entertainment: Books"),
   ENTERTAINMENT_FILM("Entertainment: Film"),
@@ -27,12 +25,13 @@ public enum Category {
   SPORTS("Sports"),
   GEOGRAPHY("Geography"),
   HISTORY("History"),
-  POLITICS_ART("Politics Art"),
+  POLITICS("Politics"),
+  ART("Art"),
   CELEBRITIES("Celebrities"),
   ANIMALS("Animals"),
   VEHICLES("Vehicles");
 
-  public static final Category[] ALL = {
+  public static final CategoryOpenTDB[] ALL = {
     GENERAL_KNOWLEDGE,
     ENTERTAINMENT_BOOKS,
     ENTERTAINMENT_FILM,
@@ -52,32 +51,8 @@ public enum Category {
     SPORTS,
     GEOGRAPHY,
     HISTORY,
-    POLITICS_ART,
-    CELEBRITIES,
-    ANIMALS,
-    VEHICLES
-  };
-  public static final Category[] ALLOPENTDB = {
-    GENERAL_KNOWLEDGE,
-    ENTERTAINMENT_BOOKS,
-    ENTERTAINMENT_FILM,
-    ENTERTAINMENT_MUSIC,
-    ENTERTAINMENT_MUSICALS_THEATRES,
-    ENTERTAINMENT_TELEVISION,
-    ENTERTAINMENT_VIDEO_GAMES,
-    ENTERTAINMENT_BOARD_GAMES,
-    ENTERTAINMENT_JAPANESE_ANIME_MANGA,
-    ENTERTAINMENT_CARTOON_ANIMATIONS,
-    ENTERTAINMENT_COMICS,
-    SCIENCE_NATURE,
-    SCIENCE_COMPUTERS,
-    SCIENCE_MATHEMATICS,
-    SCIENCE_GADGETS,
-    MYTHOLOGY,
-    SPORTS,
-    GEOGRAPHY,
-    HISTORY,
-    POLITICS_ART,
+    POLITICS,
+    ART,
     CELEBRITIES,
     ANIMALS,
     VEHICLES
@@ -85,7 +60,7 @@ public enum Category {
 
   private final String displayValue;
 
-  Category(String displayValue) {
+  CategoryOpenTDB(String displayValue) {
     this.displayValue = displayValue;
   }
 }
