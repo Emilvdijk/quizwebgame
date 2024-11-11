@@ -81,6 +81,7 @@ class QuizServiceAuthenticatedTest {
                 .difficultyEnum(DifficultyEnum.ALL)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
                 .categoryOpenTDBS(new ArrayList<>())
+                .categoryTriviaApi(new ArrayList<>())
                 .build(),
             new ArrayList<>());
     assertEquals(20, questionList.size());
@@ -91,6 +92,7 @@ class QuizServiceAuthenticatedTest {
                 .difficultyEnum(DifficultyEnum.EASY)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
                 .categoryOpenTDBS(new ArrayList<>())
+                .categoryTriviaApi(new ArrayList<>())
                 .build(),
             new ArrayList<>());
     assertEquals(9, questionList.size());
@@ -103,6 +105,7 @@ class QuizServiceAuthenticatedTest {
                 .difficultyEnum(DifficultyEnum.MEDIUM)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
                 .categoryOpenTDBS(new ArrayList<>())
+                .categoryTriviaApi(new ArrayList<>())
                 .build(),
             List.of(4L, 5L, 7L));
     assertEquals(9, questionList.size());
@@ -116,6 +119,7 @@ class QuizServiceAuthenticatedTest {
                 .difficultyEnum(DifficultyEnum.MEDIUM)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
                 .categoryOpenTDBS(new ArrayList<>())
+                .categoryTriviaApi(new ArrayList<>())
                 .build(),
             new ArrayList<>());
     assertEquals(11, questionList.size());
@@ -129,6 +133,7 @@ class QuizServiceAuthenticatedTest {
                 .difficultyEnum(DifficultyEnum.ALL)
                 .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
                 .categoryOpenTDBS(new ArrayList<>())
+                .categoryTriviaApi(new ArrayList<>())
                 .build(),
             new ArrayList<>());
     assertEquals(11, questionList.size());

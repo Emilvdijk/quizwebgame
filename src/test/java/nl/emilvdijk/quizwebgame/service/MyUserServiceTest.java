@@ -30,7 +30,6 @@ class MyUserServiceTest {
   @Test
   @Order(1)
   void testSaveUser() {
-    List<Question> questionList = new ArrayList<>();
     ArrayList<String> roles = new ArrayList<>();
     roles.add("TESTROLE");
     MyUser testSaveUser =
@@ -41,7 +40,7 @@ class MyUserServiceTest {
                 UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build())
             .myRoles(roles)
             .enabled(true)
-            .answeredQuestions(questionList)
+            .answeredQuestions(new ArrayList<>())
             .build();
     myUserService.saveUser(testSaveUser);
   }

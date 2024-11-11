@@ -73,7 +73,6 @@ public class Question extends BaseEntity implements Serializable {
   }
 
   public static Specification<Question> isOfCategory(UserPreferences userPreferences) {
-    //     FIXME check if it fully works correctly
     return (question, query, criteriaBuilder) -> {
       List<Predicate> predicates = new ArrayList<>();
       for (CategoryOpenTDB categoryOpenTDB : userPreferences.getCategoryOpenTDBS()) {
@@ -83,6 +82,9 @@ public class Question extends BaseEntity implements Serializable {
       for (CategoryTriviaApi categoryTriviaApi : userPreferences.getCategoryTriviaApi()) {
         predicates.add(
             criteriaBuilder.equal(question.get("category"), categoryTriviaApi.getDisplayValue()));
+      }
+      if (predicates.isEmpty()) {
+        return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
       }
       return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
     };
