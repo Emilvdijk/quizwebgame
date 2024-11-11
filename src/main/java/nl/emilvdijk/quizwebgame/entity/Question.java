@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.criteria.Predicate;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +14,7 @@ import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
 import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.Specification;
 
 @Entity
@@ -34,6 +36,8 @@ public class Question extends BaseEntity implements Serializable {
   private String type;
   private String difficulty;
   @Transient private List<String> answers;
+  @UpdateTimestamp
+  private Instant lastUpdatedOn;
 
   @Enumerated(EnumType.STRING)
   private ApiChoiceEnum origin;

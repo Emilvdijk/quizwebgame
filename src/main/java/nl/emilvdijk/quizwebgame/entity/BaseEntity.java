@@ -28,6 +28,4 @@ public abstract class BaseEntity {
   private Long id;
 
   @CreationTimestamp private Instant added;
-
-  @UpdateTimestamp private Instant lastUpdatedOn;
 }

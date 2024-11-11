@@ -31,11 +31,11 @@ class MyUserServiceTest {
   @Order(1)
   void testSaveUser() {
     ArrayList<String> roles = new ArrayList<>();
-    roles.add("TESTROLE");
+    roles.add("TEST_ROLE");
     MyUser testSaveUser =
         MyUser.builder()
-            .username("testuser")
-            .password(passwordEncoder.encode("testpassword"))
+            .username("testUser")
+            .password(passwordEncoder.encode("testPassword"))
             .userPreferences(
                 UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build())
             .myRoles(roles)
@@ -43,26 +43,27 @@ class MyUserServiceTest {
             .answeredQuestions(new ArrayList<>())
             .build();
     myUserService.saveUser(testSaveUser);
+    assertEquals(3,myUserService.userRepo.count());
   }
 
   @Test
   @Order(2)
   void testLoadUserByUsername() {
-    MyUser testloadUser = myUserService.loadUserByUsername("testuser");
+    MyUser testloadUser = myUserService.loadUserByUsername("testUser");
     System.out.println(testloadUser.toString());
-    assertEquals("testuser", testloadUser.getUsername());
+    assertEquals("testUser", testloadUser.getUsername());
     assertTrue(testloadUser.isEnabled());
-    assertTrue(passwordEncoder.matches("testpassword", testloadUser.getPassword()));
-    assertEquals("[TESTROLE]", testloadUser.getAuthorities().toString());
+    assertTrue(passwordEncoder.matches("testPassword", testloadUser.getPassword()));
+    assertEquals("[TEST_ROLE]", testloadUser.getAuthorities().toString());
   }
 
   @Test
   @Order(3)
   void updateUser() {
-    MyUser testIUpdateUser = myUserService.loadUserByUsername("testuser");
+    MyUser testIUpdateUser = myUserService.loadUserByUsername("testUser");
     testIUpdateUser.getUserPreferences().setApiChoiceEnum(ApiChoiceEnum.OPENTDB);
     myUserService.updateUser(testIUpdateUser);
-    MyUser testUpdatedUser = myUserService.loadUserByUsername("testuser");
+    MyUser testUpdatedUser = myUserService.loadUserByUsername("testUser");
     assertEquals(ApiChoiceEnum.OPENTDB, testUpdatedUser.getUserPreferences().getApiChoiceEnum());
   }
 
@@ -70,25 +71,25 @@ class MyUserServiceTest {
   @Order(4)
   void registerNewUser() {
     MyUserDto myUserDtoTest =
-        MyUserDto.builder().username("testusername").password("testpassword").build();
+        MyUserDto.builder().username("testUsername").password("testPassword").build();
     myUserService.registerNewUser(myUserDtoTest);
-    assertEquals("testusername", myUserService.loadUserByUsername("testusername").getUsername());
+    assertEquals("testUsername", myUserService.loadUserByUsername("testUsername").getUsername());
   }
 
   @Test
   @Order(5)
   void markQuestionDone() {
-    MyUser testUser = myUserService.loadUserByUsername("testuser");
+    MyUser testUser = myUserService.loadUserByUsername("testUser");
     assertEquals(0, testUser.getAnsweredQuestions().size());
-    myUserService.markQuestionDone(Question.builder().id(2L).build(), testUser);
-    testUser = myUserService.loadUserByUsername("testuser");
+    myUserService.markQuestionDone(Question.builder().id(2L).build(), testUser,"questionChosenAnswer");
+    testUser = myUserService.loadUserByUsername("testUser");
     assertEquals(1, testUser.getAnsweredQuestions().size());
   }
 
   @Test
   @Order(6)
   void checkIfUserExists() {
-    assertNotEquals(true, myUserService.checkIfUserExists("asfasdfad"));
-    assertEquals(true, myUserService.checkIfUserExists("testuser"));
+    assertFalse(myUserService.checkIfUserExists("asfasdfad"));
+    assertTrue(myUserService.checkIfUserExists("testUser"));
   }
 }

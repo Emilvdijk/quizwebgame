@@ -66,7 +66,7 @@ public class QuizServiceAuthenticated implements QuizService {
             .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
     List<Long> questionIdList = new ArrayList<>();
-    myUser.getAnsweredQuestions().forEach(question -> questionIdList.add(question.getId()));
+    myUser.getAnsweredQuestions().forEach(answeredQuestion -> questionIdList.add(answeredQuestion.getId()));
     List<Question> questions = getQuestionsByChoice(myUser.getUserPreferences(), questionIdList);
 
     if (questions.size() < 10) {

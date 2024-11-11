@@ -3,7 +3,9 @@ package nl.emilvdijk.quizwebgame.service;
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import nl.emilvdijk.quizwebgame.entity.AnsweredQuestion;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
@@ -37,18 +39,16 @@ public class MyUserService implements UserDetailsService {
   public void addTestUsersAfterStartup() {
     ArrayList<String> userRoles = new ArrayList<>();
     userRoles.add("ROLE_USER");
-    UserPreferences userPreferences =
-        UserPreferences.builder()
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
-            .difficultyEnum(DifficultyEnum.ALL)
-            .build();
     MyUser testUser =
         MyUser.builder()
             .username("user")
             .password("$2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG")
             .myRoles(userRoles)
             .enabled(true)
-            .userPreferences(userPreferences)
+            .userPreferences(UserPreferences.builder()
+                .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                .difficultyEnum(DifficultyEnum.ALL)
+                .build())
             .build();
     saveUser(testUser);
 
@@ -139,11 +139,18 @@ public class MyUserService implements UserDetailsService {
    * @param question question to be linked to user
    * @param user user to be linked to question
    */
-  public void markQuestionDone(Question question, MyUser user) {
+  public void markQuestionDone(Question question, MyUser user, String chosenAnswer) {
     MyUser myUser = loadUserByUsername(user.getUsername());
-    myUser.getAnsweredQuestions().add(question);
-    userRepo.save(myUser);
-  }
+    myUser
+        .getAnsweredQuestions()
+        .add(
+            new AnsweredQuestion(
+                user.getId(),
+                question.getId(),
+                chosenAnswer,
+                Objects.equals(chosenAnswer, question.getCorrectAnswer())));
+    updateUser(myUser);
+}
 
   public Boolean checkIfUserExists(String username) {
     return userRepo.existsMyUserByUsername(username);

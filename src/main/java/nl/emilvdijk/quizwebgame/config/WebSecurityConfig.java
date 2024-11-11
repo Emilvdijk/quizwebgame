@@ -51,7 +51,7 @@ public class WebSecurityConfig {
                     .requestMatchers(
                         "/", "/home", "/quiz", "/images/*", "/register", "/authtestpage")
                     .permitAll()
-                    .requestMatchers("/userPreferences")
+                    .requestMatchers("/userPreferences","/questionHistory")
                     .hasRole("USER")
                     .anyRequest()
                     .authenticated())

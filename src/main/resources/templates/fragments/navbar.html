@@ -32,6 +32,13 @@
             </form>
           </li>
         </div>
+        <div sec:authorize="hasAnyRole('ADMIN', 'USER')">
+          <li class="nav-item">
+            <form class="nav-link" th:action="@{/questionHistory}" method="get">
+              <button class="nav-link" type="submit">history</button>
+            </form>
+          </li>
+        </div>
         <li class="nav-item" sec:authorize="isAnonymous()">
           <p class="nav-link">Hello guest!
           </p>
@@ -61,7 +68,6 @@
         </div>
       </ul>
     </div>
-
   </nav>
 </div>
 

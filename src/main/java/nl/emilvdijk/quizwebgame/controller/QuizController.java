@@ -1,8 +1,11 @@
 package nl.emilvdijk.quizwebgame.controller;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import nl.emilvdijk.quizwebgame.entity.AnsweredQuestion;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.DynamicQuizService;
@@ -62,13 +65,13 @@ public class QuizController {
    * this method is called when a user answers a question. it checks if the answer is correct and
    * returns a new result page
    *
-   * @param chosenAnswerStr the number of the answer chosen by user
+   * @param chosenAnswer the answer chosen by user
    * @param model model to add attributes to
    * @return either the correct answer html page or the incorrect answer html page
    */
   @PostMapping("/quiz")
   public String questionAnswer(
-      @ModelAttribute(name = "chosenAnswer") String chosenAnswerStr,
+      @ModelAttribute(name = "chosenAnswer") String chosenAnswer,
       Model model,
       @AuthenticationPrincipal MyUser user,
       HttpSession httpSession) {
@@ -77,12 +80,9 @@ public class QuizController {
 
     Question question =
         dynamicQuizService.getService(user).getQuestionByMyid(answeredQuestion.getId());
-
     if (user != null) {
-      userService.markQuestionDone(question, user);
+      userService.markQuestionDone(question, user,chosenAnswer);
     }
-
-    String chosenAnswer = answeredQuestion.getAnswers().get(Integer.parseInt(chosenAnswerStr));
     dynamicQuizService.getService(user).removeAnsweredQuestion();
     model.addAttribute("question", question);
     model.addAttribute("chosenanswer", chosenAnswer);
@@ -96,5 +96,23 @@ public class QuizController {
     } else {
       return "resultpagebad";
     }
+  }
+
+  @GetMapping("/questionHistory")
+  public String ShowQuestionHistory(Model model, @AuthenticationPrincipal MyUser user) {
+    Map<AnsweredQuestion, Question> questionsMap = new HashMap<>();
+    MyUser myUser = userService.loadUserByUsername(user.getUsername());
+    myUser
+        .getAnsweredQuestions()
+        .forEach(
+            answeredQuestion ->
+                questionsMap.put(
+                    answeredQuestion,
+                    dynamicQuizService
+                        .getService(user)
+                        .getQuestionByMyid(answeredQuestion.getQuestionId())));
+
+    model.addAttribute("questionsMap",questionsMap);
+    return "questionHistory";
   }
 }

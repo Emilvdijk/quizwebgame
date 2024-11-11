@@ -3,6 +3,7 @@ package nl.emilvdijk.quizwebgame.entity;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
@@ -11,6 +12,7 @@ import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
 import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Getter
@@ -22,7 +24,8 @@ import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 public class UserPreferences extends BaseEntity implements Serializable {
 
   @Serial private static final long serialVersionUID = -682768038923270772L;
-
+  @UpdateTimestamp
+  private Instant lastUpdatedOn;
   @Enumerated(EnumType.STRING)
   private ApiChoiceEnum apiChoiceEnum;
 

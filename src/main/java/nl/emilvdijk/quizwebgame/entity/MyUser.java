@@ -3,6 +3,7 @@ package nl.emilvdijk.quizwebgame.entity;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,11 +41,13 @@ public class MyUser extends BaseEntity implements UserDetails, Serializable {
   @ManyToMany(
       fetch = FetchType.EAGER,
       cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-  private List<Question> answeredQuestions;
+  private List<AnsweredQuestion> answeredQuestions;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "user_preferences_id")
   private UserPreferences userPreferences;
+  @UpdateTimestamp
+  private Instant lastUpdatedOn;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
