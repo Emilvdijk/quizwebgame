@@ -75,9 +75,6 @@ public class Question extends BaseEntity implements Serializable {
   public static Specification<Question> isOfCategory(UserPreferences userPreferences) {
     //     FIXME check if it fully works correctly
     return (question, query, criteriaBuilder) -> {
-      if (userPreferences.getCategoryOpenTDBS().isEmpty()) {
-        return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
-      }
       List<Predicate> predicates = new ArrayList<>();
       for (CategoryOpenTDB categoryOpenTDB : userPreferences.getCategoryOpenTDBS()) {
         predicates.add(

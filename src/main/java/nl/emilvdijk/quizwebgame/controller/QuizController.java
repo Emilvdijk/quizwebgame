@@ -53,7 +53,7 @@ public class QuizController {
     if (user == null) {
       log.debug("Anonymous GET Requested with question Id: {}", question.getId());
     } else {
-      log.debug("{} GET Requested with question Id: {}", user.getQuestions(), question.getId());
+      log.debug("{} GET Requested with question Id: {}", user.getUsername(), question.getId());
     }
     return "quiz";
   }

@@ -80,7 +80,6 @@ public class QuizServiceAuthenticated implements QuizService {
 
   public List<Question> getQuestionsByChoice(
       UserPreferences userPreferences, List<Long> questionIdList) {
-    // FIXME make sure category check works
     return questionRepo.findAll(
         where(difficultyEquals(userPreferences.getDifficultyEnum()))
             .and(idNotIn(questionIdList))
