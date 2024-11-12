@@ -3,6 +3,7 @@ package nl.emilvdijk.quizwebgame.service.api;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.dto.QuestionOpentdb;
@@ -13,6 +14,7 @@ import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
 import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
+import nl.emilvdijk.quizwebgame.exceptions.ApiErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -54,7 +56,13 @@ public class QuestionApiService {
     URI uri = generateURIOpenTDB(user);
     QuestionsApiCaller<QuestionOpentdb> questionsApiCaller =
         new QuestionsApiCaller(new ParameterizedTypeReference<QuestionOpentdb>() {});
-    return questionApiMapperService.mapOpenTDBQuestions(questionsApiCaller.getNewQuestion(uri));
+    QuestionOpentdb questionOpenTdbResponse = questionsApiCaller.getNewQuestion(uri);
+    if (Objects.equals(questionOpenTdbResponse.getResponse_code(), "1")) {
+      log.error("Could not return results. The API doesn't have enough questions for your query.");
+      throw new ApiErrorException(
+          "Could not return results. The API doesn't have enough questions for your query.");
+    }
+    return questionApiMapperService.mapOpenTDBQuestions(questionOpenTdbResponse);
   }
 
   private List<Question> getNewQuestionsFromAll(MyUser user) {
@@ -135,6 +143,7 @@ public class QuestionApiService {
                 categories.add(category);
               }
             });
+    // FIXME make it just string instead of List<String>
     List<String> categoriesStrings =
         switch (categories.getFirst()) {
           case GENERAL_KNOWLEDGE -> List.of("9");

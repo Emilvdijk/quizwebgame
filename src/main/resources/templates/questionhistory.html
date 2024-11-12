@@ -15,20 +15,23 @@
 </tr>
 <tr th:if="${!questionsMap.isEmpty()}">
   <p>Total answered questions: <span
-                                     th:text="${questionsMap.size}"></span></p>
+      th:text="${questionsMap.size}"></span></p>
+
+  <table>
+    <tr>
+      <th>date:</th>
+      <th>Question:</th>
+      <th>Chosen answer:</th>
+      <th>Correct answer?:</th>
+    </tr>
+    <tr th:each="questionAnswer : ${questionsMap}">
+      <td th:text="${questionAnswer.key.added}"></td>
+      <td th:text="${questionAnswer.value.questionText}"></td>
+      <td th:text="${questionAnswer.key.chosenAnswer}"></td>
+      <td th:text="${questionAnswer.key.correct}"></td>
+    </tr>
+  </table>
 </tr>
 
-<table>
-  <tr>
-    <th>Question:</th>
-    <th>Chosen answer:</th>
-    <th>Correct answer?:</th>
-  </tr>
-<tr th:each="questionAnswer : ${questionsMap}">
-  <td th:text="${questionAnswer.value.questionText}"></td>
-  <td th:text="${questionAnswer.key.chosenAnswer}"></td>
-  <td th:text="${questionAnswer.key.correct}"></td>
-</tr>
-</table>
 </body>
 </html>

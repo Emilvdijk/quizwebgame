@@ -45,10 +45,11 @@ public class MyUserService implements UserDetailsService {
             .password("$2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG")
             .myRoles(userRoles)
             .enabled(true)
-            .userPreferences(UserPreferences.builder()
-                .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
-                .difficultyEnum(DifficultyEnum.ALL)
-                .build())
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .difficultyEnum(DifficultyEnum.ALL)
+                    .build())
             .build();
     saveUser(testUser);
 
@@ -150,7 +151,7 @@ public class MyUserService implements UserDetailsService {
                 chosenAnswer,
                 Objects.equals(chosenAnswer, question.getCorrectAnswer())));
     updateUser(myUser);
-}
+  }
 
   public Boolean checkIfUserExists(String username) {
     return userRepo.existsMyUserByUsername(username);
@@ -158,5 +159,17 @@ public class MyUserService implements UserDetailsService {
 
   public void deleteUserById(Long id) {
     userRepo.deleteById(id);
+  }
+
+  public void resetUserSettings(MyUser myUser) {
+    UserPreferences userPreferences = myUser.getUserPreferences();
+    userPreferences.setApiChoiceEnum(ApiChoiceEnum.ALL);
+    userPreferences.setDifficultyEnum(DifficultyEnum.ALL);
+    userPreferences.setCategoryTriviaApi(new ArrayList<>());
+    userPreferences.setCategoryOpenTDBS(new ArrayList<>());
+    myUser.setUserPreferences(userPreferences);
+    MyUser user = loadUserByUsername(myUser.getUsername());
+    user.setUserPreferences(userPreferences);
+    updateUser(user);
   }
 }
