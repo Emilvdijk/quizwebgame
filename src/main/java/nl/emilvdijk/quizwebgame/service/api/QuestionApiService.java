@@ -27,10 +27,10 @@ public class QuestionApiService {
   QuestionApiMapperService questionApiMapperService;
 
   @Value("${myapp.url}")
-  private String QUIZ_API_URL;
+  private String triviaApiUrl;
 
   @Value("${myapp.url2}")
-  private String QUIZ_API_URL2;
+  private String openTdbUrl;
 
   public QuestionApiService(@Autowired QuestionApiMapperService questionApiMapperService) {
     this.questionApiMapperService = questionApiMapperService;
@@ -39,20 +39,20 @@ public class QuestionApiService {
   public List<Question> getNewQuestions(MyUser user) {
     return switch (user.getUserPreferences().getApiChoiceEnum()) {
       case TRIVIAAPI -> getNewTriviaApiQuestions(user);
-      case OPENTDB -> getNewOpenTDBQuestions(user);
+      case OPENTDB -> getNewOpenTdbQuestions(user);
       case ALL -> getNewQuestionsFromAll(user);
     };
   }
 
   private List<Question> getNewTriviaApiQuestions(MyUser user) {
-    URI uri = generateTriviaApiURI(user);
-    QuestionsApiCaller questionsApiService =
+    URI uri = generateTriviaApiUri(user);
+    QuestionsApiCaller<QuestionTriviaApi> questionsApiService =
         new QuestionsApiCaller(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
     return questionApiMapperService.mapTriviaApiQuestions(questionsApiService.getNewQuestions(uri));
   }
 
-  private List<Question> getNewOpenTDBQuestions(MyUser user) {
-    URI uri = generateURIOpenTDB(user);
+  private List<Question> getNewOpenTdbQuestions(MyUser user) {
+    URI uri = generateUriOpenTdb(user);
     QuestionsApiCaller<QuestionOpentdb> questionsApiCaller =
         new QuestionsApiCaller(new ParameterizedTypeReference<QuestionOpentdb>() {});
     QuestionOpentdb questionOpenTdbResponse = questionsApiCaller.getNewQuestion(uri);
@@ -67,20 +67,20 @@ public class QuestionApiService {
   private List<Question> getNewQuestionsFromAll(MyUser user) {
     List<Question> newQuestionsList = new ArrayList<>();
     newQuestionsList.addAll(getNewTriviaApiQuestions(user));
-    newQuestionsList.addAll(getNewOpenTDBQuestions(user));
+    newQuestionsList.addAll(getNewOpenTdbQuestions(user));
     return newQuestionsList;
   }
 
   public List<Question> getDefaultQuestions() {
-    QuestionsApiCaller questionsApiService =
-        new QuestionsApiCaller(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
+    QuestionsApiCaller<?> questionsApiService =
+        new QuestionsApiCaller<>(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
     return questionApiMapperService.mapTriviaApiQuestions(
         questionsApiService.getDefaultQuestions());
   }
 
-  private URI generateTriviaApiURI(MyUser user) {
+  private URI generateTriviaApiUri(MyUser user) {
     URI uri =
-        UriComponentsBuilder.fromUriString(QUIZ_API_URL)
+        UriComponentsBuilder.fromUriString(triviaApiUrl)
             .queryParamIfPresent(
                 "difficulties",
                 Optional.ofNullable(getDifficultyUriVariables(user.getUserPreferences())))
@@ -93,15 +93,15 @@ public class QuestionApiService {
     return uri;
   }
 
-  private URI generateURIOpenTDB(MyUser user) {
+  private URI generateUriOpenTdb(MyUser user) {
     URI uri =
-        UriComponentsBuilder.fromUriString(QUIZ_API_URL2)
+        UriComponentsBuilder.fromUriString(openTdbUrl)
             .queryParamIfPresent(
                 "difficulty",
                 Optional.ofNullable(getDifficultyUriVariables(user.getUserPreferences())))
             .queryParamIfPresent(
                 "category",
-                Optional.ofNullable(getOpenTDBCategoryUriVariables(user.getUserPreferences())))
+                Optional.ofNullable(getOpenTdbCategoryUriVariables(user.getUserPreferences())))
             .build()
             .toUri();
     log.debug("OpenTDB URI generated: {} for user {}", uri, user.getUsername());
@@ -128,11 +128,11 @@ public class QuestionApiService {
             .toList());
   }
 
-  private String getOpenTDBCategoryUriVariables(UserPreferences userPreferences) {
+  private String getOpenTdbCategoryUriVariables(UserPreferences userPreferences) {
     if (userPreferences.getCategoryOpenTDBS().isEmpty()) {
       return null;
     }
-    //OpenTdb only accepts one category per request and enumerated as well
+    // OpenTdb only accepts one category per request and enumerated as well
     return switch (userPreferences.getCategoryOpenTDBS().getFirst()) {
       case GENERAL_KNOWLEDGE -> "9";
       case ENTERTAINMENT_BOOKS -> "10";
@@ -159,7 +159,9 @@ public class QuestionApiService {
       case ENTERTAINMENT_JAPANESE_ANIME_MANGA -> "31";
       case ENTERTAINMENT_CARTOON_ANIMATIONS -> "32";
       default -> {
-        log.error("wrong case found for: {}", userPreferences.getCategoryOpenTDBS().getFirst().getDisplayValue());
+        log.error(
+            "wrong case found for: {}",
+            userPreferences.getCategoryOpenTDBS().getFirst().getDisplayValue());
         yield null;
       }
     };

@@ -64,7 +64,7 @@ class QuestionApiServiceTest {
   }
 
   @Test
-  void generateTriviaApiURI()
+  void generateTriviaApiUri()
       throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     Method generateTriviaApiURIMethod =
         QuestionApiService.class.getDeclaredMethod("generateTriviaApiURI", MyUser.class);
@@ -121,7 +121,7 @@ class QuestionApiServiceTest {
   }
 
   @Test
-  void generateURIOpenTDB()
+  void generateUriOpenTdb()
       throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     Method generateURIOpenTDBMethod =
         QuestionApiService.class.getDeclaredMethod("generateURIOpenTDB", MyUser.class);
