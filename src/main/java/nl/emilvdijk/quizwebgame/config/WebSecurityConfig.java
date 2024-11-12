@@ -49,9 +49,9 @@ public class WebSecurityConfig {
             requests ->
                 requests
                     .requestMatchers(
-                        "/", "/home", "/quiz", "/images/*", "/register", "/authtestpage")
+                        "/", "/home", "/quiz", "/images/*", "/register", "/authtestpage", "error")
                     .permitAll()
-                    .requestMatchers("/userPreferences","/questionHistory")
+                    .requestMatchers("/userPreferences", "/questionHistory")
                     .hasRole("USER")
                     .anyRequest()
                     .authenticated())
