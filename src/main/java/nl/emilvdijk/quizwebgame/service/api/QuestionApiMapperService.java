@@ -19,7 +19,6 @@ public class QuestionApiMapperService {
       question.setQuestionText(questionTriviaApi.getQuestion().get("text"));
       question.setCorrectAnswer(questionTriviaApi.getCorrectAnswer());
       question.setIncorrectAnswers(questionTriviaApi.getIncorrectAnswers());
-      // FIXME combine similar categories
       question.setCategory(questionTriviaApi.getCategory());
       question.setTags(questionTriviaApi.getTags());
       question.setType(questionTriviaApi.getType());
