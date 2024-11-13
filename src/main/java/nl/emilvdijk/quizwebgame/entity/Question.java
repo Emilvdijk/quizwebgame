@@ -36,8 +36,7 @@ public class Question extends BaseEntity implements Serializable {
   private String type;
   private String difficulty;
   @Transient private List<String> answers;
-  @UpdateTimestamp
-  private Instant lastUpdatedOn;
+  @UpdateTimestamp private Instant lastUpdatedOn;
 
   @Enumerated(EnumType.STRING)
   private ApiChoiceEnum origin;

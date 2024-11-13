@@ -3,7 +3,6 @@ package nl.emilvdijk.quizwebgame.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
@@ -43,7 +42,7 @@ class MyUserServiceTest {
             .answeredQuestions(new ArrayList<>())
             .build();
     myUserService.saveUser(testSaveUser);
-    assertEquals(3,myUserService.userRepo.count());
+    assertEquals(3, myUserService.userRepo.count());
   }
 
   @Test
@@ -81,7 +80,8 @@ class MyUserServiceTest {
   void markQuestionDone() {
     MyUser testUser = myUserService.loadUserByUsername("testUser");
     assertEquals(0, testUser.getAnsweredQuestions().size());
-    myUserService.markQuestionDone(Question.builder().id(2L).build(), testUser,"questionChosenAnswer");
+    myUserService.markQuestionDone(
+        Question.builder().id(2L).build(), testUser, "questionChosenAnswer");
     testUser = myUserService.loadUserByUsername("testUser");
     assertEquals(1, testUser.getAnsweredQuestions().size());
   }

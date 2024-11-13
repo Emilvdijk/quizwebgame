@@ -46,8 +46,8 @@ public class MyUser extends BaseEntity implements UserDetails, Serializable {
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "user_preferences_id")
   private UserPreferences userPreferences;
-  @UpdateTimestamp
-  private Instant lastUpdatedOn;
+
+  @UpdateTimestamp private Instant lastUpdatedOn;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

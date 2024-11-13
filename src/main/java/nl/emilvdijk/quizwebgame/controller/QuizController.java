@@ -81,7 +81,7 @@ public class QuizController {
     Question question =
         dynamicQuizService.getService(user).getQuestionByMyid(answeredQuestion.getId());
     if (user != null) {
-      userService.markQuestionDone(question, user,chosenAnswer);
+      userService.markQuestionDone(question, user, chosenAnswer);
     }
     dynamicQuizService.getService(user).removeAnsweredQuestion();
     model.addAttribute("question", question);
@@ -112,7 +112,7 @@ public class QuizController {
                         .getService(user)
                         .getQuestionByMyid(answeredQuestion.getQuestionId())));
 
-    model.addAttribute("questionsMap",questionsMap);
+    model.addAttribute("questionsMap", questionsMap);
     return "questionHistory";
   }
 }

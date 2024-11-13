@@ -24,8 +24,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class UserPreferences extends BaseEntity implements Serializable {
 
   @Serial private static final long serialVersionUID = -682768038923270772L;
-  @UpdateTimestamp
-  private Instant lastUpdatedOn;
+
+  @UpdateTimestamp private Instant lastUpdatedOn;
+
   @Enumerated(EnumType.STRING)
   private ApiChoiceEnum apiChoiceEnum;
 

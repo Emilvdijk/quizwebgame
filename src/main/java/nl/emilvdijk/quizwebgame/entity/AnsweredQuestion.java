@@ -20,5 +20,4 @@ public class AnsweredQuestion extends BaseEntity implements Serializable {
   private Long questionId;
   private String chosenAnswer;
   private boolean correct;
-
 }
