@@ -3,7 +3,7 @@ package nl.emilvdijk.quizwebgame.model;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import nl.emilvdijk.quizwebgame.annotation.UserAlreadyExistsConstraint;
+import nl.emilvdijk.quizwebgame.validator.UserAlreadyExistsConstraint;
 
 @Setter
 @Getter

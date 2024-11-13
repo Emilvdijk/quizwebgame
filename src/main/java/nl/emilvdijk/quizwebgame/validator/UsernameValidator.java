@@ -2,19 +2,19 @@ package nl.emilvdijk.quizwebgame.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import nl.emilvdijk.quizwebgame.annotation.UserAlreadyExistsConstraint;
-import nl.emilvdijk.quizwebgame.service.MyUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import nl.emilvdijk.quizwebgame.repository.UserRepo;
 
+@RequiredArgsConstructor
 public class UsernameValidator implements ConstraintValidator<UserAlreadyExistsConstraint, String> {
 
-  @Autowired MyUserService userService;
+  private final UserRepo userRepo;
 
   @Override
   public void initialize(UserAlreadyExistsConstraint username) {}
 
   @Override
-  public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-    return !userService.checkIfUserExists(s);
+  public boolean isValid(String username, ConstraintValidatorContext constraintValidatorContext) {
+    return !userRepo.existsMyUserByUsername(username);
   }
 }
