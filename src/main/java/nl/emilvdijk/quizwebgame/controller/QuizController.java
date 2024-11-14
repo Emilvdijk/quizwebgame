@@ -1,16 +1,19 @@
 package nl.emilvdijk.quizwebgame.controller;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.AnsweredQuestion;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.DynamicQuizService;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,16 +23,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @Slf4j
+@AllArgsConstructor
 public class QuizController {
 
   MyUserService userService;
   DynamicQuizService dynamicQuizService;
-
-  public QuizController(
-      @Autowired MyUserService userService, @Autowired DynamicQuizService dynamicQuizService) {
-    this.userService = userService;
-    this.dynamicQuizService = dynamicQuizService;
-  }
 
   /**
    * default page. returns homepage.
@@ -112,7 +110,18 @@ public class QuizController {
                         .getService(user)
                         .getQuestionByMyid(answeredQuestion.getQuestionId())));
 
-    model.addAttribute("questionsMap", questionsMap);
+    // https://stackoverflow.com/a/50453349
+    Map<AnsweredQuestion, Question> sortedQuestionsMAp =
+        questionsMap.entrySet().stream()
+            .sorted(
+                Comparator.comparing(value -> value.getKey().getAdded(), Comparator.reverseOrder()))
+            .collect(
+                Collectors.toMap(
+                    Map.Entry::getKey,
+                    Map.Entry::getValue,
+                    (left, right) -> left,
+                    LinkedHashMap::new));
+    model.addAttribute("questionsMap", sortedQuestionsMAp);
     return "questionHistory";
   }
 }
