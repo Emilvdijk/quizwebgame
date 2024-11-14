@@ -110,6 +110,8 @@ public class QuizController {
                         .getService(user)
                         .getQuestionByMyid(answeredQuestion.getQuestionId())));
 
+    // sorts the map based on the date of the answeredQuestion.
+    // the method in this answer was used:
     // https://stackoverflow.com/a/50453349
     Map<AnsweredQuestion, Question> sortedQuestionsMAp =
         questionsMap.entrySet().stream()
