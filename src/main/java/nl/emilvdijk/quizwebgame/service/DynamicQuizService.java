@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DynamicQuizService {
+
   private final Map<String, QuizService> quizServiceByAuthentication;
 
   @Autowired

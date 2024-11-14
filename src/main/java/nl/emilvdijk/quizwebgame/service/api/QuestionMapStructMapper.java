@@ -11,14 +11,18 @@ import org.mapstruct.factory.Mappers;
 public interface QuestionMapStructMapper {
   QuestionMapStructMapper INSTANCE = Mappers.getMapper(QuestionMapStructMapper.class);
 
-  List<Question> QuestionOpentdbListToQuestionList(
+  List<Question> questionOpenTdbListToQuestionList(
       List<QuestionOpentdbQuestion> questionOpentdbQuestionList);
 
+  @Mapping(target = "tags", ignore = true)
+  @Mapping(target = "origin", ignore = true)
+  @Mapping(target = "lastUpdatedOn", ignore = true)
+  @Mapping(target = "answers", ignore = true)
   @Mapping(target = "questionText", source = "question")
   @Mapping(target = "correctAnswer", source = "correct_answer")
   @Mapping(target = "incorrectAnswers", source = "incorrect_answers")
   @Mapping(target = "category", source = "category")
   @Mapping(target = "type", source = "type")
   @Mapping(target = "difficulty", source = "difficulty")
-  Question QuestionOpentdbToQuestion(QuestionOpentdbQuestion questionOpentdbQuestionList);
+  Question questionOpentdbToQuestion(QuestionOpentdbQuestion questionOpenTdbQuestionList);
 }

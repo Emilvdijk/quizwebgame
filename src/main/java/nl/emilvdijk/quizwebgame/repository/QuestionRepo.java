@@ -14,6 +14,4 @@ public interface QuestionRepo
   List<Question> findByIdNotIn(List<Long> idList);
 
   List<Question> findByIdNotInAndOrigin(List<Long> myIdList, ApiChoiceEnum origin);
-
-  List<Question> findByOrigin(ApiChoiceEnum origin);
 }

@@ -1,10 +1,12 @@
 package nl.emilvdijk.quizwebgame.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true)
+@AllArgsConstructor
 public enum CategoryTriviaApi {
   MUSIC("music"),
   SPORT_AND_LEISURE("sport_and_leisure"),
@@ -30,8 +32,4 @@ public enum CategoryTriviaApi {
     GENERAL_KNOWLEDGE
   };
   private final String displayValue;
-
-  CategoryTriviaApi(String displayValue) {
-    this.displayValue = displayValue;
-  }
 }

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
@@ -14,7 +15,6 @@ import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
 import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.model.MyUserDto;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,13 +26,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @Slf4j
+@AllArgsConstructor
 public class UserController {
 
   MyUserService userService;
-
-  public UserController(@Autowired MyUserService userService) {
-    this.userService = userService;
-  }
 
   /**
    * login page.

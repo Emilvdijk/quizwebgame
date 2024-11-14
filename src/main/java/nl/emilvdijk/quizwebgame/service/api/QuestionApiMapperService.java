@@ -31,7 +31,7 @@ public class QuestionApiMapperService {
 
   public List<Question> mapOpenTDBQuestions(QuestionOpentdb newQuestions) {
     List<Question> questionList =
-        QuestionMapStructMapper.INSTANCE.QuestionOpentdbListToQuestionList(
+        QuestionMapStructMapper.INSTANCE.questionOpenTdbListToQuestionList(
             newQuestions.getResults());
     questionList.forEach(question -> question.setOrigin(ApiChoiceEnum.OPENTDB));
     questionList.forEach(

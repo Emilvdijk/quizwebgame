@@ -9,34 +9,26 @@ import static org.springframework.data.jpa.domain.Specification.where;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class QuizServiceAuthenticated implements QuizService {
 
   QuestionRepo questionRepo;
   UserRepo userRepo;
   QuestionApiService questionApiService;
   private static final String APPLICABLE_ROLE = "ROLE_USER";
-
-  public QuizServiceAuthenticated(
-      @Autowired QuestionRepo questionRepo,
-      @Autowired UserRepo userRepo,
-      @Autowired QuestionApiService questionApiService) {
-    this.questionRepo = questionRepo;
-    this.userRepo = userRepo;
-    this.questionApiService = questionApiService;
-  }
 
   /**
    * returns question held by quiz service.

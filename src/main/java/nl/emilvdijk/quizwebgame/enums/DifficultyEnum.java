@@ -1,10 +1,12 @@
 package nl.emilvdijk.quizwebgame.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true)
+@AllArgsConstructor
 public enum DifficultyEnum {
   EASY("easy"),
   MEDIUM("medium"),
@@ -12,8 +14,4 @@ public enum DifficultyEnum {
   ALL("all difficulties");
 
   private final String displayValue;
-
-  DifficultyEnum(String displayValue) {
-    this.displayValue = displayValue;
-  }
 }

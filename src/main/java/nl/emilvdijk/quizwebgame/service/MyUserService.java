@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.AnsweredQuestion;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
@@ -13,7 +14,6 @@ import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import nl.emilvdijk.quizwebgame.model.MyUserDto;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,15 +21,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class MyUserService implements UserDetailsService {
 
   UserRepo userRepo;
   PasswordEncoder passwordEncoder;
-
-  public MyUserService(@Autowired PasswordEncoder passwordEncoder, @Autowired UserRepo userRepo) {
-    this.passwordEncoder = passwordEncoder;
-    this.userRepo = userRepo;
-  }
 
   /**
    * adds 2 user profiles for testing. FIXME should be removed if moved from testing or development
