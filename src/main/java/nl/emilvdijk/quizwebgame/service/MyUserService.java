@@ -120,6 +120,7 @@ public class MyUserService implements UserDetailsService {
         .username(newUser.getUsername())
         .password(passwordEncoder.encode(newUser.getPassword()))
         .myRoles(List.of("ROLE_USER"))
+        .questions(new ArrayList<>())
         .enabled(true)
         .userPreferences(
             UserPreferences.builder()
