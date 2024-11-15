@@ -113,7 +113,7 @@ public class QuizController {
     // sorts the map based on the date of the answeredQuestion.
     // the method in this answer was used:
     // https://stackoverflow.com/a/50453349
-    Map<AnsweredQuestion, Question> sortedQuestionsMAp =
+    Map<AnsweredQuestion, Question> sortedQuestionsMap =
         questionsMap.entrySet().stream()
             .sorted(
                 Comparator.comparing(value -> value.getKey().getAdded(), Comparator.reverseOrder()))
@@ -123,7 +123,7 @@ public class QuizController {
                     Map.Entry::getValue,
                     (left, right) -> left,
                     LinkedHashMap::new));
-    model.addAttribute("questionsMap", sortedQuestionsMAp);
+    model.addAttribute("questionsMap", sortedQuestionsMap);
     return "questionHistory";
   }
 }
