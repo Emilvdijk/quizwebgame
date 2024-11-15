@@ -1,15 +1,10 @@
 package nl.emilvdijk.quizwebgame.controller;
 
 import jakarta.servlet.http.HttpSession;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import nl.emilvdijk.quizwebgame.entity.AnsweredQuestion;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.DynamicQuizService;
@@ -26,8 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @AllArgsConstructor
 public class QuizController {
 
-  MyUserService userService;
-  DynamicQuizService dynamicQuizService;
+  @NonNull MyUserService userService;
+  @NonNull DynamicQuizService dynamicQuizService;
 
   /**
    * default page. returns homepage.
@@ -97,33 +92,10 @@ public class QuizController {
   }
 
   @GetMapping("/questionHistory")
-  public String ShowQuestionHistory(Model model, @AuthenticationPrincipal MyUser user) {
-    Map<AnsweredQuestion, Question> questionsMap = new HashMap<>();
-    MyUser myUser = userService.loadUserByUsername(user.getUsername());
-    myUser
-        .getAnsweredQuestions()
-        .forEach(
-            answeredQuestion ->
-                questionsMap.put(
-                    answeredQuestion,
-                    dynamicQuizService
-                        .getService(user)
-                        .getQuestionByMyid(answeredQuestion.getQuestionId())));
-
-    // sorts the map based on the date of the answeredQuestion.
-    // the method in this answer was used:
-    // https://stackoverflow.com/a/50453349
-    Map<AnsweredQuestion, Question> sortedQuestionsMap =
-        questionsMap.entrySet().stream()
-            .sorted(
-                Comparator.comparing(value -> value.getKey().getAdded(), Comparator.reverseOrder()))
-            .collect(
-                Collectors.toMap(
-                    Map.Entry::getKey,
-                    Map.Entry::getValue,
-                    (existing, replacement) -> existing,
-                    LinkedHashMap::new));
-    model.addAttribute("questionsMap", sortedQuestionsMap);
+  public String showQuestionHistory(Model model, @AuthenticationPrincipal MyUser user) {
+    model.addAttribute(
+        "questionsMap",
+        dynamicQuizService.getQuizServiceAuthenticated().generateAnswersQuestionsMap(user));
     return "questionHistory";
   }
 }

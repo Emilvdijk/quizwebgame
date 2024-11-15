@@ -8,17 +8,20 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import nl.emilvdijk.quizwebgame.entity.AnsweredQuestion;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
-import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
-import org.springframework.data.domain.Example;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +29,7 @@ import org.springframework.stereotype.Service;
 public class QuizServiceAuthenticated implements QuizService {
 
   QuestionRepo questionRepo;
-  UserRepo userRepo;
+  MyUserService userService;
   QuestionApiService questionApiService;
   private static final String APPLICABLE_ROLE = "ROLE_USER";
 
@@ -39,9 +42,9 @@ public class QuizServiceAuthenticated implements QuizService {
   public Question getNewQuestion() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     // FIXME when a new user is made and logs in the Questions field is null
-    if (user.getQuestions() == null) {
-      user.setQuestions(new ArrayList<>());
-    }
+    //    if (user.getQuestions() == null) {
+    //      user.setQuestions(new ArrayList<>());
+    //    }
 
     if (user.getQuestions().isEmpty()) {
       getNewQuestions();
@@ -52,11 +55,7 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public void getNewQuestions() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    MyUser myUser =
-        userRepo
-            .findByUsername(user.getUsername())
-            .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-
+    MyUser myUser = userService.loadUserByUsername(user.getUsername());
     List<Long> questionIdList = new ArrayList<>();
     myUser
         .getAnsweredQuestions()
@@ -85,10 +84,7 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public void addNewQuestionsFromApi() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    MyUser myUser =
-        userRepo
-            .findByUsername(user.getUsername())
-            .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+    MyUser myUser = userService.loadUserByUsername(user.getUsername());
     List<Question> newQuestions = questionApiService.getNewQuestions(myUser);
     questionRepo.saveAll(newQuestions);
   }
@@ -109,7 +105,24 @@ public class QuizServiceAuthenticated implements QuizService {
     return APPLICABLE_ROLE;
   }
 
-  public List<Question> findQuestion(Question probe) {
-    return questionRepo.findAll(Example.of(probe));
+  public Map<AnsweredQuestion, Question> generateAnswersQuestionsMap(MyUser user) {
+    Map<AnsweredQuestion, Question> questionsMap = new HashMap<>();
+    MyUser myUser = userService.loadUserByUsername(user.getUsername());
+    myUser
+        .getAnsweredQuestions()
+        .forEach(
+            answeredQuestion ->
+                questionsMap.put(
+                    answeredQuestion, getQuestionByMyid(answeredQuestion.getQuestionId())));
+
+    // sorts the map based on the date of the answeredQuestion.
+    return questionsMap.entrySet().stream()
+        .sorted(Comparator.comparing(value -> value.getKey().getAdded(), Comparator.reverseOrder()))
+        .collect(
+            Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (existing, replacement) -> existing,
+                LinkedHashMap::new));
   }
 }

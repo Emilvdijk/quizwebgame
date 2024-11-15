@@ -29,4 +29,8 @@ public class DynamicQuizService {
       return quizServiceByAuthentication.get("ANONYMOUS");
     }
   }
+
+  public QuizServiceAuthenticated getQuizServiceAuthenticated() {
+    return (QuizServiceAuthenticated) quizServiceByAuthentication.get("ROLE_USER");
+  }
 }
