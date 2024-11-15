@@ -121,7 +121,7 @@ public class QuizController {
                 Collectors.toMap(
                     Map.Entry::getKey,
                     Map.Entry::getValue,
-                    (left, right) -> left,
+                    (existing, replacement) -> existing,
                     LinkedHashMap::new));
     model.addAttribute("questionsMap", sortedQuestionsMap);
     return "questionHistory";
