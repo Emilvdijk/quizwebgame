@@ -8,7 +8,7 @@ import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
-import nl.emilvdijk.quizwebgame.model.MyUserDto;
+import nl.emilvdijk.quizwebgame.model.NewMyUser;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -69,9 +69,9 @@ class MyUserServiceTest {
   @Test
   @Order(4)
   void registerNewUser() {
-    MyUserDto myUserDtoTest =
-        MyUserDto.builder().username("testUsername").password("testPassword").build();
-    myUserService.registerNewUser(myUserDtoTest);
+    NewMyUser newMyUserTest =
+        NewMyUser.builder().username("testUsername").password("testPassword").build();
+    myUserService.registerNewUser(newMyUserTest);
     assertEquals("testUsername", myUserService.loadUserByUsername("testUsername").getUsername());
   }
 

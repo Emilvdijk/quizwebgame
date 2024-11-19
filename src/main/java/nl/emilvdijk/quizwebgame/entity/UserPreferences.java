@@ -15,12 +15,9 @@ import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Getter
-@Setter
 @SuperBuilder
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class UserPreferences extends BaseEntity implements Serializable {
 
   @Serial private static final long serialVersionUID = -682768038923270772L;

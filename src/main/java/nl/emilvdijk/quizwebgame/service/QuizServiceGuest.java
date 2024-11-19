@@ -19,7 +19,7 @@ public class QuizServiceGuest implements QuizService {
 
   QuestionRepo questionRepo;
   QuestionApiService questionApiService;
-  private final String APPLICABLE_ROLE = "ANONYMOUS";
+  private static final String APPLICABLE_ROLE = "ANONYMOUS";
 
   // FIXME store in session?
   @Getter @Setter List<Question> questions = new ArrayList<>();

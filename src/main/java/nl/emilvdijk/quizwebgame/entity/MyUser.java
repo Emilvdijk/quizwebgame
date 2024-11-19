@@ -5,11 +5,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,12 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "myusers")
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
 @SuperBuilder
-@AllArgsConstructor
+@Data
+@NoArgsConstructor
 public class MyUser extends BaseEntity implements UserDetails, Serializable {
 
   @Serial private static final long serialVersionUID = -8443145631573894870L;

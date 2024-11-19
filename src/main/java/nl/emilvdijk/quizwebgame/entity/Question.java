@@ -18,12 +18,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.Specification;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @SuperBuilder
-@Getter
-@Setter
-@ToString
+@NoArgsConstructor
 public class Question extends BaseEntity implements Serializable {
 
   @Serial private static final long serialVersionUID = -4638285421950167006L;

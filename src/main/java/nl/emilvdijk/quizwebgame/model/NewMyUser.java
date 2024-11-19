@@ -5,13 +5,11 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import nl.emilvdijk.quizwebgame.validator.UserAlreadyExistsConstraint;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder(access = AccessLevel.PUBLIC)
-public class MyUserDto {
+public class NewMyUser {
 
   @NotEmpty(message = "please enter username")
   @UserAlreadyExistsConstraint(message = "username already exists")

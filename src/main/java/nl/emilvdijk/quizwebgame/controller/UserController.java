@@ -13,7 +13,7 @@ import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
 import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
-import nl.emilvdijk.quizwebgame.model.MyUserDto;
+import nl.emilvdijk.quizwebgame.model.NewMyUser;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,11 +44,11 @@ public class UserController {
   /**
    * returns the registration html page so the user can register as a new user.
    *
-   * @param myUserDto add new user model
+   * @param newMyUser add new user model
    * @return return the registration html page
    */
   @GetMapping("/register")
-  public String showRegisterForm(MyUserDto myUserDto) {
+  public String showRegisterForm(NewMyUser newMyUser) {
     return "register";
   }
 
@@ -60,7 +60,7 @@ public class UserController {
    */
   @PostMapping("/register")
   public String registerUser(
-      HttpServletRequest request, @Valid MyUserDto user, BindingResult bindingResult) {
+      HttpServletRequest request, @Valid NewMyUser user, BindingResult bindingResult) {
 
     if (bindingResult.hasErrors()) {
       return "register";

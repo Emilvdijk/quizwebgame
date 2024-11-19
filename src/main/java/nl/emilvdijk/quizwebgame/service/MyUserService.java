@@ -12,7 +12,7 @@ import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
-import nl.emilvdijk.quizwebgame.model.MyUserDto;
+import nl.emilvdijk.quizwebgame.model.NewMyUser;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -103,7 +103,7 @@ public class MyUserService implements UserDetailsService {
    *
    * @param newUser user dto to be saved
    */
-  public void registerNewUser(MyUserDto newUser) {
+  public void registerNewUser(NewMyUser newUser) {
     MyUser registerUser = constructUser(newUser);
     saveUser(registerUser);
     log.debug("new account created with username: {}", registerUser.getUsername());
@@ -115,7 +115,7 @@ public class MyUserService implements UserDetailsService {
    * @param newUser to be transformed to user
    * @return new user object
    */
-  private MyUser constructUser(MyUserDto newUser) {
+  private MyUser constructUser(NewMyUser newUser) {
     return MyUser.builder()
         .username(newUser.getUsername())
         .password(passwordEncoder.encode(newUser.getPassword()))

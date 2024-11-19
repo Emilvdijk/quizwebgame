@@ -5,21 +5,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import java.time.Instant;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 
-@Getter
-@Setter
-@ToString
+@Data
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 @MappedSuperclass
+@NoArgsConstructor
 public abstract class BaseEntity {
 
   @Id

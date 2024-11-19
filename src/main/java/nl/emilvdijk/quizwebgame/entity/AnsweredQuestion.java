@@ -4,20 +4,21 @@ import jakarta.persistence.Entity;
 import java.io.Serial;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@NoArgsConstructor
 @SuperBuilder
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
-@Getter
 public class AnsweredQuestion extends BaseEntity implements Serializable {
 
   @Serial private static final long serialVersionUID = -7224721293078656698L;
-  private Long myUserId;
-  private Long questionId;
-  private String chosenAnswer;
-  private boolean correct;
+  @NonNull private Long myUserId;
+  @NonNull private Long questionId;
+  @NonNull private String chosenAnswer;
+  @NonNull private Boolean correct;
 }
