@@ -43,9 +43,10 @@ public class QuestionApiService {
         new QuestionsApiCaller(new ParameterizedTypeReference<QuestionOpentdb>() {});
     QuestionOpentdb questionOpenTdbResponse = questionsApiCaller.getNewQuestion(uri);
     if (Objects.equals(questionOpenTdbResponse.getResponse_code(), "1")) {
-      log.error("Could not return results. The API doesn't have enough questions for your query.");
+      log.error(
+          "Could not return results. The OpenTdb API doesn't have enough questions for your query.");
       throw new ApiErrorException(
-          "Could not return results. The API doesn't have enough questions for your query.");
+          "Could not return results. The OpenTdb API doesn't have enough questions for your query.");
     }
     return questionApiMapperService.mapOpenTDBQuestions(questionOpenTdbResponse);
   }
