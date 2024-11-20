@@ -30,6 +30,13 @@ public class QuestionApiService {
     };
   }
 
+  public List<Question> getDefaultQuestions() {
+    QuestionsApiCaller<List<QuestionTriviaApi>> questionsApiService =
+        new QuestionsApiCaller<>(new ParameterizedTypeReference<>() {});
+    return questionApiMapperService.mapTriviaApiQuestions(
+        questionsApiService.getNewQuestions(apiUrlBuilder.getDefault()));
+  }
+
   private List<Question> getNewTriviaApiQuestions(MyUser user) {
     URI uri = apiUrlBuilder.generateTriviaApiUri(user);
     QuestionsApiCaller<List<QuestionTriviaApi>> questionsApiService =
@@ -56,12 +63,5 @@ public class QuestionApiService {
     newQuestionsList.addAll(getNewTriviaApiQuestions(user));
     newQuestionsList.addAll(getNewOpenTdbQuestions(user));
     return newQuestionsList;
-  }
-
-  public List<Question> getDefaultQuestions() {
-    QuestionsApiCaller<?> questionsApiService =
-        new QuestionsApiCaller<>(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
-    return questionApiMapperService.mapTriviaApiQuestions(
-        questionsApiService.getDefaultQuestions());
   }
 }

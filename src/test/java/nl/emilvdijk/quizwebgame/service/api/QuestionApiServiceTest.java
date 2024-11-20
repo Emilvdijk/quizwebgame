@@ -59,4 +59,12 @@ class QuestionApiServiceTest {
     questionList.forEach(System.out::println);
     assertEquals(50, questionList.size());
   }
+
+  /** actually calls api service */
+  @Test
+  void getDefaultQuestions() {
+    List<Question> questionList = questionApiService.getDefaultQuestions();
+    questionList.forEach(System.out::println);
+    assertEquals(50, questionList.size());
+  }
 }

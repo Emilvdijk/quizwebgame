@@ -51,6 +51,10 @@ public class ApiUrlBuilder {
     return uri;
   }
 
+  URI getDefault() {
+    return UriComponentsBuilder.fromUriString(triviaApiUrl).build().toUri();
+  }
+
   private String getDifficultyUriVariables(UserPreferences userPreferences) {
     return switch (userPreferences.getDifficultyEnum()) {
       case EASY -> DifficultyEnum.EASY.getDisplayValue();
