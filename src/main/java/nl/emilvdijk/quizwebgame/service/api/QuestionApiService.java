@@ -41,7 +41,7 @@ public class QuestionApiService {
     URI uri = apiUrlBuilder.generateUriOpenTdb(user);
     QuestionsApiCaller<QuestionOpentdb> questionsApiCaller =
         new QuestionsApiCaller<>(new ParameterizedTypeReference<>() {});
-    QuestionOpentdb questionOpenTdbResponse = questionsApiCaller.getNewQuestion(uri);
+    QuestionOpentdb questionOpenTdbResponse = questionsApiCaller.getNewQuestions(uri);
     if (Objects.equals(questionOpenTdbResponse.getResponse_code(), "1")) {
       log.error(
           "Could not return results. The OpenTdb API doesn't have enough questions for your query.");

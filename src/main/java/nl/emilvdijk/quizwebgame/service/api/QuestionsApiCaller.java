@@ -32,13 +32,6 @@ public class QuestionsApiCaller<T> {
     return response.getBody();
   }
 
-  public T getNewQuestion(URI uri) {
-    log.debug("attempting call to: {}", uri);
-    ResponseEntity<T> response = restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
-    log.debug("call made with response code: {}", response.getStatusCode());
-    return response.getBody();
-  }
-
   public List<QuestionTriviaApi> getDefaultQuestions() {
     log.debug("attempting call to: https://the-trivia-api.com/v2/questions?limit=50");
     ResponseEntity<QuestionTriviaApi[]> response =
