@@ -2,6 +2,7 @@ package nl.emilvdijk.quizwebgame.service.api;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,31 +17,26 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class QuestionsApiCaller<T> {
 
-  private ParameterizedTypeReference<List<T>> responseType;
+  private ParameterizedTypeReference<T> responseType;
   private RestTemplate restTemplate;
 
-  public QuestionsApiCaller(ParameterizedTypeReference<List<T>> responseType) {
+  public QuestionsApiCaller(ParameterizedTypeReference<T> responseType) {
     this.responseType = responseType;
     this.restTemplate = new RestTemplate();
   }
 
-  public List<T> getNewQuestions(URI uri) {
+  public T getNewQuestions(URI uri) {
     log.debug("attempting call to: {}", uri);
-    ResponseEntity<List<T>> response =
-        restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
-    log.debug(
-        "call made with response code: {} with bodySize: {}",
-        response.getStatusCode(),
-        response.getBody().size());
+    ResponseEntity<T> response = restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
+    log.debug("call made with response code: {}", response.getStatusCode());
     return response.getBody();
   }
 
   public T getNewQuestion(URI uri) {
     log.debug("attempting call to: {}", uri);
-    ResponseEntity<List<T>> response =
-        restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
+    ResponseEntity<T> response = restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
     log.debug("call made with response code: {}", response.getStatusCode());
-    return (T) response.getBody();
+    return response.getBody();
   }
 
   public List<QuestionTriviaApi> getDefaultQuestions() {
@@ -49,6 +45,6 @@ public class QuestionsApiCaller<T> {
         restTemplate.getForEntity(
             "https://the-trivia-api.com/v2/questions?limit=50", QuestionTriviaApi[].class);
     log.debug("call made with response code: {}", response.getStatusCode());
-    return List.of(response.getBody());
+    return List.of(Objects.requireNonNull(response.getBody()));
   }
 }

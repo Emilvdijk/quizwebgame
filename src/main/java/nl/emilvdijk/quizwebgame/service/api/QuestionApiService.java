@@ -32,15 +32,15 @@ public class QuestionApiService {
 
   private List<Question> getNewTriviaApiQuestions(MyUser user) {
     URI uri = apiUrlBuilder.generateTriviaApiUri(user);
-    QuestionsApiCaller<QuestionTriviaApi> questionsApiService =
-        new QuestionsApiCaller(new ParameterizedTypeReference<List<QuestionTriviaApi>>() {});
+    QuestionsApiCaller<List<QuestionTriviaApi>> questionsApiService =
+        new QuestionsApiCaller<>(new ParameterizedTypeReference<>() {});
     return questionApiMapperService.mapTriviaApiQuestions(questionsApiService.getNewQuestions(uri));
   }
 
   private List<Question> getNewOpenTdbQuestions(MyUser user) {
     URI uri = apiUrlBuilder.generateUriOpenTdb(user);
     QuestionsApiCaller<QuestionOpentdb> questionsApiCaller =
-        new QuestionsApiCaller(new ParameterizedTypeReference<QuestionOpentdb>() {});
+        new QuestionsApiCaller<>(new ParameterizedTypeReference<>() {});
     QuestionOpentdb questionOpenTdbResponse = questionsApiCaller.getNewQuestion(uri);
     if (Objects.equals(questionOpenTdbResponse.getResponse_code(), "1")) {
       log.error(
