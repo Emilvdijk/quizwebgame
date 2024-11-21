@@ -23,7 +23,7 @@ public class QuestionApiMapperService {
       question.setTags(questionTriviaApi.getTags());
       question.setType(questionTriviaApi.getType());
       question.setDifficulty(questionTriviaApi.getDifficulty());
-      question.setOrigin(ApiChoiceEnum.TRIVIAAPI);
+      question.setOrigin(ApiChoiceEnum.TRIVIA_API);
       questionList.add(question);
     }
     return questionList;
@@ -33,7 +33,7 @@ public class QuestionApiMapperService {
     List<Question> questionList =
         QuestionMapStructMapper.INSTANCE.questionOpenTdbListToQuestionList(
             newQuestions.getResults());
-    questionList.forEach(question -> question.setOrigin(ApiChoiceEnum.OPENTDB));
+    questionList.forEach(question -> question.setOrigin(ApiChoiceEnum.OPEN_TDB));
     questionList.forEach(
         question -> question.setQuestionText(HtmlUtils.htmlUnescape(question.getQuestionText())));
     questionList.forEach(

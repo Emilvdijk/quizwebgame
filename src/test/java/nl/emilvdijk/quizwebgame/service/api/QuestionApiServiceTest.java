@@ -25,9 +25,12 @@ class QuestionApiServiceTest {
   void getNewQuestions() {
     MyUser testUser =
         MyUser.builder()
+            .username("testuser")
+            .password("test")
+            .myRoles(List.of())
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                     .difficultyEnum(DifficultyEnum.ALL)
                     .categoryOpenTDBS(new ArrayList<>())
                     .categoryTriviaApi(List.of())
@@ -47,9 +50,12 @@ class QuestionApiServiceTest {
   void getNewQuestion() {
     MyUser testUser =
         MyUser.builder()
+            .username("testuser")
+            .password("test")
+            .myRoles(List.of())
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                    .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                     .difficultyEnum(DifficultyEnum.ALL)
                     .categoryOpenTDBS(new ArrayList<>())
                     .build())

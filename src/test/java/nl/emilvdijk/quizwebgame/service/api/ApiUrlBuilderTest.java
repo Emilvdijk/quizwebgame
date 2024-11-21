@@ -26,9 +26,11 @@ class ApiUrlBuilderTest {
     MyUser user =
         MyUser.builder()
             .username("testUser")
+            .password("test")
+            .myRoles(List.of())
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                     .difficultyEnum(DifficultyEnum.EASY)
                     .categoryOpenTDBS(new ArrayList<>())
                     .categoryTriviaApi(List.of())
@@ -42,9 +44,11 @@ class ApiUrlBuilderTest {
     MyUser user2 =
         MyUser.builder()
             .username("testUser")
+            .password("test")
+            .myRoles(List.of())
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                     .difficultyEnum(DifficultyEnum.MEDIUM)
                     .categoryOpenTDBS(new ArrayList<>())
                     .categoryTriviaApi(List.of())
@@ -59,9 +63,11 @@ class ApiUrlBuilderTest {
     MyUser user3 =
         MyUser.builder()
             .username("testUser")
+            .password("test")
+            .myRoles(List.of())
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                     .difficultyEnum(DifficultyEnum.ALL)
                     .categoryOpenTDBS(new ArrayList<>())
                     .categoryTriviaApi(List.of())
@@ -78,9 +84,11 @@ class ApiUrlBuilderTest {
     MyUser user =
         MyUser.builder()
             .username("testUser")
+            .password("test")
+            .myRoles(List.of())
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                    .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                     .difficultyEnum(DifficultyEnum.EASY)
                     .categoryOpenTDBS(new ArrayList<>())
                     .categoryTriviaApi(List.of())
@@ -94,9 +102,11 @@ class ApiUrlBuilderTest {
     MyUser user2 =
         MyUser.builder()
             .username("testUser")
+            .password("test")
+            .myRoles(List.of())
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                    .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                     .difficultyEnum(DifficultyEnum.MEDIUM)
                     .categoryOpenTDBS(new ArrayList<>())
                     .categoryTriviaApi(List.of())
@@ -110,9 +120,11 @@ class ApiUrlBuilderTest {
     MyUser user3 =
         MyUser.builder()
             .username("testUser")
+            .password("test")
+            .myRoles(List.of())
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                    .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                     .difficultyEnum(DifficultyEnum.ALL)
                     .categoryOpenTDBS(new ArrayList<>())
                     .categoryTriviaApi(List.of())
@@ -127,9 +139,12 @@ class ApiUrlBuilderTest {
         apiUrlBuilder
             .generateUriOpenTdb(
                 MyUser.builder()
+                    .username("testUser")
+                    .password("test")
+                    .myRoles(List.of())
                     .userPreferences(
                         UserPreferences.builder()
-                            .apiChoiceEnum(ApiChoiceEnum.OPENTDB)
+                            .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                             .difficultyEnum(DifficultyEnum.ALL)
                             .categoryOpenTDBS(
                                 List.of(CategoryOpenTDB.ANIMALS, CategoryOpenTDB.CELEBRITIES))

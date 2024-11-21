@@ -28,10 +28,10 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class QuizServiceAuthenticated implements QuizService {
 
+  private static final String APPLICABLE_ROLE = "ROLE_USER";
   QuestionRepo questionRepo;
   MyUserService userService;
   QuestionApiService questionApiService;
-  private static final String APPLICABLE_ROLE = "ROLE_USER";
 
   /**
    * returns question held by quiz service.
@@ -48,6 +48,7 @@ public class QuizServiceAuthenticated implements QuizService {
     return user.getQuestions().getFirst();
   }
 
+  /** FIXME */
   @Override
   public void getNewQuestions() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -67,6 +68,13 @@ public class QuizServiceAuthenticated implements QuizService {
     user.setQuestions(questions);
   }
 
+  /**
+   * FIXME
+   *
+   * @param userPreferences
+   * @param questionIdList
+   * @return
+   */
   public List<Question> getQuestionsByChoice(
       UserPreferences userPreferences, List<Long> questionIdList) {
     return questionRepo.findAll(
@@ -101,6 +109,12 @@ public class QuizServiceAuthenticated implements QuizService {
     return APPLICABLE_ROLE;
   }
 
+  /**
+   * FIXME
+   *
+   * @param user
+   * @return
+   */
   public Map<AnsweredQuestion, Question> generateAnswersQuestionsMap(MyUser user) {
     Map<AnsweredQuestion, Question> questionsMap = new HashMap<>();
     MyUser myUser = userService.loadUserByUsername(user.getUsername());

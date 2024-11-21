@@ -19,14 +19,14 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(ApiErrorException.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  public String ApiErrorHandler(
+  public String apiErrorHandler(
       ApiErrorException ex, Model model, @AuthenticationPrincipal MyUser myUser) {
-    ResetUserSettings(myUser);
+    resetUserSettings(myUser);
     model.addAttribute("errorMessage", ex.getMessage());
     return "error";
   }
 
-  private void ResetUserSettings(MyUser myUser) {
+  private void resetUserSettings(MyUser myUser) {
     userService.resetUserSettings(myUser);
   }
 }

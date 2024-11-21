@@ -3,11 +3,13 @@ package nl.emilvdijk.quizwebgame.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import nl.emilvdijk.quizwebgame.model.NewMyUser;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -36,7 +38,10 @@ class MyUserServiceTest {
             .username("testUser")
             .password(passwordEncoder.encode("testPassword"))
             .userPreferences(
-                UserPreferences.builder().apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI).build())
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
+                    .difficultyEnum(DifficultyEnum.ALL)
+                    .build())
             .myRoles(roles)
             .enabled(true)
             .answeredQuestions(new ArrayList<>())
@@ -60,10 +65,10 @@ class MyUserServiceTest {
   @Order(3)
   void updateUser() {
     MyUser testIUpdateUser = myUserService.loadUserByUsername("testUser");
-    testIUpdateUser.getUserPreferences().setApiChoiceEnum(ApiChoiceEnum.OPENTDB);
+    testIUpdateUser.getUserPreferences().setApiChoiceEnum(ApiChoiceEnum.OPEN_TDB);
     myUserService.updateUser(testIUpdateUser);
     MyUser testUpdatedUser = myUserService.loadUserByUsername("testUser");
-    assertEquals(ApiChoiceEnum.OPENTDB, testUpdatedUser.getUserPreferences().getApiChoiceEnum());
+    assertEquals(ApiChoiceEnum.OPEN_TDB, testUpdatedUser.getUserPreferences().getApiChoiceEnum());
   }
 
   @Test
@@ -81,7 +86,16 @@ class MyUserServiceTest {
     MyUser testUser = myUserService.loadUserByUsername("testUser");
     assertEquals(0, testUser.getAnsweredQuestions().size());
     myUserService.markQuestionDone(
-        Question.builder().id(2L).build(), testUser, "questionChosenAnswer");
+        Question.builder()
+            .id(2L)
+            .questionText("test")
+            .category("test")
+            .correctAnswer("test")
+            .difficulty("test")
+            .incorrectAnswers(List.of())
+            .build(),
+        testUser,
+        "questionChosenAnswer");
     testUser = myUserService.loadUserByUsername("testUser");
     assertEquals(1, testUser.getAnsweredQuestions().size());
   }

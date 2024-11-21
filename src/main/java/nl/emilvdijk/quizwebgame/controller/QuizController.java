@@ -24,11 +24,6 @@ public class QuizController {
   @NonNull MyUserService userService;
   @NonNull DynamicQuizService dynamicQuizService;
 
-  /**
-   * default page. returns homepage.
-   *
-   * @return home page
-   */
   @GetMapping("/")
   public String showHomePage() {
     return "home";

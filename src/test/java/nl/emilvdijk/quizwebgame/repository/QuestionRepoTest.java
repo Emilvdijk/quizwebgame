@@ -24,17 +24,17 @@ class QuestionRepoTest {
   static void createTestQuestions(@Autowired QuestionRepo questionRepo) {
     Question question = new Question();
     question.setId(1L);
-    question.setOrigin(ApiChoiceEnum.TRIVIAAPI);
+    question.setOrigin(ApiChoiceEnum.TRIVIA_API);
     questionRepo.save(question);
 
     Question question2 = new Question();
     question2.setId(2L);
-    question2.setOrigin(ApiChoiceEnum.TRIVIAAPI);
+    question2.setOrigin(ApiChoiceEnum.TRIVIA_API);
     questionRepo.save(question2);
 
     Question question3 = new Question();
     question3.setId(3L);
-    question3.setOrigin(ApiChoiceEnum.OPENTDB);
+    question3.setOrigin(ApiChoiceEnum.OPEN_TDB);
     questionRepo.save(question3);
   }
 
@@ -63,19 +63,19 @@ class QuestionRepoTest {
     List<Long> longList = new ArrayList<>();
     longList.add(2L);
     List<Question> questionList =
-        questionRepo.findByIdNotInAndOrigin(longList, ApiChoiceEnum.OPENTDB);
+        questionRepo.findByIdNotInAndOrigin(longList, ApiChoiceEnum.OPEN_TDB);
     questionList.forEach(question -> assertNotEquals(2L, question.getId()));
-    questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPENTDB, question.getOrigin()));
+    questionList.forEach(question -> assertEquals(ApiChoiceEnum.OPEN_TDB, question.getOrigin()));
 
     List<Question> questionList2 =
-        questionRepo.findByIdNotInAndOrigin(longList, ApiChoiceEnum.TRIVIAAPI);
+        questionRepo.findByIdNotInAndOrigin(longList, ApiChoiceEnum.TRIVIA_API);
     questionList2.forEach(question -> assertNotEquals(2L, question.getId()));
-    questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI, question.getOrigin()));
+    questionList2.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIA_API, question.getOrigin()));
 
     // NotIn derived query will fail if given empty list
     List<Long> longList3 = new ArrayList<>();
     List<Question> questionList3 =
-        questionRepo.findByIdNotInAndOrigin(longList3, ApiChoiceEnum.TRIVIAAPI);
+        questionRepo.findByIdNotInAndOrigin(longList3, ApiChoiceEnum.TRIVIA_API);
     assertTrue(questionList3.isEmpty());
   }
 }

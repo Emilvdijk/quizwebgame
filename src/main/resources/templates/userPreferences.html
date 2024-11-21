@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Preferences</title>
 </head>
 <body>
-<P>welcome to user preferences <span th:remove="tag"
-                                     sec:authentication="name">user</span></P>
+<P>welcome to user preferences <span sec:authentication="name"
+                                     th:remove="tag">user</span></P>
 <br>
-<form th:action="@{/userPreferences}" th:object="${userPreferences}" method="post">
-  <input type="hidden" th:field="*{id}"/>
-  <input type="hidden" th:field="*{added}"/>
+<form method="post" th:action="@{/userPreferences}" th:object="${userPreferences}">
+  <input th:field="*{id}" type="hidden"/>
+  <input th:field="*{added}" type="hidden"/>
   <P>choose which api to use:</P>
   <select name="apiChoice" th:field="*{apiChoiceEnum}">
     <option th:each="apiChoiceOpt : ${T(nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum).values()}"
-            th:value="${apiChoiceOpt}" th:text="${apiChoiceOpt.displayValue}"></option>
+            th:text="${apiChoiceOpt.displayValue}" th:value="${apiChoiceOpt}"></option>
   </select>
   <P>choose the difficulty of questions:</P>
   <ul>
     <li th:each="diff : ${T(nl.emilvdijk.quizwebgame.enums.DifficultyEnum).values()}">
-      <input type="radio" th:field="*{difficultyEnum}" th:value="${diff}"/>
+      <input th:field="*{difficultyEnum}" th:value="${diff}" type="radio"/>
       <label th:for="${#ids.prev('difficultyEnum')}"
              th:text="${diff.displayValue}"></label>
     </li>
@@ -28,7 +28,7 @@
   <P>choose the categories of TriviaApi questions:</P>
   <ul>
     <li th:each="categoryTriviaApi : ${allCategoriesTriviaApi}">
-      <input type="checkbox" th:field="*{categoryTriviaApi}" th:value="${categoryTriviaApi}"/>
+      <input th:field="*{categoryTriviaApi}" th:value="${categoryTriviaApi}" type="checkbox"/>
       <label th:for="${#ids.prev('categoryTriviaApi')}"
              th:text="${categoryTriviaApi.displayValue}"></label>
     </li>
@@ -36,7 +36,7 @@
   <P>choose the categories of OpenTDB questions:</P>
   <ul>
     <li th:each="categoryOpenTDB : ${allCategoriesOpenTDB}">
-      <input type="checkbox" th:field="*{categoryOpenTDBS}" th:value="${categoryOpenTDB}"/>
+      <input th:field="*{categoryOpenTDBS}" th:value="${categoryOpenTDB}" type="checkbox"/>
       <label th:for="${#ids.prev('categoryOpenTDBS')}"
              th:text="${categoryOpenTDB.displayValue}"></label>
     </li>
@@ -47,8 +47,10 @@
 <br>
 <br>
 <div sec:authorize="!hasRole('ADMIN')">
-  <form th:action="@{/deleteAccount}" method="post"><input type="submit" value="Delete Account"
-                                                           th:onclick="if(!(confirm('Are you sure you want to delete your account?' ) )) return false"/>
+  <form method="post" th:action="@{/deleteAccount}"><input
+      th:onclick="if(!(confirm('Are you sure you want to delete your account?' ) )) return false"
+      type="submit"
+      value="Delete Account"/>
   </form>
 </div>
 </body>

@@ -17,11 +17,9 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class QuizServiceGuest implements QuizService {
 
+  private static final String APPLICABLE_ROLE = "ANONYMOUS";
   QuestionRepo questionRepo;
   QuestionApiService questionApiService;
-  private static final String APPLICABLE_ROLE = "ANONYMOUS";
-
-  // FIXME store in session?
   @Getter @Setter List<Question> questions = new ArrayList<>();
 
   @Override
@@ -42,12 +40,11 @@ public class QuizServiceGuest implements QuizService {
     Collections.shuffle(questions);
   }
 
-  /** gets new questions from the question api and saves them to the repo. */
   @Override
   public void addNewQuestionsFromApi() {
     List<Question> questionList = questionApiService.getDefaultQuestions();
     questionRepo.saveAll(questionList);
-    log.debug("{} questions added to questionrepo", questionList.size());
+    log.debug("{} questions added to question repo", questionList.size());
   }
 
   @Override

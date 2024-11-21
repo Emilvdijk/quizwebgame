@@ -25,27 +25,18 @@ public class Question extends BaseEntity implements Serializable {
 
   @Serial private static final long serialVersionUID = -4638285421950167006L;
 
-  private String questionText;
-  private String correctAnswer;
-  private List<String> incorrectAnswers;
-  private String category;
+  @NonNull private String questionText;
+  @NonNull private String correctAnswer;
+  @NonNull private List<String> incorrectAnswers;
+  @NonNull private String category;
   private List<String> tags;
   private String type;
-  private String difficulty;
+  @NonNull private String difficulty;
   @Transient private List<String> answers;
   @UpdateTimestamp private Instant lastUpdatedOn;
 
   @Enumerated(EnumType.STRING)
   private ApiChoiceEnum origin;
-
-  /** prepares and populates the answers field. */
-  public void prepareAnswers() {
-    List<String> preparedAnswers = new ArrayList<>();
-    preparedAnswers.add(this.correctAnswer);
-    preparedAnswers.addAll(this.incorrectAnswers);
-    Collections.shuffle(preparedAnswers);
-    this.answers = preparedAnswers;
-  }
 
   public static Specification<Question> difficultyEquals(DifficultyEnum difficultyEnum) {
     return (question, query, criteriaBuilder) -> {
@@ -88,5 +79,14 @@ public class Question extends BaseEntity implements Serializable {
       }
       return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
     };
+  }
+
+  /** prepares and populates the answers field. */
+  public void prepareAnswers() {
+    List<String> preparedAnswers = new ArrayList<>();
+    preparedAnswers.add(this.correctAnswer);
+    preparedAnswers.addAll(this.incorrectAnswers);
+    Collections.shuffle(preparedAnswers);
+    this.answers = preparedAnswers;
   }
 }

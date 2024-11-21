@@ -43,7 +43,7 @@ public class MyUserService implements UserDetailsService {
             .enabled(true)
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                    .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                     .difficultyEnum(DifficultyEnum.ALL)
                     .build())
             .build();
@@ -54,7 +54,7 @@ public class MyUserService implements UserDetailsService {
     adminRoles.add("ROLE_USER");
     UserPreferences adminPreferences =
         UserPreferences.builder()
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+            .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
             .difficultyEnum(DifficultyEnum.ALL)
             .build();
 
@@ -70,13 +70,8 @@ public class MyUserService implements UserDetailsService {
     log.debug("added 2 users");
   }
 
-  /**
-   * save the user to the repository.
-   *
-   * @param user to be saved
-   */
   public void saveUser(MyUser user) {
-    if (checkIfUserExists(user.getUsername())) {
+    if (Boolean.TRUE.equals(checkIfUserExists(user.getUsername()))) {
       log.debug("could not save user because user already exists: {}", user.getUsername());
       return;
     }
@@ -84,8 +79,8 @@ public class MyUserService implements UserDetailsService {
   }
 
   public void updateUser(MyUser user) {
-    if (!checkIfUserExists(user.getUsername())) {
-      log.error("could not update user because user couldnt be found: {}", user.getUsername());
+    if (Boolean.FALSE.equals(checkIfUserExists(user.getUsername()))) {
+      log.error("could not update user because user couldn't be found: {}", user.getUsername());
       return;
     }
     userRepo.save(user);
@@ -98,11 +93,6 @@ public class MyUserService implements UserDetailsService {
         .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
   }
 
-  /**
-   * transform new user dto to a user object and save it to repo.
-   *
-   * @param newUser user dto to be saved
-   */
   public void registerNewUser(NewMyUser newUser) {
     MyUser registerUser = constructUser(newUser);
     saveUser(registerUser);
@@ -124,7 +114,7 @@ public class MyUserService implements UserDetailsService {
         .enabled(true)
         .userPreferences(
             UserPreferences.builder()
-                .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                 .difficultyEnum(DifficultyEnum.ALL)
                 .build())
         .build();
@@ -168,5 +158,6 @@ public class MyUserService implements UserDetailsService {
     MyUser user = loadUserByUsername(myUser.getUsername());
     user.setUserPreferences(userPreferences);
     updateUser(user);
+    log.debug("preferences reset for user: {}", user.getUsername());
   }
 }

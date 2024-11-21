@@ -31,33 +31,16 @@ public class UserController {
 
   MyUserService userService;
 
-  /**
-   * login page.
-   *
-   * @return returns the html login page
-   */
   @GetMapping("/login")
   public String showLoginForm() {
     return "login";
   }
 
-  /**
-   * returns the registration html page so the user can register as a new user.
-   *
-   * @param newMyUser add new user model
-   * @return return the registration html page
-   */
   @GetMapping("/register")
   public String showRegisterForm(NewMyUser newMyUser) {
     return "register";
   }
 
-  /**
-   * post request for the register new user method.
-   *
-   * @param user user to be saved
-   * @return returns redirect to the login page
-   */
   @PostMapping("/register")
   public String registerUser(
       HttpServletRequest request, @Valid NewMyUser user, BindingResult bindingResult) {

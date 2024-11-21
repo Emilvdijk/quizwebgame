@@ -24,9 +24,11 @@ public class UserPreferences extends BaseEntity implements Serializable {
 
   @UpdateTimestamp private Instant lastUpdatedOn;
 
+  @NonNull
   @Enumerated(EnumType.STRING)
   private ApiChoiceEnum apiChoiceEnum;
 
+  @NonNull
   @Enumerated(EnumType.STRING)
   private DifficultyEnum difficultyEnum;
 

@@ -41,13 +41,15 @@ class QuestionApiMapperServiceTest {
                 "In the game series &#34;The Legend of Zelda&#34;, what was the first 3D game?")
             .correct_answer("Ocarina of Time")
             .incorrect_answers(incorrectAnswers)
+            .category("Game")
+            .difficulty("easy")
             .build();
     List<QuestionOpentdbQuestion> testQuestionList = new ArrayList<>();
     testQuestionList.add(questionTest);
-    QuestionOpentdb questionOpentdbTest =
+    QuestionOpentdb questionOpenTdbTest =
         QuestionOpentdb.builder().results(testQuestionList).build();
 
-    List<Question> questionList = questionApiMapperService.mapOpenTDBQuestions(questionOpentdbTest);
+    List<Question> questionList = questionApiMapperService.mapOpenTDBQuestions(questionOpenTdbTest);
     questionList.forEach(System.out::println);
     assertEquals("Ocarina of Time", questionList.getFirst().getCorrectAnswer());
     assertEquals("Majora's Mask", questionList.getFirst().getIncorrectAnswers().getFirst());

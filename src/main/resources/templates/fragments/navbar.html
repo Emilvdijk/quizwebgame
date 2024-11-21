@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>QuizNavBar</title>
@@ -13,28 +13,28 @@
       <ul class="navbar-nav">
         <div sec:authorize="hasAnyRole('ADMIN', 'USER')">
           <li class="nav-item">
-            <form class="nav-link" th:action="@{/logout}" method="post">
+            <form class="nav-link" method="post" th:action="@{/logout}">
               <button class="nav-link" type="submit">Logout</button>
             </form>
           </li>
         </div>
         <div sec:authorize="isAnonymous()">
           <li class="nav-item">
-            <form class="nav-link" th:action="@{/login}" method="get">
+            <form class="nav-link" method="get" th:action="@{/login}">
               <button class="nav-link" type="submit">Login</button>
             </form>
           </li>
         </div>
         <div sec:authorize="isAnonymous()">
           <li class="nav-item">
-            <form class="nav-link" th:action="@{/register}" method="get">
+            <form class="nav-link" method="get" th:action="@{/register}">
               <button class="nav-link" type="submit">Sign Up</button>
             </form>
           </li>
         </div>
         <div sec:authorize="hasAnyRole('ADMIN', 'USER')">
           <li class="nav-item">
-            <form class="nav-link" th:action="@{/questionHistory}" method="get">
+            <form class="nav-link" method="get" th:action="@{/questionHistory}">
               <button class="nav-link" type="submit">history</button>
             </form>
           </li>
@@ -44,8 +44,8 @@
           </p>
         </li>
         <li class="nav-item" sec:authorize="!hasRole('ADMIN') and !isAnonymous()">
-          <p class="nav-link" th:inline="text">Hello <span th:remove="tag"
-                                                           sec:authentication="name">thymeleaf</span>!
+          <p class="nav-link" th:inline="text">Hello <span sec:authentication="name"
+                                                           th:remove="tag">thymeleaf</span>!
           </p>
         </li>
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
@@ -54,14 +54,14 @@
         </li>
         <div sec:authorize="hasRole('USER')">
           <li class="nav-item">
-            <form class="nav-link" th:action="@{/userPreferences}" method="get">
+            <form class="nav-link" method="get" th:action="@{/userPreferences}">
               <button class="nav-link" type="submit">Options</button>
             </form>
           </li>
         </div>
         <div sec:authorize="hasRole('ADMIN')">
           <li class="nav-item">
-            <form class="nav-link" th:action="@{/h2-console}" method="get">
+            <form class="nav-link" method="get" th:action="@{/h2-console}">
               <button class="nav-link" type="submit">H2 console</button>
             </form>
           </li>

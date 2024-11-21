@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,11 +23,11 @@ public class MyUser extends BaseEntity implements UserDetails, Serializable {
 
   @Serial private static final long serialVersionUID = -8443145631573894870L;
 
-  private String username;
+  @NonNull private String username;
+  @NonNull private String password;
+  @NonNull private boolean enabled;
 
-  private String password;
-  private boolean enabled;
-
+  @NonNull
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> myRoles;
 
@@ -50,15 +51,5 @@ public class MyUser extends BaseEntity implements UserDetails, Serializable {
       userAuth.add(new SimpleGrantedAuthority(authority));
     }
     return userAuth;
-  }
-
-  @Override
-  public String getPassword() {
-    return password;
-  }
-
-  @Override
-  public String getUsername() {
-    return username;
   }
 }

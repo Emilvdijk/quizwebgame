@@ -24,31 +24,32 @@ public class QuestionApiService {
 
   public List<Question> getNewQuestions(MyUser user) {
     return switch (user.getUserPreferences().getApiChoiceEnum()) {
-      case TRIVIAAPI -> getNewTriviaApiQuestions(user);
-      case OPENTDB -> getNewOpenTdbQuestions(user);
+      case TRIVIA_API -> getNewTriviaApiQuestions(user);
+      case OPEN_TDB -> getNewOpenTdbQuestions(user);
       case ALL -> getNewQuestionsFromAll(user);
     };
   }
 
   public List<Question> getDefaultQuestions() {
-    QuestionsApiCaller<List<QuestionTriviaApi>> questionsApiService =
+    QuestionsApiCaller<List<QuestionTriviaApi>> listQuestionsApiCaller =
         new QuestionsApiCaller<>(new ParameterizedTypeReference<>() {});
     return questionApiMapperService.mapTriviaApiQuestions(
-        questionsApiService.getNewQuestions(apiUrlBuilder.getDefault()));
+        listQuestionsApiCaller.getNewQuestions(apiUrlBuilder.getDefault()));
   }
 
   private List<Question> getNewTriviaApiQuestions(MyUser user) {
     URI uri = apiUrlBuilder.generateTriviaApiUri(user);
-    QuestionsApiCaller<List<QuestionTriviaApi>> questionsApiService =
+    QuestionsApiCaller<List<QuestionTriviaApi>> listQuestionsApiCaller =
         new QuestionsApiCaller<>(new ParameterizedTypeReference<>() {});
-    return questionApiMapperService.mapTriviaApiQuestions(questionsApiService.getNewQuestions(uri));
+    return questionApiMapperService.mapTriviaApiQuestions(
+        listQuestionsApiCaller.getNewQuestions(uri));
   }
 
   private List<Question> getNewOpenTdbQuestions(MyUser user) {
     URI uri = apiUrlBuilder.generateUriOpenTdb(user);
-    QuestionsApiCaller<QuestionOpentdb> questionsApiCaller =
+    QuestionsApiCaller<QuestionOpentdb> opentdbQuestionsApiCaller =
         new QuestionsApiCaller<>(new ParameterizedTypeReference<>() {});
-    QuestionOpentdb questionOpenTdbResponse = questionsApiCaller.getNewQuestions(uri);
+    QuestionOpentdb questionOpenTdbResponse = opentdbQuestionsApiCaller.getNewQuestions(uri);
     if (Objects.equals(questionOpenTdbResponse.getResponse_code(), "1")) {
       log.error(
           "Could not return results. The OpenTdb API doesn't have enough questions for your query.");

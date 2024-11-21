@@ -30,7 +30,7 @@ class QuizServiceAuthenticatedTest {
       Question newTestQuestion = new Question();
       newTestQuestion.setId(i);
       newTestQuestion.setQuestionText(String.valueOf(i));
-      newTestQuestion.setOrigin(ApiChoiceEnum.OPENTDB);
+      newTestQuestion.setOrigin(ApiChoiceEnum.OPEN_TDB);
       newTestQuestion.setCategory("Entertainment: Film");
       newTestQuestion.setDifficulty("easy");
       newTestQuestion.setAnswers(new ArrayList<>());
@@ -41,7 +41,7 @@ class QuizServiceAuthenticatedTest {
       Question newTestQuestion = new Question();
       newTestQuestion.setId(i);
       newTestQuestion.setQuestionText(String.valueOf(i));
-      newTestQuestion.setOrigin(ApiChoiceEnum.OPENTDB);
+      newTestQuestion.setOrigin(ApiChoiceEnum.OPEN_TDB);
       newTestQuestion.setCategory("Entertainment: Video Games");
       newTestQuestion.setDifficulty("medium");
       newTestQuestion.setAnswers(new ArrayList<>());
@@ -52,7 +52,7 @@ class QuizServiceAuthenticatedTest {
       Question newTestQuestion = new Question();
       newTestQuestion.setId(i);
       newTestQuestion.setQuestionText(String.valueOf(i));
-      newTestQuestion.setOrigin(ApiChoiceEnum.TRIVIAAPI);
+      newTestQuestion.setOrigin(ApiChoiceEnum.TRIVIA_API);
       newTestQuestion.setDifficulty("easy");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
@@ -62,7 +62,7 @@ class QuizServiceAuthenticatedTest {
       Question newTestQuestion = new Question();
       newTestQuestion.setId(i);
       newTestQuestion.setQuestionText(String.valueOf(i));
-      newTestQuestion.setOrigin(ApiChoiceEnum.TRIVIAAPI);
+      newTestQuestion.setOrigin(ApiChoiceEnum.TRIVIA_API);
       newTestQuestion.setDifficulty("medium");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
@@ -131,13 +131,13 @@ class QuizServiceAuthenticatedTest {
         quizServiceAuthenticated.getQuestionsByChoice(
             UserPreferences.builder()
                 .difficultyEnum(DifficultyEnum.ALL)
-                .apiChoiceEnum(ApiChoiceEnum.TRIVIAAPI)
+                .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                 .categoryOpenTDBS(new ArrayList<>())
                 .categoryTriviaApi(new ArrayList<>())
                 .build(),
             new ArrayList<>());
     assertEquals(11, questionList.size());
-    questionList.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIAAPI, question.getOrigin()));
+    questionList.forEach(question -> assertEquals(ApiChoiceEnum.TRIVIA_API, question.getOrigin()));
 
     questionList =
         quizServiceAuthenticated.getQuestionsByChoice(

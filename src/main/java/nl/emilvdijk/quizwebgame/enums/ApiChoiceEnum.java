@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(force = true)
 public enum ApiChoiceEnum {
-  TRIVIAAPI("Trivia Api"),
-  OPENTDB("OpenTDB"),
+  TRIVIA_API("Trivia Api"),
+  OPEN_TDB("OpenTDB"),
   ALL("All");
 
   private final String displayValue;
