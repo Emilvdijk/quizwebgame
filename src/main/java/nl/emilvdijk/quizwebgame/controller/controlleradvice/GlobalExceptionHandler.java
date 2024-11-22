@@ -17,6 +17,9 @@ public class GlobalExceptionHandler {
 
   MyUserService userService;
 
+  // FIXME
+  // https://erkanyasun.medium.com/advanced-error-handling-in-spring-boot-with-controlleradvice-2526803890f9
+
   @ExceptionHandler(ApiErrorException.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public String apiErrorHandler(

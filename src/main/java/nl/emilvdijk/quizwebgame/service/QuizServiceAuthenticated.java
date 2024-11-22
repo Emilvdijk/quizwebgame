@@ -118,6 +118,7 @@ public class QuizServiceAuthenticated implements QuizService {
   public Map<AnsweredQuestion, Question> generateAnswersQuestionsMap(MyUser user) {
     Map<AnsweredQuestion, Question> questionsMap = new HashMap<>();
     MyUser myUser = userService.loadUserByUsername(user.getUsername());
+    // FIXME try to limit db calls
     myUser
         .getAnsweredQuestions()
         .forEach(
@@ -127,7 +128,7 @@ public class QuizServiceAuthenticated implements QuizService {
 
     // sorts the map based on the date of the answeredQuestion.
     return questionsMap.entrySet().stream()
-        .sorted(Comparator.comparing(value -> value.getKey().getAdded(), Comparator.reverseOrder()))
+        .sorted(Comparator.comparing(entry -> entry.getKey().getAdded(), Comparator.reverseOrder()))
         .collect(
             Collectors.toMap(
                 Map.Entry::getKey,
