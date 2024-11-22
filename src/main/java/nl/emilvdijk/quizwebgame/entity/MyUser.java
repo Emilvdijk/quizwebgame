@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
@@ -14,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "myusers")
 @SuperBuilder
@@ -25,7 +27,7 @@ public class MyUser extends BaseEntity implements UserDetails, Serializable {
 
   @NonNull private String username;
   @NonNull private String password;
-  @NonNull private boolean enabled;
+  private boolean enabled;
 
   @NonNull
   @ElementCollection(fetch = FetchType.EAGER)
@@ -36,7 +38,7 @@ public class MyUser extends BaseEntity implements UserDetails, Serializable {
   @ManyToMany(
       fetch = FetchType.EAGER,
       cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-  private List<AnsweredQuestion> answeredQuestions;
+  private Set<AnsweredQuestion> answeredQuestions;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "user_preferences_id")

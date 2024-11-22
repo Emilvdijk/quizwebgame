@@ -8,14 +8,8 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
-import nl.emilvdijk.quizwebgame.entity.AnsweredQuestion;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
@@ -90,6 +84,8 @@ public class QuizServiceAuthenticated implements QuizService {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     MyUser myUser = userService.loadUserByUsername(user.getUsername());
     List<Question> newQuestions = questionApiService.getNewQuestions(myUser);
+    // FIXME make it batch insert
+    // https://medium.com/@ervrajdesai999/exploring-saveall-method-of-spring-data-jpa-with-batching-properties-of-hibernate-94128d85dff3
     questionRepo.saveAll(newQuestions);
   }
 
@@ -109,31 +105,32 @@ public class QuizServiceAuthenticated implements QuizService {
     return APPLICABLE_ROLE;
   }
 
-  /**
-   * FIXME
-   *
-   * @param user
-   * @return
-   */
-  public Map<AnsweredQuestion, Question> generateAnswersQuestionsMap(MyUser user) {
-    Map<AnsweredQuestion, Question> questionsMap = new HashMap<>();
-    MyUser myUser = userService.loadUserByUsername(user.getUsername());
-    // FIXME try to limit db calls
-    myUser
-        .getAnsweredQuestions()
-        .forEach(
-            answeredQuestion ->
-                questionsMap.put(
-                    answeredQuestion, getQuestionByMyid(answeredQuestion.getQuestionId())));
-
-    // sorts the map based on the date of the answeredQuestion.
-    return questionsMap.entrySet().stream()
-        .sorted(Comparator.comparing(entry -> entry.getKey().getAdded(), Comparator.reverseOrder()))
-        .collect(
-            Collectors.toMap(
-                Map.Entry::getKey,
-                Map.Entry::getValue,
-                (existing, replacement) -> existing,
-                LinkedHashMap::new));
-  }
+  //  /**
+  //   * FIXME
+  //   *
+  //   * @param user
+  //   * @return
+  //   */
+  //  public Map<AnsweredQuestion, Question> generateAnswersQuestionsMap(MyUser user) {
+  //    Map<AnsweredQuestion, Question> questionsMap = new HashMap<>();
+  //    MyUser myUser = userService.loadUserByUsername(user.getUsername());
+  //    // FIXME try to limit db calls
+  //    myUser
+  //        .getAnsweredQuestions()
+  //        .forEach(
+  //            answeredQuestion ->
+  //                questionsMap.put(
+  //                    answeredQuestion, getQuestionByMyid(answeredQuestion.getQuestionId())));
+  //
+  //    // sorts the map based on the date of the answeredQuestion.
+  //    return questionsMap.entrySet().stream()
+  //        .sorted(Comparator.comparing(entry -> entry.getKey().getAdded(),
+  // Comparator.reverseOrder()))
+  //        .collect(
+  //            Collectors.toMap(
+  //                Map.Entry::getKey,
+  //                Map.Entry::getValue,
+  //                (existing, replacement) -> existing,
+  //                LinkedHashMap::new));
+  //  }
 }

@@ -133,10 +133,7 @@ public class MyUserService implements UserDetailsService {
         .getAnsweredQuestions()
         .add(
             new AnsweredQuestion(
-                user.getId(),
-                question.getId(),
-                chosenAnswer,
-                Objects.equals(chosenAnswer, question.getCorrectAnswer())));
+                question, chosenAnswer, Objects.equals(chosenAnswer, question.getCorrectAnswer())));
     updateUser(myUser);
   }
 

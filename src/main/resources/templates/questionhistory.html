@@ -10,12 +10,12 @@
 </head>
 <body>
 <div th:insert="~{fragments/navbar :: navbar}"></div>
-<tr th:if="${questionsMap.isEmpty()}">
+<tr th:if="${answeredQuestions.isEmpty()}">
   <td> No question answers found!</td>
 </tr>
-<tr th:if="${!questionsMap.isEmpty()}">
+<tr th:if="${!answeredQuestions.isEmpty()}">
   <p>Total answered questions: <span
-      th:text="${questionsMap.size}"></span></p>
+      th:text="${answeredQuestions.size}"></span></p>
 
   <table>
     <tr>
@@ -24,11 +24,11 @@
       <th>Chosen answer:</th>
       <th>Correct answer?:</th>
     </tr>
-    <tr th:each="questionAnswer : ${questionsMap}">
-      <td th:text="${questionAnswer.key.added}"></td>
-      <td th:text="${questionAnswer.value.questionText}"></td>
-      <td th:text="${questionAnswer.key.chosenAnswer}"></td>
-      <td th:text="${questionAnswer.key.correct}"></td>
+    <tr th:each="questionAnswer : ${answeredQuestions}">
+      <td th:text="${questionAnswer.added}"></td>
+      <td th:text="${questionAnswer.question.questionText}"></td>
+      <td th:text="${questionAnswer.chosenAnswer}"></td>
+      <td th:text="${questionAnswer.correct}"></td>
     </tr>
   </table>
 </tr>

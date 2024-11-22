@@ -88,9 +88,8 @@ public class QuizController {
 
   @GetMapping("/questionHistory")
   public String showQuestionHistory(Model model, @AuthenticationPrincipal MyUser user) {
-    model.addAttribute(
-        "questionsMap",
-        dynamicQuizService.getQuizServiceAuthenticated().generateAnswersQuestionsMap(user));
+    MyUser myUser = userService.loadUserByUsername(user.getUsername());
+    model.addAttribute("answeredQuestions", myUser.getAnsweredQuestions());
     return "questionHistory";
   }
 }
