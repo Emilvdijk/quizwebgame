@@ -14,6 +14,7 @@ import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.hibernate.annotations.UpdateTimestamp;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @SuperBuilder
 @Data

@@ -18,6 +18,8 @@ public interface QuestionMapStructMapper {
   @Mapping(target = "origin", ignore = true)
   @Mapping(target = "lastUpdatedOn", ignore = true)
   @Mapping(target = "answers", ignore = true)
+  @Mapping(target = "added", ignore = true)
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "questionText", source = "question")
   @Mapping(target = "correctAnswer", source = "correct_answer")
   @Mapping(target = "incorrectAnswers", source = "incorrect_answers")

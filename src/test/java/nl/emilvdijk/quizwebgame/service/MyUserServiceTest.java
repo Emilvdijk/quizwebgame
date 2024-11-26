@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
@@ -44,7 +45,7 @@ class MyUserServiceTest {
                     .build())
             .myRoles(roles)
             .enabled(true)
-            .answeredQuestions(new ArrayList<>())
+            .answeredQuestions(Set.of())
             .build();
     myUserService.saveUser(testSaveUser);
     assertEquals(3, myUserService.userRepo.count());
