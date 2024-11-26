@@ -1,10 +1,12 @@
 package nl.emilvdijk.quizwebgame.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true)
+@AllArgsConstructor
 public enum CategoryOpenTDB {
   GENERAL_KNOWLEDGE("General Knowledge"),
   ENTERTAINMENT_BOOKS("Entertainment: Books"),
@@ -59,8 +61,4 @@ public enum CategoryOpenTDB {
   };
 
   private final String displayValue;
-
-  CategoryOpenTDB(String displayValue) {
-    this.displayValue = displayValue;
-  }
 }
