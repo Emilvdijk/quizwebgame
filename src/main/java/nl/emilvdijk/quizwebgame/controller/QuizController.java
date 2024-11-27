@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * base controller class for the program website. several services have been attached.
+ *
+ * @see MyUserService
+ * @see DynamicQuizService
+ * @author Emil van Dijk
+ */
 @Controller
 @Slf4j
 @AllArgsConstructor

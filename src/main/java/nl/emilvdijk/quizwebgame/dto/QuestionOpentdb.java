@@ -3,6 +3,13 @@ package nl.emilvdijk.quizwebgame.dto;
 import java.util.List;
 import lombok.*;
 
+/**
+ * dta class used in QuestionApiService class. field names are the same as the names given by the
+ * external api for ease of use and simplicity.
+ *
+ * @see nl.emilvdijk.quizwebgame.service.api.QuestionApiService
+ * @author Emil van Dijk
+ */
 @NoArgsConstructor
 @Getter
 @Setter

@@ -17,6 +17,9 @@ import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.Specification;
 
+/**
+ * @author Emil van Dijk
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data

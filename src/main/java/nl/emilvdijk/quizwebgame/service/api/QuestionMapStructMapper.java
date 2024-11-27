@@ -7,6 +7,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapstruct generating class used to map OpenTDB quiz questions to Question class objects.
+ *
+ * @see nl.emilvdijk.quizwebgame.dto.QuestionOpentdb
+ * @see Question
+ * @author Emil van Dijk
+ */
 @Mapper
 public interface QuestionMapStructMapper {
   QuestionMapStructMapper INSTANCE = Mappers.getMapper(QuestionMapStructMapper.class);

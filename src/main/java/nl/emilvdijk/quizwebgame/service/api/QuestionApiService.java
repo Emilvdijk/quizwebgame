@@ -14,6 +14,14 @@ import nl.emilvdijk.quizwebgame.exceptions.ApiErrorException;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
+/**
+ * service class responsible for executing api calls to external apis for quiz questions using the
+ * appropriate uri, mapping them through the mapper service, and returning Question class objects.
+ *
+ * @see QuestionApiMapperService
+ * @see ApiUrlBuilder
+ * @author Emil van Dijk
+ */
 @Service
 @Slf4j
 @AllArgsConstructor

@@ -9,6 +9,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * class responsible for calling appropriate external api to retrieve quiz questions.
+ *
+ * @author Emil van Dijk
+ * @param <T> type of the appropriate type returned by the external api
+ */
 @Setter
 @Getter
 @Slf4j

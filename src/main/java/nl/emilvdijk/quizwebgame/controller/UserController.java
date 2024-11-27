@@ -24,6 +24,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * controller class for user based operations.
+ *
+ * @author Emil van Dijk
+ */
 @Controller
 @Slf4j
 @AllArgsConstructor

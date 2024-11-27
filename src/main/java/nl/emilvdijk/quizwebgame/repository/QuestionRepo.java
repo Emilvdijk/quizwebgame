@@ -7,6 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+/**
+ * JpaRepository class for Question class. implements several derived query generated methods.
+ * implements JpaSpecificationExecutor to query by specification. several specification methods have
+ * been written in the Question class.
+ *
+ * @see Question
+ * @author Emil van Dijk
+ */
 @Repository
 public interface QuestionRepo
     extends JpaRepository<Question, Long>, JpaSpecificationExecutor<Question> {

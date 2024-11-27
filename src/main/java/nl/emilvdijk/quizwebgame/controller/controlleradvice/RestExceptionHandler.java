@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * exception handler for REST api part of the program.
+ *
+ * @author Emil van Dijk
+ */
 @RestControllerAdvice
 public class RestExceptionHandler {
 

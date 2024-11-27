@@ -11,6 +11,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * Uri builder class to build uris for the question api providers that will include uri variables
+ * when necessary.
+ *
+ * @author Emil van Dijk
+ */
 @Slf4j
 @Service
 public class ApiUrlBuilder {

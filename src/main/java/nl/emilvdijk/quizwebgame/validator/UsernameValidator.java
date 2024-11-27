@@ -5,6 +5,12 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 
+/**
+ * validator class for the UserAlreadyExistsConstraint.
+ *
+ * @see UserAlreadyExistsConstraint
+ * @author Emil van Dijk
+ */
 @RequiredArgsConstructor
 public class UsernameValidator implements ConstraintValidator<UserAlreadyExistsConstraint, String> {
 

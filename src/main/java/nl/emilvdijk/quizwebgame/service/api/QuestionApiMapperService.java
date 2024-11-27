@@ -9,6 +9,12 @@ import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+/**
+ * Mapper class to map the api supplier questions to Question class objects.
+ *
+ * @see Question
+ * @author Emil van Dijk
+ */
 @Service
 public class QuestionApiMapperService {
 

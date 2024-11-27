@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * global error handler class. all custom errors and special operations for handling exceptions are
+ * configured here.
+ *
+ * @author Emil van Dijk
+ */
 @ControllerAdvice
 @AllArgsConstructor
 public class GlobalExceptionHandler {

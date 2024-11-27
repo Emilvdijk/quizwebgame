@@ -15,9 +15,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * base user class implementing spring security UserDetails functionality.
+ *
+ * @see org.springframework.security.core.userdetails.UserDetails
+ * @author Emil van Dijk
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "myusers")
 @SuperBuilder
 @Data
 @NoArgsConstructor

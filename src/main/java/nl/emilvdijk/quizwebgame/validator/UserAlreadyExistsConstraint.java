@@ -8,7 +8,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** validation check to see if the user already exists. */
+/**
+ * validation check to see if the user already exists.
+ *
+ * @see UsernameValidator
+ * @author Emil van Dijk
+ */
 @Documented
 @Constraint(validatedBy = UsernameValidator.class)
 @Target(ElementType.FIELD)

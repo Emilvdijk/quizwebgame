@@ -5,6 +5,14 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import nl.emilvdijk.quizwebgame.validator.UserAlreadyExistsConstraint;
 
+/**
+ * model for a new user form. it includes several validation constraints by Jakarta.Validation and
+ * one custom-made one.
+ *
+ * @see UserAlreadyExistsConstraint
+ * @see nl.emilvdijk.quizwebgame.validator.UsernameValidator
+ * @author Emil van Dijk
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

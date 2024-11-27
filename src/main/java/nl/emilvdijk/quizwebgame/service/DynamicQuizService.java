@@ -8,6 +8,12 @@ import nl.emilvdijk.quizwebgame.entity.MyUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Dynamic quiz service responsible for returning the appropriate quiz service when service is
+ * needed.
+ *
+ * @author Emil van Dijk
+ */
 @Service
 public class DynamicQuizService {
 

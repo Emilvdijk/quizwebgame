@@ -11,6 +11,13 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * this class is made and attached to a MyUser when a user answers a quiz question. it is used to
+ * persist a user history of questions the user has answered.
+ *
+ * @see MyUser
+ * @author Emil van Dijk
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @SuperBuilder

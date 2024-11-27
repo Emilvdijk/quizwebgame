@@ -14,6 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * global security filter configuration class. here the h2 database console, the REST api, and the
+ * web security is configured.
+ *
+ * @author Emil van Dijk
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {

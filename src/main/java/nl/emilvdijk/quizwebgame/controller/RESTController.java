@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * controller class for REST api functions.
+ *
+ * @author Emil van Dijk
+ */
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor

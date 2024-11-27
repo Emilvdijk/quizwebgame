@@ -14,6 +14,12 @@ import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.hibernate.annotations.UpdateTimestamp;
 
+/**
+ * preferences for users. kept in userPreferences field in MyUser class.
+ *
+ * @see MyUser
+ * @author Emil van Dijk
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @SuperBuilder
