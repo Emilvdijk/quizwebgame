@@ -67,7 +67,7 @@ public class MyUserService implements UserDetailsService {
             .userPreferences(adminPreferences)
             .build();
     saveUser(testAdmin);
-    log.debug("added 2 users");
+    log.debug("added 2 test users");
   }
 
   public void saveUser(MyUser user) {

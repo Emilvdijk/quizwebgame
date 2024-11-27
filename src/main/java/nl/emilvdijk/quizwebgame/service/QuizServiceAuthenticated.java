@@ -104,33 +104,4 @@ public class QuizServiceAuthenticated implements QuizService {
   public String getApplicableRole() {
     return APPLICABLE_ROLE;
   }
-
-  //  /**
-  //   * FIXME
-  //   *
-  //   * @param user
-  //   * @return
-  //   */
-  //  public Map<AnsweredQuestion, Question> generateAnswersQuestionsMap(MyUser user) {
-  //    Map<AnsweredQuestion, Question> questionsMap = new HashMap<>();
-  //    MyUser myUser = userService.loadUserByUsername(user.getUsername());
-  //    // FIXME try to limit db calls
-  //    myUser
-  //        .getAnsweredQuestions()
-  //        .forEach(
-  //            answeredQuestion ->
-  //                questionsMap.put(
-  //                    answeredQuestion, getQuestionByMyid(answeredQuestion.getQuestionId())));
-  //
-  //    // sorts the map based on the date of the answeredQuestion.
-  //    return questionsMap.entrySet().stream()
-  //        .sorted(Comparator.comparing(entry -> entry.getKey().getAdded(),
-  // Comparator.reverseOrder()))
-  //        .collect(
-  //            Collectors.toMap(
-  //                Map.Entry::getKey,
-  //                Map.Entry::getValue,
-  //                (existing, replacement) -> existing,
-  //                LinkedHashMap::new));
-  //  }
 }

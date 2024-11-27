@@ -26,6 +26,7 @@ class QuizServiceAuthenticatedTest {
 
   @BeforeAll
   static void createTestQuestions(@Autowired QuestionRepo questionRepo) {
+    List<Question> questionList = new ArrayList<>();
     for (long i = 1L; i < 5; i++) {
       Question newTestQuestion = new Question();
       newTestQuestion.setId(i);
@@ -35,7 +36,7 @@ class QuizServiceAuthenticatedTest {
       newTestQuestion.setDifficulty("easy");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
-      questionRepo.save(newTestQuestion);
+      questionList.add(newTestQuestion);
     }
     for (long i = 5L; i < 10; i++) {
       Question newTestQuestion = new Question();
@@ -46,7 +47,7 @@ class QuizServiceAuthenticatedTest {
       newTestQuestion.setDifficulty("medium");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
-      questionRepo.save(newTestQuestion);
+      questionList.add(newTestQuestion);
     }
     for (long i = 10L; i < 15; i++) {
       Question newTestQuestion = new Question();
@@ -56,7 +57,7 @@ class QuizServiceAuthenticatedTest {
       newTestQuestion.setDifficulty("easy");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
-      questionRepo.save(newTestQuestion);
+      questionList.add(newTestQuestion);
     }
     for (long i = 15L; i < 21; i++) {
       Question newTestQuestion = new Question();
@@ -66,8 +67,9 @@ class QuizServiceAuthenticatedTest {
       newTestQuestion.setDifficulty("medium");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
-      questionRepo.save(newTestQuestion);
+      questionList.add(newTestQuestion);
     }
+    questionRepo.saveAll(questionList);
   }
 
   @Test
