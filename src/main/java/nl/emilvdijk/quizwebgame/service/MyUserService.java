@@ -1,10 +1,10 @@
 package nl.emilvdijk.quizwebgame.service;
 
-import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.AnsweredQuestion;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
@@ -19,57 +19,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * service class for all operations involving users.
+ *
+ * @author Emil van Dijk
+ */
 @Service
 @Slf4j
 @AllArgsConstructor
 public class MyUserService implements UserDetailsService {
 
-  UserRepo userRepo;
-  PasswordEncoder passwordEncoder;
+  @NonNull UserRepo userRepo;
+  @NonNull PasswordEncoder passwordEncoder;
+  public static final String DEFAULT_USER_ROLE = "ROLE_USER";
 
   /**
-   * adds 2 user profiles for testing. FIXME should be removed if moved from testing or development
-   * remove after testing or development
+   * save a new user to the repository.
+   *
+   * @param user new user to be saved
    */
-  @PostConstruct
-  public void addTestUsersAfterStartup() {
-    ArrayList<String> userRoles = new ArrayList<>();
-    userRoles.add("ROLE_USER");
-    MyUser testUser =
-        MyUser.builder()
-            .username("user")
-            .password("$2a$10$pJ/ahJVBfkGOjzgyOwZWselKRv6WcsaGFc8Tf1A0VkeUFhpX2jEMG")
-            .myRoles(userRoles)
-            .enabled(true)
-            .userPreferences(
-                UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
-                    .difficultyEnum(DifficultyEnum.ALL)
-                    .build())
-            .build();
-    saveUser(testUser);
-
-    ArrayList<String> adminRoles = new ArrayList<>();
-    adminRoles.add("ROLE_ADMIN");
-    adminRoles.add("ROLE_USER");
-    UserPreferences adminPreferences =
-        UserPreferences.builder()
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
-            .difficultyEnum(DifficultyEnum.ALL)
-            .build();
-
-    MyUser testAdmin =
-        MyUser.builder()
-            .username("1")
-            .password("$2a$10$ixsefZtwnAoLc10H/R6Tu.NBQgWKnhgx5vXs.r2aYp32IjKE6YlCu")
-            .myRoles(adminRoles)
-            .enabled(true)
-            .userPreferences(adminPreferences)
-            .build();
-    saveUser(testAdmin);
-    log.debug("added 2 test users");
-  }
-
   public void saveUser(MyUser user) {
     if (Boolean.TRUE.equals(checkIfUserExists(user.getUsername()))) {
       log.debug("could not save user because user already exists: {}", user.getUsername());
@@ -78,6 +46,11 @@ public class MyUserService implements UserDetailsService {
     userRepo.save(user);
   }
 
+  /**
+   * update the given user in the repository.
+   *
+   * @param user user to be updated
+   */
   public void updateUser(MyUser user) {
     if (Boolean.FALSE.equals(checkIfUserExists(user.getUsername()))) {
       log.error("could not update user because user couldn't be found: {}", user.getUsername());
@@ -86,6 +59,14 @@ public class MyUserService implements UserDetailsService {
     userRepo.save(user);
   }
 
+  /**
+   * load user from repository with the given username or if the user is not found a
+   * UsernameNotFoundException will be thrown.
+   *
+   * @param username username of the desired user
+   * @return the user if found
+   * @throws UsernameNotFoundException if the user is not found
+   */
   @Override
   public MyUser loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepo
@@ -93,6 +74,11 @@ public class MyUserService implements UserDetailsService {
         .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
   }
 
+  /**
+   * given new user will be registered and saved to the repository.
+   *
+   * @param newUser user to be saved
+   */
   public void registerNewUser(NewMyUser newUser) {
     MyUser registerUser = constructUser(newUser);
     saveUser(registerUser);
@@ -100,7 +86,8 @@ public class MyUserService implements UserDetailsService {
   }
 
   /**
-   * transforms dto to user.
+   * transforms dto to user. the password will be encoded using the current password encoder. a user
+   * role will be given. a user preferences object will be added to the user with the default state.
    *
    * @param newUser to be transformed to user
    * @return new user object
@@ -109,7 +96,7 @@ public class MyUserService implements UserDetailsService {
     return MyUser.builder()
         .username(newUser.getUsername())
         .password(passwordEncoder.encode(newUser.getPassword()))
-        .myRoles(List.of("ROLE_USER"))
+        .myRoles(List.of(DEFAULT_USER_ROLE))
         .questions(new ArrayList<>())
         .enabled(true)
         .userPreferences(
@@ -121,11 +108,13 @@ public class MyUserService implements UserDetailsService {
   }
 
   /**
-   * adds a link of the question and the current user to the database. the link will signify that
-   * the question is already answered by the user
+   * adds a new AnsweredQuestion object to the list of the user and updates the user in the
+   * repository.
    *
-   * @param question question to be linked to user
-   * @param user user to be linked to question
+   * @see AnsweredQuestion
+   * @param question the question that has been answered
+   * @param user the user that answered the question
+   * @param chosenAnswer the answer the user has chosen
    */
   public void markQuestionDone(Question question, MyUser user, String chosenAnswer) {
     MyUser myUser = loadUserByUsername(user.getUsername());
@@ -137,14 +126,30 @@ public class MyUserService implements UserDetailsService {
     updateUser(myUser);
   }
 
+  /**
+   * check if the user with the given username already exists in the repository.
+   *
+   * @param username username to look for
+   * @return boolean of whether the user exists or not
+   */
   public Boolean checkIfUserExists(String username) {
     return userRepo.existsMyUserByUsername(username);
   }
 
+  /**
+   * deletes the user with the corresponding id from the repository.
+   *
+   * @param id id of the user to be deleted
+   */
   public void deleteUserById(Long id) {
     userRepo.deleteById(id);
   }
 
+  /**
+   * resets the given users preferences field to a default state.
+   *
+   * @param myUser owner of the preferences to be reset
+   */
   public void resetUserSettings(MyUser myUser) {
     UserPreferences userPreferences = myUser.getUserPreferences();
     userPreferences.setApiChoiceEnum(ApiChoiceEnum.ALL);
