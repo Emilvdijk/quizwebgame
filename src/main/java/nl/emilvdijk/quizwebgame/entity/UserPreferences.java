@@ -1,15 +1,22 @@
 package nl.emilvdijk.quizwebgame.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
-import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
+import nl.emilvdijk.quizwebgame.enums.CategoryOpenTdb;
 import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -40,8 +47,8 @@ public class UserPreferences extends BaseEntity implements Serializable {
   private DifficultyEnum difficultyEnum;
 
   @ElementCollection(fetch = FetchType.EAGER)
-  private List<CategoryTriviaApi> categoryTriviaApi = new ArrayList<>();
+  private List<CategoryTriviaApi> categoryTriviaApiList = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.EAGER)
-  private List<CategoryOpenTDB> categoryOpenTDBS = new ArrayList<>();
+  private List<CategoryOpenTdb> categoryOpenTdbList = new ArrayList<>();
 }

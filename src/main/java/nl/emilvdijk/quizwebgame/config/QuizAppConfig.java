@@ -27,9 +27,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 public class QuizAppConfig {
 
+  /**
+   * when in test profile "test" or "dev" 2 test users will be added.
+   *
+   * @param userRepo repo to save users to
+   * @param passwordEncoder encoder to use for passwords
+   * @return a user service bean
+   */
   @Bean
   @Profile({"dev", "test"})
-  public MyUserService myUserService(
+  MyUserService myUserService(
       @Autowired UserRepo userRepo, @Autowired PasswordEncoder passwordEncoder) {
     MyUserService userService = new MyUserService(userRepo, passwordEncoder);
     ArrayList<String> userRoles = new ArrayList<>();

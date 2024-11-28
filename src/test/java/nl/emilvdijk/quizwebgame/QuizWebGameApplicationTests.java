@@ -8,7 +8,7 @@ import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 import nl.emilvdijk.quizwebgame.service.DynamicQuizService;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
-import nl.emilvdijk.quizwebgame.service.RESTQuizService;
+import nl.emilvdijk.quizwebgame.service.RestQuizService;
 import nl.emilvdijk.quizwebgame.service.api.ApiUrlBuilder;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiMapperService;
 import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
@@ -26,7 +26,7 @@ class QuizWebGameApplicationTests {
 
   @Autowired MyUserService userService;
   @Autowired DynamicQuizService dynamicQuizService;
-  @Autowired RESTQuizService restQuizService;
+  @Autowired RestQuizService restQuizService;
   @Autowired QuestionApiMapperService questionApiMapperService;
   @Autowired ApiUrlBuilder apiUrlBuilder;
   @Autowired QuestionRepo questionRepo;

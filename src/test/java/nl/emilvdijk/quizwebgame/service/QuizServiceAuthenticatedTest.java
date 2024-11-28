@@ -8,7 +8,7 @@ import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
-import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
+import nl.emilvdijk.quizwebgame.enums.CategoryOpenTdb;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.junit.jupiter.api.BeforeAll;
@@ -82,8 +82,8 @@ class QuizServiceAuthenticatedTest {
             UserPreferences.builder()
                 .difficultyEnum(DifficultyEnum.ALL)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
-                .categoryOpenTDBS(new ArrayList<>())
-                .categoryTriviaApi(new ArrayList<>())
+                .categoryOpenTdbList(new ArrayList<>())
+                .categoryTriviaApiList(new ArrayList<>())
                 .build(),
             new ArrayList<>());
     assertEquals(20, questionList.size());
@@ -93,8 +93,8 @@ class QuizServiceAuthenticatedTest {
             UserPreferences.builder()
                 .difficultyEnum(DifficultyEnum.EASY)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
-                .categoryOpenTDBS(new ArrayList<>())
-                .categoryTriviaApi(new ArrayList<>())
+                .categoryOpenTdbList(new ArrayList<>())
+                .categoryTriviaApiList(new ArrayList<>())
                 .build(),
             new ArrayList<>());
     assertEquals(9, questionList.size());
@@ -106,8 +106,8 @@ class QuizServiceAuthenticatedTest {
             UserPreferences.builder()
                 .difficultyEnum(DifficultyEnum.MEDIUM)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
-                .categoryOpenTDBS(new ArrayList<>())
-                .categoryTriviaApi(new ArrayList<>())
+                .categoryOpenTdbList(new ArrayList<>())
+                .categoryTriviaApiList(new ArrayList<>())
                 .build(),
             List.of(4L, 5L, 7L));
     assertEquals(9, questionList.size());
@@ -120,8 +120,8 @@ class QuizServiceAuthenticatedTest {
             UserPreferences.builder()
                 .difficultyEnum(DifficultyEnum.MEDIUM)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
-                .categoryOpenTDBS(new ArrayList<>())
-                .categoryTriviaApi(new ArrayList<>())
+                .categoryOpenTdbList(new ArrayList<>())
+                .categoryTriviaApiList(new ArrayList<>())
                 .build(),
             new ArrayList<>());
     assertEquals(11, questionList.size());
@@ -134,8 +134,8 @@ class QuizServiceAuthenticatedTest {
             UserPreferences.builder()
                 .difficultyEnum(DifficultyEnum.ALL)
                 .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
-                .categoryOpenTDBS(new ArrayList<>())
-                .categoryTriviaApi(new ArrayList<>())
+                .categoryOpenTdbList(new ArrayList<>())
+                .categoryTriviaApiList(new ArrayList<>())
                 .build(),
             new ArrayList<>());
     assertEquals(11, questionList.size());
@@ -146,8 +146,8 @@ class QuizServiceAuthenticatedTest {
             UserPreferences.builder()
                 .difficultyEnum(DifficultyEnum.ALL)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
-                .categoryOpenTDBS(List.of(CategoryOpenTDB.ENTERTAINMENT_VIDEO_GAMES))
-                .categoryTriviaApi(List.of())
+                .categoryOpenTdbList(List.of(CategoryOpenTdb.ENTERTAINMENT_VIDEO_GAMES))
+                .categoryTriviaApiList(List.of())
                 .build(),
             new ArrayList<>());
     assertEquals(5, questionList.size());
@@ -157,8 +157,8 @@ class QuizServiceAuthenticatedTest {
             UserPreferences.builder()
                 .difficultyEnum(DifficultyEnum.ALL)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
-                .categoryOpenTDBS(List.of(CategoryOpenTDB.ENTERTAINMENT_FILM))
-                .categoryTriviaApi(List.of())
+                .categoryOpenTdbList(List.of(CategoryOpenTdb.ENTERTAINMENT_FILM))
+                .categoryTriviaApiList(List.of())
                 .build(),
             new ArrayList<>());
     assertEquals(4, questionList.size());
@@ -168,8 +168,8 @@ class QuizServiceAuthenticatedTest {
             UserPreferences.builder()
                 .difficultyEnum(DifficultyEnum.ALL)
                 .apiChoiceEnum(ApiChoiceEnum.ALL)
-                .categoryOpenTDBS(List.of(CategoryOpenTDB.ENTERTAINMENT_FILM))
-                .categoryTriviaApi(List.of())
+                .categoryOpenTdbList(List.of(CategoryOpenTdb.ENTERTAINMENT_FILM))
+                .categoryTriviaApiList(List.of())
                 .build(),
             List.of(3L));
     assertEquals(3, questionList.size());

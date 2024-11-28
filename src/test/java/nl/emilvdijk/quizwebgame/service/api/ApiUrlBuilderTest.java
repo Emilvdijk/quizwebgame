@@ -8,7 +8,7 @@ import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
-import nl.emilvdijk.quizwebgame.enums.CategoryOpenTDB;
+import nl.emilvdijk.quizwebgame.enums.CategoryOpenTdb;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +32,8 @@ class ApiUrlBuilderTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                     .difficultyEnum(DifficultyEnum.EASY)
-                    .categoryOpenTDBS(new ArrayList<>())
-                    .categoryTriviaApi(List.of())
+                    .categoryOpenTdbList(new ArrayList<>())
+                    .categoryTriviaApiList(List.of())
                     .build())
             .build();
 
@@ -50,9 +50,8 @@ class ApiUrlBuilderTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                     .difficultyEnum(DifficultyEnum.MEDIUM)
-                    .categoryOpenTDBS(new ArrayList<>())
-                    .categoryTriviaApi(List.of())
-                    .categoryTriviaApi(List.of())
+                    .categoryOpenTdbList(new ArrayList<>())
+                    .categoryTriviaApiList(List.of())
                     .build())
             .build();
 
@@ -69,8 +68,8 @@ class ApiUrlBuilderTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                     .difficultyEnum(DifficultyEnum.ALL)
-                    .categoryOpenTDBS(new ArrayList<>())
-                    .categoryTriviaApi(List.of())
+                    .categoryOpenTdbList(new ArrayList<>())
+                    .categoryTriviaApiList(List.of())
                     .build())
             .build();
 
@@ -90,8 +89,8 @@ class ApiUrlBuilderTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                     .difficultyEnum(DifficultyEnum.EASY)
-                    .categoryOpenTDBS(new ArrayList<>())
-                    .categoryTriviaApi(List.of())
+                    .categoryOpenTdbList(new ArrayList<>())
+                    .categoryTriviaApiList(List.of())
                     .build())
             .build();
 
@@ -108,8 +107,8 @@ class ApiUrlBuilderTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                     .difficultyEnum(DifficultyEnum.MEDIUM)
-                    .categoryOpenTDBS(new ArrayList<>())
-                    .categoryTriviaApi(List.of())
+                    .categoryOpenTdbList(new ArrayList<>())
+                    .categoryTriviaApiList(List.of())
                     .build())
             .build();
 
@@ -126,8 +125,8 @@ class ApiUrlBuilderTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                     .difficultyEnum(DifficultyEnum.ALL)
-                    .categoryOpenTDBS(new ArrayList<>())
-                    .categoryTriviaApi(List.of())
+                    .categoryOpenTdbList(new ArrayList<>())
+                    .categoryTriviaApiList(List.of())
                     .build())
             .build();
 
@@ -146,9 +145,9 @@ class ApiUrlBuilderTest {
                         UserPreferences.builder()
                             .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                             .difficultyEnum(DifficultyEnum.ALL)
-                            .categoryOpenTDBS(
-                                List.of(CategoryOpenTDB.ANIMALS, CategoryOpenTDB.CELEBRITIES))
-                            .categoryTriviaApi(List.of())
+                            .categoryOpenTdbList(
+                                List.of(CategoryOpenTdb.ANIMALS, CategoryOpenTdb.CELEBRITIES))
+                            .categoryTriviaApiList(List.of())
                             .build())
                     .build())
             .toString());

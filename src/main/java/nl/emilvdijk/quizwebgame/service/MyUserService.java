@@ -1,12 +1,14 @@
 package nl.emilvdijk.quizwebgame.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import nl.emilvdijk.quizwebgame.entity.AnsweredQuestion;
+import nl.emilvdijk.quizwebgame.entity.BaseEntity;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
@@ -29,9 +31,9 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class MyUserService implements UserDetailsService {
 
+  public static final String DEFAULT_USER_ROLE = "ROLE_USER";
   @NonNull UserRepo userRepo;
   @NonNull PasswordEncoder passwordEncoder;
-  public static final String DEFAULT_USER_ROLE = "ROLE_USER";
 
   /**
    * save a new user to the repository.
@@ -154,12 +156,25 @@ public class MyUserService implements UserDetailsService {
     UserPreferences userPreferences = myUser.getUserPreferences();
     userPreferences.setApiChoiceEnum(ApiChoiceEnum.ALL);
     userPreferences.setDifficultyEnum(DifficultyEnum.ALL);
-    userPreferences.setCategoryTriviaApi(new ArrayList<>());
-    userPreferences.setCategoryOpenTDBS(new ArrayList<>());
+    userPreferences.setCategoryTriviaApiList(new ArrayList<>());
+    userPreferences.setCategoryOpenTdbList(new ArrayList<>());
     myUser.setUserPreferences(userPreferences);
     MyUser user = loadUserByUsername(myUser.getUsername());
     user.setUserPreferences(userPreferences);
     updateUser(user);
     log.debug("preferences reset for user: {}", user.getUsername());
+  }
+
+  /**
+   * sorts the answered questions list of the given user based on the answer date and returns it as
+   * a list.
+   *
+   * @param myUser user to get the answered questions form
+   * @return sorted list of answered questions
+   */
+  public List<AnsweredQuestion> getSortedAnsweredQuestions(MyUser myUser) {
+    List<AnsweredQuestion> answeredQuestionList = new ArrayList<>(myUser.getAnsweredQuestions());
+    answeredQuestionList.sort(Comparator.comparing(BaseEntity::getAdded).reversed());
+    return answeredQuestionList;
   }
 }

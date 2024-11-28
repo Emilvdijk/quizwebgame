@@ -38,29 +38,6 @@
 
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>dev</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <properties>
-        <spring.profiles.active>dev</spring.profiles.active>
-      </properties>
-    </profile>
-    <profile>
-      <id>prod</id>
-      <properties>
-        <spring.profiles.active>prod</spring.profiles.active>
-      </properties>
-    </profile>
-    <profile>
-      <id>test</id>
-      <properties>
-        <spring.profiles.active>test</spring.profiles.active>
-      </properties>
-    </profile>
-  </profiles>
   <dependencies>
     <dependency>
       <artifactId>spring-boot-starter-security</artifactId>
@@ -159,6 +136,29 @@
     <relativePath/>
     <version>3.3.5</version> <!-- lookup parent from repository -->
   </parent>
+  <profiles>
+    <profile>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <id>dev</id>
+      <properties>
+        <spring.profiles.active>dev</spring.profiles.active>
+      </properties>
+    </profile>
+    <profile>
+      <id>prod</id>
+      <properties>
+        <spring.profiles.active>prod</spring.profiles.active>
+      </properties>
+    </profile>
+    <profile>
+      <id>test</id>
+      <properties>
+        <spring.profiles.active>test</spring.profiles.active>
+      </properties>
+    </profile>
+  </profiles>
   <properties>
     <java.version>23</java.version>
     <org.mapstruct.version>1.6.2</org.mapstruct.version>

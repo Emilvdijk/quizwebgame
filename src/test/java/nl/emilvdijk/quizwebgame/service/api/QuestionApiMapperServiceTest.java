@@ -43,7 +43,7 @@ class QuestionApiMapperServiceTest {
   }
 
   @Test
-  void mapOpenTDBQuestions() {
+  void mapOpenTdbQuestions() {
 
     List<String> incorrectAnswers = new ArrayList<>();
     incorrectAnswers.add("Majora&#039;s Mask");
@@ -61,7 +61,7 @@ class QuestionApiMapperServiceTest {
     QuestionOpentdb questionOpenTdbTest =
         QuestionOpentdb.builder().results(testQuestionList).build();
 
-    List<Question> questionList = questionApiMapperService.mapOpenTDBQuestions(questionOpenTdbTest);
+    List<Question> questionList = questionApiMapperService.mapOpenTdbQuestions(questionOpenTdbTest);
     questionList.forEach(System.out::println);
     assertEquals("Ocarina of Time", questionList.getFirst().getCorrectAnswer());
     assertEquals("Majora's Mask", questionList.getFirst().getIncorrectAnswers().getFirst());

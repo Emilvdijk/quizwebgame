@@ -2,7 +2,11 @@ package nl.emilvdijk.quizwebgame.model;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import nl.emilvdijk.quizwebgame.validator.UserAlreadyExistsConstraint;
 
 /**

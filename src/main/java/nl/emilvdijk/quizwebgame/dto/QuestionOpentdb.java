@@ -1,7 +1,13 @@
 package nl.emilvdijk.quizwebgame.dto;
 
 import java.util.List;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * dta class used in QuestionApiService class. field names are the same as the names given by the
@@ -20,6 +26,11 @@ public class QuestionOpentdb {
   private String response_code;
   private List<QuestionOpentdbQuestion> results;
 
+  /**
+   * nested class for simplicity and ease of use.
+   *
+   * @author Emil van Dijk
+   */
   @Getter
   @Setter
   @AllArgsConstructor

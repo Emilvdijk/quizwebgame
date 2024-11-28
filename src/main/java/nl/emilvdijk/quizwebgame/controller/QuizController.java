@@ -31,6 +31,11 @@ public class QuizController {
   @NonNull MyUserService userService;
   @NonNull DynamicQuizService dynamicQuizService;
 
+  /**
+   * shows homepage.
+   *
+   * @return homepage
+   */
   @GetMapping("/")
   public String showHomePage() {
     return "home";
@@ -46,7 +51,7 @@ public class QuizController {
   public String showQuizQuestion(
       Model model, @AuthenticationPrincipal MyUser user, HttpSession httpSession) {
     Question question = dynamicQuizService.getService(user).getNewQuestion();
-    httpSession.setAttribute("question", question);
+    httpSession.setAttribute("sessionQuestion", question);
     model.addAttribute("question", question);
     if (user == null) {
       log.debug("Anonymous GET Requested with question Id: {}", question.getId());
@@ -70,11 +75,11 @@ public class QuizController {
       Model model,
       @AuthenticationPrincipal MyUser user,
       HttpSession httpSession) {
-    Question answeredQuestion = (Question) httpSession.getAttribute("question");
-    httpSession.removeAttribute("question");
+    Question answeredQuestion = (Question) httpSession.getAttribute("sessionQuestion");
+    httpSession.removeAttribute("sessionQuestion");
 
     Question question =
-        dynamicQuizService.getService(user).getQuestionByMyid(answeredQuestion.getId());
+        dynamicQuizService.getService(user).getQuestionById(answeredQuestion.getId());
     if (user != null) {
       userService.markQuestionDone(question, user, chosenAnswer);
     }
@@ -93,10 +98,17 @@ public class QuizController {
     }
   }
 
+  /**
+   * shows question history page.
+   *
+   * @param model model object to add answered questions to
+   * @param user user to retrieve answered questions from
+   * @return question history page
+   */
   @GetMapping("/questionHistory")
   public String showQuestionHistory(Model model, @AuthenticationPrincipal MyUser user) {
     MyUser myUser = userService.loadUserByUsername(user.getUsername());
-    model.addAttribute("answeredQuestions", myUser.getAnsweredQuestions());
+    model.addAttribute("answeredQuestions", userService.getSortedAnsweredQuestions(myUser));
     return "questionHistory";
   }
 }

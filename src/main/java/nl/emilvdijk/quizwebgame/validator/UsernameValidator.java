@@ -2,6 +2,7 @@ package nl.emilvdijk.quizwebgame.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
 
@@ -14,7 +15,7 @@ import nl.emilvdijk.quizwebgame.repository.UserRepo;
 @RequiredArgsConstructor
 public class UsernameValidator implements ConstraintValidator<UserAlreadyExistsConstraint, String> {
 
-  private final UserRepo userRepo;
+  @NonNull private final UserRepo userRepo;
 
   @Override
   public void initialize(UserAlreadyExistsConstraint username) {}

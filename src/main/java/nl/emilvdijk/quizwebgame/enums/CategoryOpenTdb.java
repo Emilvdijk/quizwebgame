@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
-public enum CategoryOpenTDB {
+public enum CategoryOpenTdb {
   GENERAL_KNOWLEDGE("General Knowledge"),
   ENTERTAINMENT_BOOKS("Entertainment: Books"),
   ENTERTAINMENT_FILM("Entertainment: Film"),
@@ -40,7 +40,7 @@ public enum CategoryOpenTDB {
   ANIMALS("Animals"),
   VEHICLES("Vehicles");
 
-  public static final CategoryOpenTDB[] ALL = {
+  public static final CategoryOpenTdb[] ALL = {
     GENERAL_KNOWLEDGE,
     ENTERTAINMENT_BOOKS,
     ENTERTAINMENT_FILM,

@@ -18,9 +18,22 @@ import org.mapstruct.factory.Mappers;
 public interface QuestionMapStructMapper {
   QuestionMapStructMapper INSTANCE = Mappers.getMapper(QuestionMapStructMapper.class);
 
+  /**
+   * this will generate a method to convert a list of QuestionOpenTdbQuestions to a list of
+   * questions.
+   *
+   * @param questionOpenTdbQuestionList list to convert
+   * @return returns a list of questions
+   */
   List<Question> questionOpenTdbListToQuestionList(
-      List<QuestionOpentdbQuestion> questionOpentdbQuestionList);
+      List<QuestionOpentdbQuestion> questionOpenTdbQuestionList);
 
+  /**
+   * converts a single QuestionOpenTdbQuestion to a question object.
+   *
+   * @param questionOpenTdbQuestionList object to convert
+   * @return returns a question object
+   */
   @Mapping(target = "tags", ignore = true)
   @Mapping(target = "origin", ignore = true)
   @Mapping(target = "lastUpdatedOn", ignore = true)

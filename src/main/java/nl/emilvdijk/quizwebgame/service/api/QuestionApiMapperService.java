@@ -18,6 +18,14 @@ import org.springframework.web.util.HtmlUtils;
 @Service
 public class QuestionApiMapperService {
 
+  /**
+   * converts triviaApiQuestions to Question objects.
+   *
+   * @see QuestionTriviaApi
+   * @see Question
+   * @param questionTriviaApis list of questions to convert
+   * @return list of question objects
+   */
   public List<Question> mapTriviaApiQuestions(List<QuestionTriviaApi> questionTriviaApis) {
     List<Question> questionList = new ArrayList<>();
     for (QuestionTriviaApi questionTriviaApi : questionTriviaApis) {
@@ -35,7 +43,15 @@ public class QuestionApiMapperService {
     return questionList;
   }
 
-  public List<Question> mapOpenTDBQuestions(QuestionOpentdb newQuestions) {
+  /**
+   * converts openTdbQuestion to Question objects. also unescapes special characters.
+   *
+   * @see QuestionOpentdb
+   * @see Question
+   * @param newQuestions OpenTdb questions to convert
+   * @return list of question objects
+   */
+  public List<Question> mapOpenTdbQuestions(QuestionOpentdb newQuestions) {
     List<Question> questionList =
         QuestionMapStructMapper.INSTANCE.questionOpenTdbListToQuestionList(
             newQuestions.getResults());

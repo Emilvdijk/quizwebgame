@@ -27,6 +27,12 @@ public class ApiUrlBuilder {
   @Value("${myapp.url2}")
   private String openTdbUrl;
 
+  /**
+   * generate an uri for the triviaApi website api with added uri variables based on user choice.
+   *
+   * @param user user to read choices from
+   * @return new uri
+   */
   URI generateTriviaApiUri(MyUser user) {
     URI uri =
         UriComponentsBuilder.fromUriString(triviaApiUrl)
@@ -42,6 +48,12 @@ public class ApiUrlBuilder {
     return uri;
   }
 
+  /**
+   * generate an uri for the openTdb website api with added uri variables based on user choice.
+   *
+   * @param user user to read choices from
+   * @return new uri
+   */
   URI generateUriOpenTdb(MyUser user) {
     URI uri =
         UriComponentsBuilder.fromUriString(openTdbUrl)
@@ -57,10 +69,21 @@ public class ApiUrlBuilder {
     return uri;
   }
 
+  /**
+   * returns the default uri for fetching new questions.
+   *
+   * @return default uri
+   */
   URI getDefault() {
     return UriComponentsBuilder.fromUriString(triviaApiUrl).build().toUri();
   }
 
+  /**
+   * returns a difficulty uri variable based on user preferences.
+   *
+   * @param userPreferences user preferences to read from
+   * @return returns uri difficulty variable
+   */
   private String getDifficultyUriVariables(UserPreferences userPreferences) {
     return switch (userPreferences.getDifficultyEnum()) {
       case EASY -> DifficultyEnum.EASY.getDisplayValue();
@@ -70,23 +93,35 @@ public class ApiUrlBuilder {
     };
   }
 
+  /**
+   * generates triviaApi category uri variables based on user preferences.
+   *
+   * @param userPreferences user preferences to read from
+   * @return returns category uri variable
+   */
   private String getTriviaApiCategoryUriVariables(UserPreferences userPreferences) {
-    if (userPreferences.getCategoryTriviaApi().isEmpty()) {
+    if (userPreferences.getCategoryTriviaApiList().isEmpty()) {
       return null;
     }
     return String.join(
         ",",
-        userPreferences.getCategoryTriviaApi().stream()
+        userPreferences.getCategoryTriviaApiList().stream()
             .map(CategoryTriviaApi::getDisplayValue)
             .toList());
   }
 
+  /**
+   * generates openTdb category uri variables based on user preferences.
+   *
+   * @param userPreferences user preferences to read from
+   * @return returns category uri variable
+   */
   private String getOpenTdbCategoryUriVariables(UserPreferences userPreferences) {
-    if (userPreferences.getCategoryOpenTDBS().isEmpty()) {
+    if (userPreferences.getCategoryOpenTdbList().isEmpty()) {
       return null;
     }
     // OpenTdb only accepts one category per request and enumerated as well
-    return switch (userPreferences.getCategoryOpenTDBS().getFirst()) {
+    return switch (userPreferences.getCategoryOpenTdbList().getFirst()) {
       case GENERAL_KNOWLEDGE -> "9";
       case ENTERTAINMENT_BOOKS -> "10";
       case ENTERTAINMENT_FILM -> "11";
@@ -114,7 +149,7 @@ public class ApiUrlBuilder {
       default -> {
         log.error(
             "wrong case found for: {}",
-            userPreferences.getCategoryOpenTDBS().getFirst().getDisplayValue());
+            userPreferences.getCategoryOpenTdbList().getFirst().getDisplayValue());
         yield null;
       }
     };

@@ -32,8 +32,8 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
                     .difficultyEnum(DifficultyEnum.ALL)
-                    .categoryOpenTDBS(new ArrayList<>())
-                    .categoryTriviaApi(List.of())
+                    .categoryOpenTdbList(new ArrayList<>())
+                    .categoryTriviaApiList(List.of())
                     .build())
             .build();
 
@@ -57,7 +57,7 @@ class QuestionApiServiceTest {
                 UserPreferences.builder()
                     .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
                     .difficultyEnum(DifficultyEnum.ALL)
-                    .categoryOpenTDBS(new ArrayList<>())
+                    .categoryOpenTdbList(new ArrayList<>())
                     .build())
             .build();
 

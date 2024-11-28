@@ -4,6 +4,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +26,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig {
 
   @Bean
+  @Profile({"dev", "test"})
   @Order(1)
   SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
     http.securityMatcher(AntPathRequestMatcher.antMatcher("/h2-console/**"))
@@ -50,12 +52,11 @@ public class WebSecurityConfig {
 
   @Bean
   @Order(Ordered.LOWEST_PRECEDENCE)
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(
             requests ->
                 requests
-                    .requestMatchers(
-                        "/", "/home", "/quiz", "/images/*", "/register", "/authtestpage", "error")
+                    .requestMatchers("/", "/home", "/quiz", "/images/*", "/register", "error")
                     .permitAll()
                     .requestMatchers("/userPreferences", "/questionHistory")
                     .hasRole("USER")
@@ -68,7 +69,7 @@ public class WebSecurityConfig {
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
+  PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 }

@@ -13,6 +13,11 @@ public class ApiErrorException extends RuntimeException {
 
   @Serial private static final long serialVersionUID = 2521996807562553728L;
 
+  /**
+   * Constructs a ApiErrorException with the specified message.
+   *
+   * @param message message to add
+   */
   public ApiErrorException(String message) {
     super(message + " your settings have been reset, sorry for the inconvenience.");
   }
