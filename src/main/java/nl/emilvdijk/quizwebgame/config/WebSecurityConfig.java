@@ -37,7 +37,7 @@ public class WebSecurityConfig {
         .authorizeHttpRequests(request -> request.requestMatchers(H2_CONSOLE).permitAll())
         .csrf(csrf -> csrf.ignoringRequestMatchers(H2_CONSOLE))
         .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin));
-    log.info("h2-console has been made accessible through security");
+    log.warn("h2-console has been made accessible through security");
     return http.build();
   }
 
