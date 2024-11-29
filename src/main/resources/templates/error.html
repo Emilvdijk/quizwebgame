@@ -11,8 +11,8 @@
 <body style="text-align: center;">
 <div th:insert="~{fragments/navbar :: navbar}"></div>
 <br>
-<p>Sorry, something went wrong on our end.</p>
-<p th:text="${errorMessage}"></p>
+<td th:text="${errorMessage} ?: 'Sorry, something went wrong on our end.'"></td>
+<br>
 <a href="/">Return to Home</a>
 </body>
 </html>

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * global error handler class. all custom errors and special operations for handling exceptions are
@@ -29,6 +30,14 @@ public class GlobalExceptionHandler {
   String apiErrorHandler(
       ApiErrorException ex, Model model, @AuthenticationPrincipal MyUser myUser) {
     resetUserSettings(myUser);
+    model.addAttribute("errorMessage", ex.getMessage());
+    return "error";
+  }
+
+  @ExceptionHandler(NoResourceFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  String noResourceFoundExceptionErrorHandler(NoResourceFoundException ex, Model model) {
+    // FIXME add test for error
     model.addAttribute("errorMessage", ex.getMessage());
     return "error";
   }
