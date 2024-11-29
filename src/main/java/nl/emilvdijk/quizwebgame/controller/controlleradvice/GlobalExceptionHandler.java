@@ -37,7 +37,6 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NoResourceFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   String noResourceFoundExceptionErrorHandler(NoResourceFoundException ex, Model model) {
-    // FIXME add test for error
     model.addAttribute("errorMessage", ex.getMessage());
     return "error";
   }
