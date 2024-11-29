@@ -61,7 +61,7 @@ public class WebSecurityConfig {
     http.authorizeHttpRequests(
             requests ->
                 requests
-                    .requestMatchers("/", "/home", "/quiz", "/images/*", "/register", "error")
+                    .requestMatchers("/", "/home", "/quiz", "/images/*", "/register", "/error")
                     .permitAll()
                     .requestMatchers("/userPreferences", "/questionHistory")
                     .hasRole("USER")
