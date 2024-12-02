@@ -63,17 +63,16 @@ public class QuizAppConfig {
             .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
             .difficultyEnum(DifficultyEnum.ALL)
             .build();
-
     MyUser testAdmin =
         MyUser.builder()
-            .username("1")
+            .username("admin")
             .password("$2a$10$ixsefZtwnAoLc10H/R6Tu.NBQgWKnhgx5vXs.r2aYp32IjKE6YlCu")
             .myRoles(adminRoles)
             .enabled(true)
             .userPreferences(adminPreferences)
             .build();
     userService.saveUser(testAdmin);
-    log.warn("added 2 test users");
+    log.warn("added 2 test users one of which is admin");
 
     return userService;
   }

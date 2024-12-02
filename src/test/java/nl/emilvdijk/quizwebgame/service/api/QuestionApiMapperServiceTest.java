@@ -44,15 +44,12 @@ class QuestionApiMapperServiceTest {
 
   @Test
   void mapOpenTdbQuestions() {
-
-    List<String> incorrectAnswers = new ArrayList<>();
-    incorrectAnswers.add("Majora&#039;s Mask");
     QuestionOpentdbQuestion questionTest =
         QuestionOpentdbQuestion.builder()
             .question(
                 "In the game series &#34;The Legend of Zelda&#34;, what was the first 3D game?")
             .correct_answer("Ocarina of Time")
-            .incorrect_answers(incorrectAnswers)
+            .incorrect_answers(List.of("Majora&#039;s Mask"))
             .category("Game")
             .difficulty("easy")
             .build();
