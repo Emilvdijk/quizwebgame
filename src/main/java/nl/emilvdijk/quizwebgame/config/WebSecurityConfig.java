@@ -56,20 +56,20 @@ public class WebSecurityConfig {
         .authorizeHttpRequests(
             request ->
                 request
+                    .requestMatchers("/api/accessDenied", "/api/unauthorized")
+                    .permitAll()
                     .requestMatchers("/api/questions/**")
                     .hasRole("ADMIN")
                     .anyRequest()
                     .authenticated())
         .exceptionHandling(exception -> exception.accessDeniedPage("/api/accessDenied"))
-    // FIXME check this out
-
-    //        .exceptionHandling(
-    //            exception -> exception.authenticationEntryPoint((request, response, authException)
-    // -> {
-    //              response.setStatus(401);
-    //              response.sendRedirect("/api/unauthorized");
-    //            }))
-    ;
+        .exceptionHandling(
+            exception ->
+                exception.authenticationEntryPoint(
+                    (request, response, authException) -> {
+                      response.setStatus(401);
+                      response.sendRedirect("/api/unauthorized");
+                    }));
     return http.build();
   }
 
