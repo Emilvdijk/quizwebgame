@@ -6,11 +6,13 @@ import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.exceptions.ApiErrorException;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException.Forbidden;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
@@ -37,6 +39,20 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NoResourceFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   String noResourceFoundExceptionErrorHandler(NoResourceFoundException ex, Model model) {
+    model.addAttribute("errorMessage", ex.getMessage());
+    return "error";
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  String unauthorizedHandler(Model model, AuthenticationException ex) {
+    model.addAttribute("errorMessage", ex.getMessage());
+    return "error";
+  }
+
+  @ExceptionHandler(Forbidden.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  String forbiddenHandler(Model model, Forbidden ex) {
     model.addAttribute("errorMessage", ex.getMessage());
     return "error";
   }

@@ -6,6 +6,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -35,12 +36,11 @@ class GlobalExceptionHandlerTest {
 
   @Test
   void noResourceFoundExceptionErrorHandlerAnonymous() throws Exception {
-    // FIXME if an anonymous user enters an invalid url a error 401 will be thrown and not a 404
-
-    //    mockMvc
-    //        .perform(get("/testResourceNotFound"))
-    //        .andDo(print())
-    //        .andExpect(status().isNotFound())
-    //        .andExpect(content().string(containsString("testResourceNotFound")));
+    // if an anonymous user enters an invalid url an error 401 will be thrown and not a 404
+    mockMvc
+        .perform(get("/testResourceNotFound"))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(forwardedUrl("/error401"));
   }
 }

@@ -7,6 +7,7 @@ import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.exceptions.QuestionNotFoundException;
 import nl.emilvdijk.quizwebgame.service.RestQuizService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +44,9 @@ public class RestController {
 
   @GetMapping("/unauthorized")
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  String unauthorized() {
+  ResponseEntity<String> unauthorized() {
     // FIXME add test
-    return "You are not authorized to access this resource.";
+    return new ResponseEntity<>(
+        "You are not authorized to access this resource.", HttpStatus.UNAUTHORIZED);
   }
 }

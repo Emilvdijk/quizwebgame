@@ -36,13 +36,9 @@ public class WebSecurityConfig {
   SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
     http.securityMatcher(AntPathRequestMatcher.antMatcher(H2_CONSOLE))
         .authorizeHttpRequests(request -> request.requestMatchers(H2_CONSOLE).hasRole("ADMIN"))
+        .exceptionHandling(exception -> exception.accessDeniedPage("/error403"))
         .exceptionHandling(
-            httpSecurityExceptionHandlingConfigurer ->
-                httpSecurityExceptionHandlingConfigurer.accessDeniedPage("/error403"))
-        .exceptionHandling(
-            httpSecurityExceptionHandlingConfigurer ->
-                httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(
-                    authenticationEntryPoint()))
+            exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
         .csrf(csrf -> csrf.ignoringRequestMatchers(H2_CONSOLE))
         .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin));
     log.warn("h2-console has been made accessible through security");
@@ -67,8 +63,11 @@ public class WebSecurityConfig {
             exception ->
                 exception.authenticationEntryPoint(
                     (request, response, authException) -> {
+                      response.setContentType("application/json");
                       response.setStatus(401);
-                      response.sendRedirect("/api/unauthorized");
+                      response
+                          .getOutputStream()
+                          .println("You are not authorized to access this resource.");
                     }));
     return http.build();
   }
@@ -94,13 +93,9 @@ public class WebSecurityConfig {
                     .hasRole("USER")
                     .anyRequest()
                     .authenticated())
+        .exceptionHandling(exception -> exception.accessDeniedPage("/error403"))
         .exceptionHandling(
-            httpSecurityExceptionHandlingConfigurer ->
-                httpSecurityExceptionHandlingConfigurer.accessDeniedPage("/error403"))
-        .exceptionHandling(
-            httpSecurityExceptionHandlingConfigurer ->
-                httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(
-                    authenticationEntryPoint()))
+            exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
         .httpBasic(withDefaults())
         .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true).permitAll())
         .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
@@ -115,8 +110,8 @@ public class WebSecurityConfig {
   @Bean
   AuthenticationEntryPoint authenticationEntryPoint() {
     return (request, response, authException) -> {
-      response.sendRedirect("/error401");
       response.setStatus(401);
+      request.getRequestDispatcher("/error401").forward(request, response);
     };
   }
 }
