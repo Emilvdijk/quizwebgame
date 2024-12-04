@@ -1,6 +1,11 @@
 package nl.emilvdijk.quizwebgame.controller.controlleradvice;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +25,10 @@ class RestExceptionHandlerTest {
   @Test
   @WithUserDetails("admin")
   void questionNotFoundHandler() throws Exception {
-
-    // FIXME when i run test manually by running the program regularly it works just fine?
-
-    //    mockMvc
-    //        .perform(get("/api/questions/12341234").with(user("admin")))
-    //        .andDo(print())
-    //        .andExpect(status().isNotFound())
-    //        .andExpect(content().string(containsString("could not find question with id:
-    // 12341234")));
+    mockMvc
+        .perform(get("/api/questions/12341234"))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(content().string(containsString("could not find question with id: 12341234")));
   }
 }

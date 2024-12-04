@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import nl.emilvdijk.quizwebgame.QuizWebGameApplication;
@@ -30,6 +31,16 @@ class WebMvcConfigTest {
   void passwordEncoder() {
     String result = passwordEncoder.encode("myPassword");
     assertTrue(passwordEncoder.matches("myPassword", result));
+  }
+
+  @Test
+  void testHomeAndExpectOk() throws Exception {
+    mockMvc
+        .perform(get("/"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl(null))
+        .andExpect(redirectedUrl(null));
   }
 
   @Test
@@ -75,7 +86,11 @@ class WebMvcConfigTest {
   @Test
   @WithUserDetails("user")
   void testApiAndExpect403() throws Exception {
-    mockMvc.perform(get("/api/questions/all")).andDo(print()).andExpect(status().isForbidden());
+    mockMvc
+        .perform(get("/api/questions/all"))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(forwardedUrl("/api/accessDenied"));
   }
 
   @Test
@@ -105,9 +120,4 @@ class WebMvcConfigTest {
 
     //    mockMvc.perform(get("/h2-console")).andDo(print()).andExpect(status().isOk());
   }
-
-  @Test
-  void mvcSecurityTest() {}
 }
-// FIXME add more tests with:
-//  https://docs.spring.io/spring-security/reference/servlet/test/mockmvc/authentication.html

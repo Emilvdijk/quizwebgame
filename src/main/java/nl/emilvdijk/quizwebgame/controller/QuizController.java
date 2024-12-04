@@ -10,7 +10,6 @@ import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.DynamicQuizService;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,9 +40,6 @@ public class QuizController {
    */
   @GetMapping("/")
   public String showHomePage() {
-    // FIXME check what exception is thrown if authentication is not in order and handle through
-    // exceptionshandler in controlleradvice class
-    throw new AuthenticationException();
     return "home";
   }
 
@@ -119,26 +115,24 @@ public class QuizController {
   }
 
   /**
-   * mapping for access denied page
+   * mapping for access denied page.
    *
    * @return access denied page
    */
   @GetMapping("/error403")
   @ResponseStatus(HttpStatus.FORBIDDEN)
   public String accessDenied() {
-    // FIXME add test
     return "/error403";
   }
 
   /**
-   * mapping for unauthorized page
+   * mapping for unauthorized page.
    *
    * @return unauthorized page
    */
   @GetMapping("/error401")
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   public String unauthorized() {
-    // FIXME add test
     return "/error401";
   }
 }
