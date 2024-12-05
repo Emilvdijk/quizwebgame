@@ -104,7 +104,9 @@ public class QuizServiceAuthenticated implements QuizService {
   @Override
   public void removeAnsweredQuestion() {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    user.getQuestions().removeFirst();
+    if (!user.getQuestions().isEmpty()) {
+      user.getQuestions().removeFirst();
+    }
   }
 
   /**

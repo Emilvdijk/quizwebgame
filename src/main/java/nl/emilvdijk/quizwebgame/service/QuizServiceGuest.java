@@ -67,7 +67,9 @@ public class QuizServiceGuest implements QuizService {
   /** removes the first question in the list held by this class after it has been answered. */
   @Override
   public void removeAnsweredQuestion() {
-    questions.removeFirst();
+    if (!questions.isEmpty()) {
+      questions.removeFirst();
+    }
   }
 
   /**
