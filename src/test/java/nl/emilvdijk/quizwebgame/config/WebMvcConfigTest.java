@@ -1,7 +1,9 @@
 package nl.emilvdijk.quizwebgame.config;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -91,6 +93,14 @@ class WebMvcConfigTest {
         .andDo(print())
         .andExpect(status().isForbidden())
         .andExpect(forwardedUrl("/api/accessDenied"));
+  }
+
+  @Test
+  void questionAnswerCsrfExpectFail() throws Exception {
+    mockMvc
+        .perform(post("/quiz").with(csrf().useInvalidToken()))
+        .andDo(print())
+        .andExpect(status().isForbidden());
   }
 
   @Test
