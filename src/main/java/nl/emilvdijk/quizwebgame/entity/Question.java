@@ -33,7 +33,10 @@ public class Question extends BaseEntity implements Serializable {
 
   @Serial private static final long serialVersionUID = -4638285421950167006L;
 
-  @NonNull private String questionText;
+  @NonNull
+  @Column(length = 1000)
+  private String questionText;
+
   @NonNull private String correctAnswer;
   @NonNull private List<String> incorrectAnswers;
   @NonNull private String category;

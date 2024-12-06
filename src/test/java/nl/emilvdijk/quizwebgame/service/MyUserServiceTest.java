@@ -48,7 +48,7 @@ class MyUserServiceTest {
             .answeredQuestions(Set.of())
             .build();
     myUserService.saveUser(testSaveUser);
-    assertEquals(3, myUserService.userRepo.count());
+    assertNotNull(myUserService.loadUserByUsername("testUser"));
   }
 
   @Test

@@ -72,8 +72,8 @@ public class QuizAppConfig {
             .userPreferences(adminPreferences)
             .build();
     userService.saveUser(testAdmin);
-    log.warn("added 2 test users one of which is admin");
 
+    log.warn("added 2 test users one of which is admin");
     return userService;
   }
 }

@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.Data;
@@ -23,7 +22,7 @@ import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -64,10 +63,6 @@ public class MyUser extends BaseEntity implements UserDetails, Serializable {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    Set<GrantedAuthority> userAuth = new HashSet<>();
-    for (String authority : myRoles) {
-      userAuth.add(new SimpleGrantedAuthority(authority));
-    }
-    return userAuth;
+    return AuthorityUtils.createAuthorityList(myRoles);
   }
 }

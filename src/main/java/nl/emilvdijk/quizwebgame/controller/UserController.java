@@ -70,8 +70,13 @@ public class UserController {
    */
   @PostMapping("/register")
   public String registerUser(
-      HttpServletRequest request, @Valid NewMyUser user, BindingResult bindingResult) {
-
+      HttpServletRequest request,
+      @Valid NewMyUser user,
+      BindingResult bindingResult,
+      @AuthenticationPrincipal MyUser myUser) {
+    if (!(myUser == null)) {
+      return "redirect:/";
+    }
     if (bindingResult.hasErrors()) {
       return "register";
     }
@@ -115,6 +120,7 @@ public class UserController {
   public String updateUserPreferences(
       @ModelAttribute(name = "userPreferences") UserPreferences userPreferences,
       @AuthenticationPrincipal MyUser myUser) {
+
     myUser.setUserPreferences(userPreferences);
     myUser.setQuestions(new ArrayList<>());
     MyUser user = userService.loadUserByUsername(myUser.getUsername());
