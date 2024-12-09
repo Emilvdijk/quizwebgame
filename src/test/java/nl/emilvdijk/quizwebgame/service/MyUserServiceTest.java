@@ -10,8 +10,11 @@ import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
+import nl.emilvdijk.quizwebgame.enums.CategoryOpenTdb;
+import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import nl.emilvdijk.quizwebgame.model.NewMyUser;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -29,9 +32,9 @@ class MyUserServiceTest {
   @Autowired MyUserService myUserService;
   @Autowired PasswordEncoder passwordEncoder;
 
-  @Test
-  @Order(1)
-  void testSaveUser() {
+  @BeforeAll
+  static void addTestUsers(
+      @Autowired PasswordEncoder passwordEncoder, @Autowired MyUserService myUserService) {
     ArrayList<String> roles = new ArrayList<>();
     roles.add("TEST_ROLE");
     MyUser testSaveUser =
@@ -49,6 +52,24 @@ class MyUserServiceTest {
             .build();
     myUserService.saveUser(testSaveUser);
     assertNotNull(myUserService.loadUserByUsername("testUser"));
+
+    MyUser testSaveUser2 =
+        MyUser.builder()
+            .username("testUser2")
+            .password("test")
+            .myRoles(List.of("TEST_ROLE"))
+            .userPreferences(
+                UserPreferences.builder()
+                    .apiChoiceEnum(ApiChoiceEnum.OPEN_TDB)
+                    .difficultyEnum(DifficultyEnum.MEDIUM)
+                    .categoryOpenTdbList(
+                        List.of(CategoryOpenTdb.HISTORY, CategoryOpenTdb.GENERAL_KNOWLEDGE))
+                    .categoryTriviaApiList(
+                        List.of(CategoryTriviaApi.HISTORY, CategoryTriviaApi.SCIENCE))
+                    .build())
+            .build();
+    myUserService.saveUser(testSaveUser2);
+    assertNotNull(myUserService.loadUserByUsername("testUser2"));
   }
 
   @Test
@@ -106,5 +127,24 @@ class MyUserServiceTest {
   void checkIfUserExists() {
     assertFalse(myUserService.checkIfUserExists("asfasdfad"));
     assertTrue(myUserService.checkIfUserExists("testUser"));
+  }
+
+  @Test
+  void resetUserSettings() {
+    MyUser testUser = myUserService.loadUserByUsername("testUser2");
+
+    myUserService.resetUserSettings(testUser);
+
+    assertTrue(testUser.getUserPreferences().getCategoryOpenTdbList().isEmpty());
+    assertTrue(testUser.getUserPreferences().getCategoryTriviaApiList().isEmpty());
+    assertEquals(DifficultyEnum.ALL, testUser.getUserPreferences().getDifficultyEnum());
+    assertEquals(ApiChoiceEnum.ALL, testUser.getUserPreferences().getApiChoiceEnum());
+
+    testUser = myUserService.loadUserByUsername("testUser2");
+
+    assertTrue(testUser.getUserPreferences().getCategoryOpenTdbList().isEmpty());
+    assertTrue(testUser.getUserPreferences().getCategoryTriviaApiList().isEmpty());
+    assertEquals(DifficultyEnum.ALL, testUser.getUserPreferences().getDifficultyEnum());
+    assertEquals(ApiChoiceEnum.ALL, testUser.getUserPreferences().getApiChoiceEnum());
   }
 }

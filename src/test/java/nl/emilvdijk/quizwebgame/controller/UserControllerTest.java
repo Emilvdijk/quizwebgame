@@ -238,8 +238,52 @@ class UserControllerTest {
   }
 
   @Test
-  void populateOpenTdbCategories() {}
+  void populateOpenTdbCategories(@Autowired UserController userController) {
+    System.out.println(userController.populateOpenTdbCategories());
+    assertEquals(
+        List.of(
+            CategoryOpenTdb.GENERAL_KNOWLEDGE,
+            CategoryOpenTdb.ENTERTAINMENT_BOOKS,
+            CategoryOpenTdb.ENTERTAINMENT_FILM,
+            CategoryOpenTdb.ENTERTAINMENT_MUSIC,
+            CategoryOpenTdb.ENTERTAINMENT_MUSICALS_THEATRES,
+            CategoryOpenTdb.ENTERTAINMENT_TELEVISION,
+            CategoryOpenTdb.ENTERTAINMENT_VIDEO_GAMES,
+            CategoryOpenTdb.ENTERTAINMENT_BOARD_GAMES,
+            CategoryOpenTdb.ENTERTAINMENT_JAPANESE_ANIME_MANGA,
+            CategoryOpenTdb.ENTERTAINMENT_CARTOON_ANIMATIONS,
+            CategoryOpenTdb.ENTERTAINMENT_COMICS,
+            CategoryOpenTdb.SCIENCE_NATURE,
+            CategoryOpenTdb.SCIENCE_COMPUTERS,
+            CategoryOpenTdb.SCIENCE_MATHEMATICS,
+            CategoryOpenTdb.SCIENCE_GADGETS,
+            CategoryOpenTdb.MYTHOLOGY,
+            CategoryOpenTdb.SPORTS,
+            CategoryOpenTdb.GEOGRAPHY,
+            CategoryOpenTdb.HISTORY,
+            CategoryOpenTdb.POLITICS,
+            CategoryOpenTdb.ART,
+            CategoryOpenTdb.CELEBRITIES,
+            CategoryOpenTdb.ANIMALS,
+            CategoryOpenTdb.VEHICLES),
+        userController.populateOpenTdbCategories());
+  }
 
   @Test
-  void populateTriviaApiCategories() {}
+  void populateTriviaApiCategories(@Autowired UserController userController) {
+    System.out.println(userController.populateTriviaApiCategories());
+    assertEquals(
+        List.of(
+            CategoryTriviaApi.MUSIC,
+            CategoryTriviaApi.SPORT_AND_LEISURE,
+            CategoryTriviaApi.FILM_AND_TV,
+            CategoryTriviaApi.ARTS_AND_LITERATURE,
+            CategoryTriviaApi.HISTORY,
+            CategoryTriviaApi.SOCIETY_AND_CULTURE,
+            CategoryTriviaApi.SCIENCE,
+            CategoryTriviaApi.GEOGRAPHY,
+            CategoryTriviaApi.FOOD_AND_DRINK,
+            CategoryTriviaApi.GENERAL_KNOWLEDGE),
+        userController.populateTriviaApiCategories());
+  }
 }

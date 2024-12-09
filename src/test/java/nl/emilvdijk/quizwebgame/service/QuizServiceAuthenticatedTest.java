@@ -9,6 +9,7 @@ import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.enums.CategoryOpenTdb;
+import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.junit.jupiter.api.BeforeAll;
@@ -54,6 +55,7 @@ class QuizServiceAuthenticatedTest {
       newTestQuestion.setId(i);
       newTestQuestion.setQuestionText(String.valueOf(i));
       newTestQuestion.setOrigin(ApiChoiceEnum.TRIVIA_API);
+      newTestQuestion.setCategory("sport_and_leisure");
       newTestQuestion.setDifficulty("easy");
       newTestQuestion.setAnswers(new ArrayList<>());
       newTestQuestion.setIncorrectAnswers(new ArrayList<>());
@@ -173,6 +175,22 @@ class QuizServiceAuthenticatedTest {
                 .build(),
             List.of(3L));
     assertEquals(3, questionList.size());
+
+    questionList =
+        quizServiceAuthenticated.getQuestionsByChoice(
+            UserPreferences.builder()
+                .difficultyEnum(DifficultyEnum.ALL)
+                .apiChoiceEnum(ApiChoiceEnum.ALL)
+                .categoryOpenTdbList(List.of(CategoryOpenTdb.ENTERTAINMENT_FILM))
+                .categoryTriviaApiList(List.of(CategoryTriviaApi.SPORT_AND_LEISURE))
+                .build(),
+            List.of(3L));
+    assertEquals(8, questionList.size());
+    questionList.forEach(
+        question ->
+            assertTrue(
+                question.getCategory().equals("Entertainment: Film")
+                    || question.getCategory().equals("sport_and_leisure")));
   }
 
   @Test

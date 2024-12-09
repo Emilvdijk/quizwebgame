@@ -9,6 +9,7 @@ import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.UserPreferences;
 import nl.emilvdijk.quizwebgame.enums.ApiChoiceEnum;
 import nl.emilvdijk.quizwebgame.enums.CategoryOpenTdb;
+import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,26 @@ class ApiUrlBuilderTest {
     assertEquals(
         "https://the-trivia-api.com/v2/questions?limit=50",
         apiUrlBuilder.generateTriviaApiUri(user3).toString());
+
+    assertEquals(
+        "https://the-trivia-api.com/v2/questions?limit=50&categories=history,general_knowledge",
+        apiUrlBuilder
+            .generateTriviaApiUri(
+                MyUser.builder()
+                    .username("testUser")
+                    .password("test")
+                    .myRoles(List.of())
+                    .userPreferences(
+                        UserPreferences.builder()
+                            .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
+                            .difficultyEnum(DifficultyEnum.ALL)
+                            .categoryOpenTdbList(new ArrayList<>())
+                            .categoryTriviaApiList(
+                                List.of(
+                                    CategoryTriviaApi.HISTORY, CategoryTriviaApi.GENERAL_KNOWLEDGE))
+                            .build())
+                    .build())
+            .toString());
   }
 
   @Test
