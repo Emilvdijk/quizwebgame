@@ -18,7 +18,9 @@ public class UsernameValidator implements ConstraintValidator<UserAlreadyExistsC
   @NonNull private final UserRepo userRepo;
 
   @Override
-  public void initialize(UserAlreadyExistsConstraint username) {}
+  public void initialize(UserAlreadyExistsConstraint username) {
+    // no special operation for initialisation is needed so this method remains empty
+  }
 
   @Override
   public boolean isValid(String username, ConstraintValidatorContext constraintValidatorContext) {

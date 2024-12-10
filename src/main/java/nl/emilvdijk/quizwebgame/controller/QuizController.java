@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @AllArgsConstructor
 public class QuizController {
 
+  private static final String SESSION_QUESTION = "sessionQuestion";
   @NonNull MyUserService userService;
   @NonNull DynamicQuizService dynamicQuizService;
 
@@ -53,7 +54,7 @@ public class QuizController {
   public String showQuizQuestion(
       Model model, @AuthenticationPrincipal MyUser user, HttpSession httpSession) {
     Question question = dynamicQuizService.getService(user).getNewQuestion();
-    httpSession.setAttribute("sessionQuestion", question);
+    httpSession.setAttribute(SESSION_QUESTION, question);
     model.addAttribute("question", question);
     if (user == null) {
       log.debug("Anonymous GET Requested with question Id: {}", question.getId());
@@ -77,8 +78,8 @@ public class QuizController {
       Model model,
       @AuthenticationPrincipal MyUser user,
       HttpSession httpSession) {
-    Question answeredQuestion = (Question) httpSession.getAttribute("sessionQuestion");
-    httpSession.removeAttribute("sessionQuestion");
+    Question answeredQuestion = (Question) httpSession.getAttribute(SESSION_QUESTION);
+    httpSession.removeAttribute(SESSION_QUESTION);
 
     Question question =
         dynamicQuizService.getService(user).getQuestionById(answeredQuestion.getId());
