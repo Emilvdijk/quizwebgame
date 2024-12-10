@@ -3,6 +3,11 @@ package nl.emilvdijk.quizwebgame;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
+import nl.emilvdijk.quizwebgame.controller.QuizController;
+import nl.emilvdijk.quizwebgame.controller.RestController;
+import nl.emilvdijk.quizwebgame.controller.UserController;
+import nl.emilvdijk.quizwebgame.controller.controlleradvice.GlobalExceptionHandler;
+import nl.emilvdijk.quizwebgame.controller.controlleradvice.RestExceptionHandler;
 import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import nl.emilvdijk.quizwebgame.repository.UserRepo;
@@ -33,6 +38,11 @@ class QuizWebGameApplicationTests {
   @Autowired QuestionApiService questionApiService;
   @Autowired UserRepo userRepo;
   @Autowired PasswordEncoder passwordEncoder;
+  @Autowired QuizController quizController;
+  @Autowired RestController restController;
+  @Autowired UserController userController;
+  @Autowired GlobalExceptionHandler globalExceptionHandler;
+  @Autowired RestExceptionHandler restExceptionHandler;
 
   @Value("${myapp.url}")
   String triviaApiUrl;
@@ -59,5 +69,10 @@ class QuizWebGameApplicationTests {
     assertNotNull(openTdbUrl);
     QuestionMapStructMapper instance = QuestionMapStructMapper.INSTANCE;
     assertNotNull(instance);
+    assertNotNull(quizController);
+    assertNotNull(restController);
+    assertNotNull(userController);
+    assertNotNull(globalExceptionHandler);
+    assertNotNull(restExceptionHandler);
   }
 }
