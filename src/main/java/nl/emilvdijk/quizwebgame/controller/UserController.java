@@ -74,7 +74,7 @@ public class UserController {
       @Valid NewMyUser user,
       BindingResult bindingResult,
       @AuthenticationPrincipal MyUser myUser) {
-    if (!(myUser == null)) {
+    if (myUser != null) {
       return "redirect:/";
     }
     if (bindingResult.hasErrors()) {

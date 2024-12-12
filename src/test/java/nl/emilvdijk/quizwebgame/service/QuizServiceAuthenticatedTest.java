@@ -199,6 +199,6 @@ class QuizServiceAuthenticatedTest {
     MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     assertEquals(0, user.getQuestions().size());
     quizServiceAuthenticated.getNewQuestions();
-    assertEquals(11, user.getQuestions().size());
+    assertEquals(20, user.getQuestions().size());
   }
 }

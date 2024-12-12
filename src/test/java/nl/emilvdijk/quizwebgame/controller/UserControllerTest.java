@@ -34,7 +34,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 class UserControllerTest {
-  // FIXME add more tests!
   @Autowired private MockMvc mockMvc;
 
   @BeforeAll
@@ -148,7 +147,36 @@ class UserControllerTest {
         .andExpect(status().isFound())
         .andExpect(redirectedUrl("/"));
     assertNotNull(userRepo.findByUsername("testRegUsername2").orElseThrow());
-    //    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+  }
+
+  @Test
+  void postRegisterUserAndExpectBindingResultErrorTooLong(@Autowired UserRepo userRepo)
+      throws Exception {
+    mockMvc
+        .perform(
+            post("/register")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .content("username=testRegUsername2ButItIsTooLong&password=TestRegisterPassword2")
+                .with(csrf()))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("needs to be between 3 and 20 characters")));
+    assertNull(userRepo.findByUsername("testRegUsername2ButItIsTooLong").orElse(null));
+  }
+
+  @Test
+  void postRegisterUserAndExpectBindingResultErrorUserAlreadyExists(@Autowired UserRepo userRepo)
+      throws Exception {
+    assertNotNull(userRepo.findByUsername("user").orElseThrow());
+    mockMvc
+        .perform(
+            post("/register")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .content("username=user&password=TestRegisterPassword")
+                .with(csrf()))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("username already exists")));
   }
 
   @Test

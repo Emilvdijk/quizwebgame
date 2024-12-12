@@ -9,14 +9,12 @@ import nl.emilvdijk.quizwebgame.entity.MyUser;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.service.DynamicQuizService;
 import nl.emilvdijk.quizwebgame.service.MyUserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * base controller class for the program website. several services have been attached.
@@ -113,27 +111,5 @@ public class QuizController {
     MyUser myUser = userService.loadUserByUsername(user.getUsername());
     model.addAttribute("answeredQuestions", userService.getSortedAnsweredQuestions(myUser));
     return "questionHistory";
-  }
-
-  /**
-   * mapping for access denied page.
-   *
-   * @return access denied page
-   */
-  @GetMapping("/error403")
-  @ResponseStatus(HttpStatus.FORBIDDEN)
-  public String accessDenied() {
-    return "/error403";
-  }
-
-  /**
-   * mapping for unauthorized page.
-   *
-   * @return unauthorized page
-   */
-  @GetMapping("/error401")
-  @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  public String unauthorized() {
-    return "/error401";
   }
 }

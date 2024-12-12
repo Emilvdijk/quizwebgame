@@ -49,7 +49,7 @@ public class QuizAppConfig {
             .enabled(true)
             .userPreferences(
                 UserPreferences.builder()
-                    .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
+                    .apiChoiceEnum(ApiChoiceEnum.ALL)
                     .difficultyEnum(DifficultyEnum.ALL)
                     .build())
             .build();
@@ -60,7 +60,7 @@ public class QuizAppConfig {
     adminRoles.add(DEFAULT_USER_ROLE);
     UserPreferences adminPreferences =
         UserPreferences.builder()
-            .apiChoiceEnum(ApiChoiceEnum.TRIVIA_API)
+            .apiChoiceEnum(ApiChoiceEnum.ALL)
             .difficultyEnum(DifficultyEnum.ALL)
             .build();
     MyUser testAdmin =

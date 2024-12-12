@@ -78,6 +78,17 @@ class QuizControllerTest {
   }
 
   @Test
+  @WithUserDetails("user")
+  void showQuizQuestionWithUserAndExpectSuccess() throws Exception {
+    mockMvc
+        .perform(get("/quiz"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("category:")))
+        .andExpect(content().contentType("text/html;charset=UTF-8"));
+  }
+
+  @Test
   void questionAnswerAnonymousAndExpectSuccess(@Autowired QuestionRepo questionRepo)
       throws Exception {
     mockMvc

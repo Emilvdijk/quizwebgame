@@ -34,7 +34,9 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   String apiErrorHandler(
       ApiErrorException ex, Model model, @AuthenticationPrincipal MyUser myUser) {
-    userService.resetUserSettings(myUser);
+    if (myUser != null) {
+      userService.resetUserSettings(myUser);
+    }
     model.addAttribute(ERROR_MESSAGE, ex.getMessage());
     return ERROR_PAGE;
   }
