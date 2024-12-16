@@ -28,7 +28,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(classes = QuizWebGameApplication.class)
 @ActiveProfiles("test")
 @TestMethodOrder(OrderAnnotation.class)
-@DirtiesContext // FIXME make this test not dirty up the context
+@DirtiesContext
 class MyUserServiceTest {
 
   @Autowired MyUserService myUserService;
