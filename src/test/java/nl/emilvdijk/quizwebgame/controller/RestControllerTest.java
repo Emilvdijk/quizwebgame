@@ -69,7 +69,7 @@ class RestControllerTest {
   @Test
   @WithUserDetails("admin")
   void findQuestionByIdAndExpect404() throws Exception {
-    when(questionRepo.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+    when(questionRepo.findById(anyLong())).thenReturn(Optional.empty());
     mockMvc
         .perform(get("/api/questions/123452345"))
         .andDo(print())
