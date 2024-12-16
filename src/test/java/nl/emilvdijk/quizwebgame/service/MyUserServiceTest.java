@@ -22,11 +22,13 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = QuizWebGameApplication.class)
 @ActiveProfiles("test")
 @TestMethodOrder(OrderAnnotation.class)
+@DirtiesContext // FIXME make this test not dirty up the context
 class MyUserServiceTest {
 
   @Autowired MyUserService myUserService;
@@ -75,12 +77,12 @@ class MyUserServiceTest {
   @Test
   @Order(2)
   void testLoadUserByUsername() {
-    MyUser testloadUser = myUserService.loadUserByUsername("testUser");
-    System.out.println(testloadUser.toString());
-    assertEquals("testUser", testloadUser.getUsername());
-    assertTrue(testloadUser.isEnabled());
-    assertTrue(passwordEncoder.matches("testPassword", testloadUser.getPassword()));
-    assertEquals("[TEST_ROLE]", testloadUser.getAuthorities().toString());
+    MyUser testLoadUser = myUserService.loadUserByUsername("testUser");
+    System.out.println(testLoadUser.toString());
+    assertEquals("testUser", testLoadUser.getUsername());
+    assertTrue(testLoadUser.isEnabled());
+    assertTrue(passwordEncoder.matches("testPassword", testLoadUser.getPassword()));
+    assertEquals("[TEST_ROLE]", testLoadUser.getAuthorities().toString());
   }
 
   @Test
