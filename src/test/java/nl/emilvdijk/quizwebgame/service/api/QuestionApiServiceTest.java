@@ -83,7 +83,6 @@ class QuestionApiServiceTest {
     assertEquals(50, questionList.size());
   }
 
-  /** actually calls api service */
   @Test
   void getNewOpenTdbQuestionsAndExpectError() {
     try (MockedConstruction mocked =

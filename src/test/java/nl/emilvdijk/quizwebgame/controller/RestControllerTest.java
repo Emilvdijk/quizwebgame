@@ -1,5 +1,7 @@
 package nl.emilvdijk.quizwebgame.controller;
 
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -7,13 +9,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.Optional;
 import nl.emilvdijk.quizwebgame.entity.Question;
 import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,17 +30,20 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 class RestControllerTest {
 
   @Autowired private MockMvc mockMvc;
+  @MockBean QuestionRepo questionRepo;
 
-  @BeforeAll
-  static void setup(@Autowired QuestionRepo questionRepo) {
-    questionRepo.save(
+  @BeforeEach
+  void setup() {
+    Question question =
         Question.builder()
             .questionText("test")
             .category("test")
             .correctAnswer("test")
             .difficulty("test")
             .incorrectAnswers(List.of())
-            .build());
+            .build();
+    when(questionRepo.findAll()).thenReturn(List.of(question));
+    when(questionRepo.findById(anyLong())).thenReturn(Optional.of(question));
   }
 
   @Test
@@ -62,6 +69,7 @@ class RestControllerTest {
   @Test
   @WithUserDetails("admin")
   void findQuestionByIdAndExpect404() throws Exception {
+    when(questionRepo.findById(anyLong())).thenReturn(Optional.empty());
     mockMvc
         .perform(get("/api/questions/123452345"))
         .andDo(print())
