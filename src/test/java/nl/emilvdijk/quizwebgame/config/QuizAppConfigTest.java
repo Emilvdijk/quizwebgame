@@ -22,9 +22,6 @@ class QuizAppConfigTest {
     userList.forEach(
         myUser ->
             assertTrue(
-                myUser.getUsername().equals("admin")
-                    || myUser.getUsername().equals("user")
-                    || myUser.getUsername().equals("testUser")
-                    || myUser.getUsername().equals("testUsername")));
+                myUser.getUsername().equals("admin") || myUser.getUsername().equals("user")));
   }
 }
