@@ -3,7 +3,6 @@ package nl.emilvdijk.quizwebgame.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import nl.emilvdijk.quizwebgame.entity.Question;
@@ -13,14 +12,25 @@ import nl.emilvdijk.quizwebgame.service.api.QuestionApiService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@Testcontainers
 class QuizServiceGuestTest {
+
+  @Container @ServiceConnection
+  static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:16.0");
+
   @Autowired QuizServiceGuest quizServiceGuest;
   @MockBean QuestionApiService questionApiService;
   @Autowired QuestionRepo questionRepo;

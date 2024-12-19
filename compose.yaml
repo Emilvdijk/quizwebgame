@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:16.0'
+    container_name: quizwebgame
+    environment:
+      - 'POSTGRES_DB=quizwebgame'
+      - 'POSTGRES_PASSWORD=pass'
+      - 'POSTGRES_USER=user'
+    ports:
+      - "5432:5432"

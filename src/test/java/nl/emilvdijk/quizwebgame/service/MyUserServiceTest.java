@@ -20,16 +20,27 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(classes = QuizWebGameApplication.class)
 @ActiveProfiles("test")
 @TestMethodOrder(OrderAnnotation.class)
 @DirtiesContext
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@Testcontainers
 class MyUserServiceTest {
+
+  @Container @ServiceConnection
+  static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:16.0");
 
   @Autowired MyUserService myUserService;
   @Autowired PasswordEncoder passwordEncoder;
@@ -107,6 +118,7 @@ class MyUserServiceTest {
   @Test
   @Order(5)
   void markQuestionDone() {
+    // FIXME no clue why this fails
     MyUser testUser = myUserService.loadUserByUsername("testUser");
     assertEquals(0, testUser.getAnsweredQuestions().size());
     myUserService.markQuestionDone(
