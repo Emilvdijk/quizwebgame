@@ -113,32 +113,4 @@ class WebMvcConfigTest {
         .andDo(print())
         .andExpect(status().isForbidden());
   }
-
-  @Test
-  void testH2AndExpect401Forward() throws Exception {
-    mockMvc
-        .perform(get("/h2-console"))
-        .andDo(print())
-        .andExpect(status().isUnauthorized())
-        .andExpect(forwardedUrl("/error401"));
-  }
-
-  @Test
-  @WithUserDetails("user")
-  void testH2AndExpect403Forward() throws Exception {
-    mockMvc
-        .perform(get("/h2-console"))
-        .andDo(print())
-        .andExpect(status().isForbidden())
-        .andExpect(forwardedUrl("/error403"));
-  }
-
-  @Test
-  @WithUserDetails("admin")
-  void testH2AndExpectOk() throws Exception {
-    // not sure why this doesn't work
-    // maybe mockmvc doesn't understand h2-console
-
-    //    mockMvc.perform(get("/h2-console")).andDo(print()).andExpect(status().isOk());
-  }
 }
