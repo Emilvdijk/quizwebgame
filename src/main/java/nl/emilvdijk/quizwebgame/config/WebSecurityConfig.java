@@ -5,12 +5,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -27,23 +25,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @Slf4j
 public class WebSecurityConfig {
-
-  private static final String H2_CONSOLE = "/h2-console/**";
-
-  @Bean
-  @Profile({"dev", "test"})
-  @Order(1)
-  SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
-    http.securityMatcher(AntPathRequestMatcher.antMatcher(H2_CONSOLE))
-        .authorizeHttpRequests(request -> request.requestMatchers(H2_CONSOLE).hasRole("ADMIN"))
-        .exceptionHandling(exception -> exception.accessDeniedPage("/error403"))
-        .exceptionHandling(
-            exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
-        .csrf(csrf -> csrf.ignoringRequestMatchers(H2_CONSOLE))
-        .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin));
-    log.warn("h2-console has been made accessible through security");
-    return http.build();
-  }
 
   @Bean
   @Order(2)
