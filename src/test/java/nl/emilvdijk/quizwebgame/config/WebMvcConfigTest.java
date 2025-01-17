@@ -113,4 +113,29 @@ class WebMvcConfigTest {
         .andDo(print())
         .andExpect(status().isForbidden());
   }
+
+  @Test
+  @WithUserDetails("admin")
+  void testActuatorAndExpectOk() throws Exception {
+    mockMvc.perform(get("/actuator/health")).andDo(print()).andExpect(status().isOk());
+  }
+
+  @Test
+  void testActuatorAndExpect401() throws Exception {
+    mockMvc
+        .perform(get("/actuator/health"))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(forwardedUrl("/error401"));
+  }
+
+  @Test
+  @WithUserDetails("user")
+  void testActuatorAndExpect403() throws Exception {
+    mockMvc
+        .perform(get("/actuator/health"))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(forwardedUrl("/error403"));
+  }
 }

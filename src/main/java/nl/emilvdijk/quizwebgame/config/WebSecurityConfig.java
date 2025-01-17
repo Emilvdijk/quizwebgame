@@ -72,6 +72,8 @@ public class WebSecurityConfig {
                     .permitAll()
                     .requestMatchers("/userPreferences", "/questionHistory")
                     .hasRole("USER")
+                    .requestMatchers("/actuator/**")
+                    .hasRole("ADMIN")
                     .anyRequest()
                     .authenticated())
         .exceptionHandling(exception -> exception.accessDeniedPage("/error403"))
