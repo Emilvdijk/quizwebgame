@@ -65,9 +65,7 @@ public class WebSecurityConfig {
                     (request, response, authException) -> {
                       response.setContentType("application/json");
                       response.setStatus(401);
-                      response
-                          .getOutputStream()
-                          .println("You are not authorized to access this resource.");
+                      response.getWriter().write("You are not authorized to access this resource.");
                     }));
     return http.build();
   }
