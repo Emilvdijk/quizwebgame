@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -84,6 +85,16 @@ class WebMvcConfigTest {
   }
 
   @Test
+  void testApiAndExpectOkUsingHeaders() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/questions/all")
+                .with(SecurityMockMvcRequestPostProcessors.httpBasic("admin", "1")))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+
+  @Test
   void testApiAndExpect401() throws Exception {
     mockMvc
         .perform(get("/api/questions/all"))
@@ -91,7 +102,7 @@ class WebMvcConfigTest {
         .andExpect(
             result ->
                 assertEquals(
-                    "You are not authorized to access this resource.\r\n",
+                    "You are not authorized to access this resource.",
                     result.getResponse().getContentAsString()))
         .andExpect(status().isUnauthorized());
   }

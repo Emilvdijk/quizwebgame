@@ -1,12 +1,11 @@
 package nl.emilvdijk.quizwebgame.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,10 +45,9 @@ public class WebSecurityConfig {
                     (request, response, authException) -> {
                       response.setContentType("application/json");
                       response.setStatus(401);
-                      response
-                          .getOutputStream()
-                          .println("You are not authorized to access this resource.");
-                    }));
+                      response.getWriter().write("You are not authorized to access this resource.");
+                    }))
+        .httpBasic(Customizer.withDefaults());
     return http.build();
   }
 
@@ -79,7 +77,6 @@ public class WebSecurityConfig {
         .exceptionHandling(exception -> exception.accessDeniedPage("/error403"))
         .exceptionHandling(
             exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
-        .httpBasic(withDefaults())
         .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true).permitAll())
         .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
     return http.build();
