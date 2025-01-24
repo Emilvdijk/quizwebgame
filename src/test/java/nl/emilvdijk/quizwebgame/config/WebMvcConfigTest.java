@@ -80,7 +80,7 @@ class WebMvcConfigTest {
         .andExpect(
             result ->
                 assertEquals(
-                    "You are not authorized to access this resource.\r\n",
+                    "You are not authorized to access this resource.",
                     result.getResponse().getContentAsString()))
         .andExpect(status().isUnauthorized());
   }
