@@ -109,6 +109,8 @@ class MyUserServiceTest {
   void markQuestionDone() {
     MyUser testUser = myUserService.loadUserByUsername("testUser");
     assertEquals(0, testUser.getAnsweredQuestions().size());
+    // although hibernate and h2 will accept this, this question should really be added to the test
+    // db first
     myUserService.markQuestionDone(
         Question.builder()
             .id(2L)
