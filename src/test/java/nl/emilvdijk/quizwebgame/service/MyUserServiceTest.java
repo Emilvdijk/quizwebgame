@@ -14,6 +14,7 @@ import nl.emilvdijk.quizwebgame.enums.CategoryOpenTdb;
 import nl.emilvdijk.quizwebgame.enums.CategoryTriviaApi;
 import nl.emilvdijk.quizwebgame.enums.DifficultyEnum;
 import nl.emilvdijk.quizwebgame.model.NewMyUser;
+import nl.emilvdijk.quizwebgame.repository.QuestionRepo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -44,6 +45,7 @@ class MyUserServiceTest {
 
   @Autowired MyUserService myUserService;
   @Autowired PasswordEncoder passwordEncoder;
+  @Autowired QuestionRepo questionRepo;
 
   @BeforeAll
   static void addTestUsers(
@@ -118,20 +120,18 @@ class MyUserServiceTest {
   @Test
   @Order(5)
   void markQuestionDone() {
-    // FIXME no clue why this fails
-    MyUser testUser = myUserService.loadUserByUsername("testUser");
-    assertEquals(0, testUser.getAnsweredQuestions().size());
-    myUserService.markQuestionDone(
+    questionRepo.save(
         Question.builder()
-            .id(2L)
             .questionText("test")
             .category("test")
             .correctAnswer("test")
             .difficulty("test")
             .incorrectAnswers(List.of())
-            .build(),
-        testUser,
-        "questionChosenAnswer");
+            .build());
+    MyUser testUser = myUserService.loadUserByUsername("testUser");
+    Question question = questionRepo.findById(1L).orElseThrow();
+    assertEquals(0, testUser.getAnsweredQuestions().size());
+    myUserService.markQuestionDone(question, testUser, "questionChosenAnswer");
     testUser = myUserService.loadUserByUsername("testUser");
     assertEquals(1, testUser.getAnsweredQuestions().size());
   }
