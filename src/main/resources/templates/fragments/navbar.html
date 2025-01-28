@@ -59,13 +59,6 @@
             </form>
           </li>
         </div>
-        <div sec:authorize="hasRole('ADMIN')">
-          <li class="nav-item">
-            <form class="nav-link" method="get" th:action="@{/h2-console}">
-              <button class="nav-link" type="submit">H2 console</button>
-            </form>
-          </li>
-        </div>
       </ul>
     </div>
   </nav>
