@@ -110,6 +110,6 @@ public class QuizController {
   public String showQuestionHistory(Model model, @AuthenticationPrincipal MyUser user) {
     MyUser myUser = userService.loadUserByUsername(user.getUsername());
     model.addAttribute("answeredQuestions", userService.getSortedAnsweredQuestions(myUser));
-    return "questionHistory";
+    return "questionhistory";
   }
 }
