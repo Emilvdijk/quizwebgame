@@ -1,10 +1,22 @@
 services:
-  postgres:
+  database:
     image: 'postgres:16.0'
-    container_name: quizwebgame
+    container_name: quizwebgamedb
     environment:
-      - 'POSTGRES_DB=quizwebgame'
-      - 'POSTGRES_PASSWORD=pass'
-      - 'POSTGRES_USER=user'
+      POSTGRES_DB: quizwebgamedb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
     ports:
       - "5432:5432"
+  myapp:
+    image: 'emilvdijk/quizwebgame:test'
+    container_name: quizwebgame
+    depends_on:
+      - database
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/quizwebgamedb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+    ports:
+      - '8080:8080'
