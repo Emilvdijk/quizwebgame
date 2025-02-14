@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
   myapp:
-    image: 'emilvdijk/quizwebgame:test'
+    image: 'emilvdijk/quizwebgame:postgres'
     container_name: quizwebgame
     depends_on:
       - database
