@@ -13,5 +13,9 @@ https://opentdb.com/
 github:
 https://github.com/Emilvdijk/quizwebgame
 
+you can also pull it from dockerhub!
+
+docker run -e "SPRING_PROFILES_ACTIVE=prod" -p 8080:8080 -t emilvdijk/quizwebgame:test
+
 author:
 Emil van Dijk
